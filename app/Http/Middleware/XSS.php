@@ -32,13 +32,13 @@ class XSS
                 $dbMigrations           = $this->getExecutedMigrations();
                 $numberOfUpdatesPending = (count($migrations) + $messengerMigration) - count($dbMigrations);
 
-                if($numberOfUpdatesPending > 0)
+                /*if($numberOfUpdatesPending > 0)
                 {
 
                     Utility::addNewData();
 
                     return redirect()->route('LaravelUpdater::welcome');
-                }
+                }*/
 
             }
         }
