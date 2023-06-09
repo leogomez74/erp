@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::post('login', 'ApiController@login');
-Route::group(['middleware' => ['auth:sanctum']], function () {
+Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', 'ApiController@logout');
     Route::get('get-projects', 'ApiController@getProjects');
     Route::post('add-tracker', 'ApiController@addTracker');
