@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\Currencie;
 use App\Models\ProductPurchase;
 use App\Models\ProductService;
@@ -89,7 +90,7 @@ class ProductStockController extends Controller
      * @param  \App\Models\ProductStock  $productStock
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         if (\Auth::user()->can('edit product & service')) {
             $productService = ProductService::find($id);

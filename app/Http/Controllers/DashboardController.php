@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\JsonResponse;
+use Illuminate\View\View;
 use App\Models\Announcement;
 use App\Models\AttendanceEmployee;
 use App\Models\BankAccount;
@@ -53,7 +56,7 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function account_dashboard_index()
+    public function account_dashboard_index(): Renderable
     {
         if (Auth::check()) {
             if (Auth::user()->type == 'super admin') {
@@ -161,7 +164,7 @@ class DashboardController extends Controller
         }
     }
 
-    public function project_dashboard_index()
+    public function project_dashboard_index(): View
     {
         $user = Auth::user();
         if (\Auth::user()->can('show project dashboard')) {
@@ -408,7 +411,7 @@ class DashboardController extends Controller
     }
 
     // Load Dashboard user's using ajax
-    public function filterView(Request $request)
+    public function filterView(Request $request): JsonResponse
     {
         $usr = Auth::user();
         $users = User::where('id', '!=', $usr->id);
@@ -428,7 +431,7 @@ class DashboardController extends Controller
         }
     }
 
-    public function clientView()
+    public function clientView(): View
     {
         if (Auth::check()) {
             if (Auth::user()->type == 'super admin') {

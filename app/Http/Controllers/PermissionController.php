@@ -2,27 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class PermissionController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $permissions = Permission::all();
 
         return view('permission.index')->with('permissions', $permissions);
     }
 
-    public function create()
+    public function create(): View
     {
         $roles = Role::get();
 
         return view('permission.create')->with('roles', $roles);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $this->validate(
             $request, [
@@ -50,14 +52,14 @@ class PermissionController extends Controller
         );
     }
 
-    public function edit(Permission $permission)
+    public function edit(Permission $permission): View
     {
         $roles = Role::where('created_by', '=', \Auth::user()->creatorId())->get();
 
         return view('permission.edit', compact('roles', 'permission'));
     }
 
-    public function update(Request $request, Permission $permission)
+    public function update(Request $request, Permission $permission): RedirectResponse
     {
         $permission = Permission::findOrFail($permission['id']);
         $this->validate(
@@ -73,7 +75,7 @@ class PermissionController extends Controller
         );
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $permission = Permission::findOrFail($id);
         $permission->delete();

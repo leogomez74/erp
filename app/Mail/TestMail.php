@@ -24,7 +24,7 @@ class TestMail extends Mailable
      *
      * @return $this
      */
-    public function build()
+    public function build(): static
     {
         return $this->view('email.test_mail')->subject('Mail send for testing purpose.');
     }

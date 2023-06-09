@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Models\Branch;
 use App\Models\Department;
 use Illuminate\Http\Request;
@@ -28,7 +30,7 @@ class BranchController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create branch')) {
             $validator = \Validator::make(
@@ -53,7 +55,7 @@ class BranchController extends Controller
         }
     }
 
-    public function show(Branch $branch)
+    public function show(Branch $branch): RedirectResponse
     {
         return redirect()->route('branch.index');
     }
@@ -71,7 +73,7 @@ class BranchController extends Controller
         }
     }
 
-    public function update(Request $request, Branch $branch)
+    public function update(Request $request, Branch $branch): RedirectResponse
     {
         if (\Auth::user()->can('edit branch')) {
             if ($branch->created_by == \Auth::user()->creatorId()) {
@@ -98,7 +100,7 @@ class BranchController extends Controller
         }
     }
 
-    public function destroy(Branch $branch)
+    public function destroy(Branch $branch): RedirectResponse
     {
         if (\Auth::user()->can('delete branch')) {
             if ($branch->created_by == \Auth::user()->creatorId()) {
@@ -113,7 +115,7 @@ class BranchController extends Controller
         }
     }
 
-    public function getdepartment(Request $request)
+    public function getdepartment(Request $request): JsonResponse
     {
         if ($request->branch_id == 0) {
             $departments = Department::get()->pluck('name', 'id')->toArray();
@@ -124,7 +126,7 @@ class BranchController extends Controller
         return response()->json($departments);
     }
 
-    public function getemployee(Request $request)
+    public function getemployee(Request $request): JsonResponse
     {
         if (in_array('0', $request->department_id)) {
             $employees = Employee::get()->pluck('name', 'id')->toArray();

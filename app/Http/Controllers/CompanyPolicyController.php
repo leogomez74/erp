@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\Branch;
 use App\Models\CompanyPolicy;
 use App\Models\Utility;
@@ -32,7 +33,7 @@ class CompanyPolicyController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create company policy')) {
             $validator = \Validator::make(
@@ -108,7 +109,7 @@ class CompanyPolicyController extends Controller
         }
     }
 
-    public function update(Request $request, CompanyPolicy $companyPolicy)
+    public function update(Request $request, CompanyPolicy $companyPolicy): RedirectResponse
     {
         if (\Auth::user()->can('create company policy')) {
             $validator = \Validator::make(
@@ -152,7 +153,7 @@ class CompanyPolicyController extends Controller
         }
     }
 
-    public function destroy(CompanyPolicy $companyPolicy)
+    public function destroy(CompanyPolicy $companyPolicy): RedirectResponse
     {
         if (\Auth::user()->can('delete document')) {
             if ($companyPolicy->created_by == \Auth::user()->creatorId()) {

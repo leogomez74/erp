@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Models\Mail\testMail;
 use App\Models\Utility;
 use Artisan;
@@ -25,7 +27,7 @@ class SystemController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
 //        dd($request);
 
@@ -147,7 +149,7 @@ class SystemController extends Controller
         }
     }
 
-    public function saveEmailSettings(Request $request)
+    public function saveEmailSettings(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('manage system settings')) {
             $request->validate(
@@ -181,7 +183,7 @@ class SystemController extends Controller
         }
     }
 
-    public function saveCompanySettings(Request $request)
+    public function saveCompanySettings(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('manage company settings')) {
             $user = \Auth::user();
@@ -219,7 +221,7 @@ class SystemController extends Controller
         }
     }
 
-    public function savePaymentSettings(Request $request)
+    public function savePaymentSettings(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('manage stripe settings')) {
             //dd($request);
@@ -252,7 +254,7 @@ class SystemController extends Controller
         }
     }
 
-    public function saveSystemSettings(Request $request)
+    public function saveSystemSettings(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('manage company settings')) {
             $user = \Auth::user();
@@ -290,7 +292,7 @@ class SystemController extends Controller
         }
     }
 
-    public function saveZoomSettings(Request $request)
+    public function saveZoomSettings(Request $request): RedirectResponse
     {
         $post = $request->all();
         unset($post['_token']);
@@ -310,7 +312,7 @@ class SystemController extends Controller
         return redirect()->back()->with('success', __('Setting added successfully saved.'));
     }
 
-    public function saveBusinessSettings(Request $request)
+    public function saveBusinessSettings(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('manage business settings')) {
             $post = $request->all();
@@ -430,7 +432,7 @@ class SystemController extends Controller
         }
     }
 
-    public function saveCompanyPaymentSettings(Request $request)
+    public function saveCompanyPaymentSettings(Request $request): RedirectResponse
     {
         if (isset($request->is_stripe_enabled) && $request->is_stripe_enabled == 'on') {
             $request->validate(
@@ -610,12 +612,12 @@ class SystemController extends Controller
         return redirect()->back()->with('success', __('Payment setting successfully updated.'));
     }
 
-    public function testMail()
+    public function testMail(): View
     {
         return view('settings.test_mail');
     }
 
-    public function testSendMail(Request $request)
+    public function testSendMail(Request $request): RedirectResponse
     {
         $validator = \Validator::make($request->all(), ['email' => 'required|email']);
         if ($validator->fails()) {
@@ -822,7 +824,7 @@ class SystemController extends Controller
         }
     }
 
-    public function savePusherSettings(Request $request)
+    public function savePusherSettings(Request $request): RedirectResponse
     {
         if (\Auth::user()->type == 'super admin') {
             $request->validate(
@@ -855,7 +857,7 @@ class SystemController extends Controller
         }
     }
 
-    public function saveSlackSettings(Request $request)
+    public function saveSlackSettings(Request $request): RedirectResponse
     {
         $post = [];
         $post['slack_webhook'] = $request->input('slack_webhook');
@@ -900,7 +902,7 @@ class SystemController extends Controller
         return redirect()->back()->with('success', __('Slack updated successfully.'));
     }
 
-    public function saveTelegramSettings(Request $request)
+    public function saveTelegramSettings(Request $request): RedirectResponse
     {
         $post = [];
         $post['telegram_accestoken'] = $request->input('telegram_accestoken');
@@ -946,7 +948,7 @@ class SystemController extends Controller
         return redirect()->back()->with('success', __('Telegram updated successfully.'));
     }
 
-    public function saveTwilioSettings(Request $request)
+    public function saveTwilioSettings(Request $request): RedirectResponse
     {
         $post = [];
         $post['twilio_sid'] = $request->input('twilio_sid');
@@ -980,7 +982,7 @@ class SystemController extends Controller
         return redirect()->back()->with('success', __('Twilio updated successfully.'));
     }
 
-    public function recaptchaSettingStore(Request $request)
+    public function recaptchaSettingStore(Request $request): RedirectResponse
     {
         //return redirect()->back()->with('error', __('This operation is not perform due to demo mode.'));
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\CreditNote;
 use App\Models\Invoice;
 use App\Models\Utility;
@@ -36,7 +37,7 @@ class CreditNoteController extends Controller
         }
     }
 
-    public function store(Request $request, $invoice_id)
+    public function store(Request $request, $invoice_id): RedirectResponse
     {
         if (\Auth::user()->can('create credit note')) {
             $validator = \Validator::make(
@@ -83,7 +84,7 @@ class CreditNoteController extends Controller
         }
     }
 
-    public function update(Request $request, $invoice_id, $creditNote_id)
+    public function update(Request $request, $invoice_id, $creditNote_id): RedirectResponse
     {
         if (\Auth::user()->can('edit credit note')) {
             $validator = \Validator::make(
@@ -119,7 +120,7 @@ class CreditNoteController extends Controller
         }
     }
 
-    public function destroy($invoice_id, $creditNote_id)
+    public function destroy($invoice_id, $creditNote_id): RedirectResponse
     {
         if (\Auth::user()->can('delete credit note')) {
             $creditNote = CreditNote::find($creditNote_id);
@@ -144,7 +145,7 @@ class CreditNoteController extends Controller
         }
     }
 
-    public function customStore(Request $request)
+    public function customStore(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create credit note')) {
             $validator = \Validator::make(

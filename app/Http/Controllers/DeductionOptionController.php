@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\DeductionOption;
 use Illuminate\Http\Request;
 
@@ -27,7 +28,7 @@ class DeductionOptionController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create deduction option')) {
             $validator = \Validator::make(
@@ -52,7 +53,7 @@ class DeductionOptionController extends Controller
         }
     }
 
-    public function show(DeductionOption $deductionoption)
+    public function show(DeductionOption $deductionoption): RedirectResponse
     {
         return redirect()->route('deductionoption.index');
     }
@@ -71,7 +72,7 @@ class DeductionOptionController extends Controller
         }
     }
 
-    public function update(Request $request, DeductionOption $deductionoption)
+    public function update(Request $request, DeductionOption $deductionoption): RedirectResponse
     {
         if (\Auth::user()->can('edit deduction option')) {
             if ($deductionoption->created_by == \Auth::user()->creatorId()) {
@@ -99,7 +100,7 @@ class DeductionOptionController extends Controller
         }
     }
 
-    public function destroy(DeductionOption $deductionoption)
+    public function destroy(DeductionOption $deductionoption): RedirectResponse
     {
         if (\Auth::user()->can('delete deduction option')) {
             if ($deductionoption->created_by == \Auth::user()->creatorId()) {

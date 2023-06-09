@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Spatie\Permission\Models\Permission;
@@ -41,7 +42,7 @@ class RoleController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create role')) {
             $validator = \Validator::make(
@@ -97,7 +98,7 @@ class RoleController extends Controller
         }
     }
 
-    public function update(Request $request, Role $role)
+    public function update(Request $request, Role $role): RedirectResponse
     {
         if (\Auth::user()->can('edit role')) {
             $validator = \Validator::make(
@@ -135,7 +136,7 @@ class RoleController extends Controller
         }
     }
 
-    public function destroy(Role $role)
+    public function destroy(Role $role): RedirectResponse
     {
         if (\Auth::user()->can('delete role')) {
             $role->delete();

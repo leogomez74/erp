@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\CustomField;
 use Illuminate\Http\Request;
 
@@ -34,7 +35,7 @@ class CustomFieldController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create constant custom field')) {
             $validator = \Validator::make(
@@ -64,7 +65,7 @@ class CustomFieldController extends Controller
         }
     }
 
-    public function show(CustomField $customField)
+    public function show(CustomField $customField): RedirectResponse
     {
         return redirect()->route('custom-field.index');
     }
@@ -85,7 +86,7 @@ class CustomFieldController extends Controller
         }
     }
 
-    public function update(Request $request, CustomField $customField)
+    public function update(Request $request, CustomField $customField): RedirectResponse
     {
         if (\Auth::user()->can('edit constant custom field')) {
             if ($customField->created_by == \Auth::user()->creatorId()) {
@@ -113,7 +114,7 @@ class CustomFieldController extends Controller
         }
     }
 
-    public function destroy(CustomField $customField)
+    public function destroy(CustomField $customField): RedirectResponse
     {
         if (\Auth::user()->can('delete constant custom field')) {
             if ($customField->created_by == \Auth::user()->creatorId()) {

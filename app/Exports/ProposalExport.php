@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use Illuminate\Support\Collection;
 use App\Models\ProductServiceCategory;
 use App\Models\Proposal;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -12,7 +13,7 @@ class ProposalExport implements FromCollection, WithHeadings
     /**
      * @return \Illuminate\Support\Collection
      */
-    public function collection()
+    public function collection(): Collection
     {
         $data = Proposal::get();
 

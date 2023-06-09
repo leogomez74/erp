@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use App\Models\Project;
 use App\Models\ProjectUser;
 use App\Models\User;
@@ -28,7 +30,7 @@ class ZoomMeetingController extends Controller
 
     const MEETING_URL = 'https://api.zoom.us/v2/';
 
-    public function index()
+    public function index(): View
     {
         if (\Auth::user()->isClient()) {
             $meetings = ZoomMeeting::where('client_id', \Auth::user()->id)->get();
@@ -45,7 +47,7 @@ class ZoomMeetingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         $projects = Project::where('created_by', \Auth::user()->creatorId())->get()->pluck('project_name', 'id');
         $users = User::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
@@ -59,7 +61,7 @@ class ZoomMeetingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         // dd($request->all());
         if (\Auth::user()->type == 'company') {
@@ -156,7 +158,7 @@ class ZoomMeetingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ZoomMeeting $zoomMeeting)
+    public function destroy(ZoomMeeting $zoomMeeting): RedirectResponse
     {
         if ($zoomMeeting->created_by == \Auth::user()->creatorId()) {
             $zoomMeeting->delete();
@@ -196,7 +198,7 @@ class ZoomMeetingController extends Controller
         }
     }
 
-    public function calender(Request $request)
+    public function calender(Request $request): View
     {
         $user = \Auth::user();
         $transdate = date('Y-m-d', time());

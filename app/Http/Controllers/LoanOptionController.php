@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\LoanOption;
 use Illuminate\Http\Request;
 
@@ -27,7 +28,7 @@ class LoanOptionController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create loan option')) {
             $validator = \Validator::make(
@@ -51,7 +52,7 @@ class LoanOptionController extends Controller
         }
     }
 
-    public function show(LoanOption $loanoption)
+    public function show(LoanOption $loanoption): RedirectResponse
     {
         return redirect()->route('loanoption.index');
     }
@@ -69,7 +70,7 @@ class LoanOptionController extends Controller
         }
     }
 
-    public function update(Request $request, LoanOption $loanoption)
+    public function update(Request $request, LoanOption $loanoption): RedirectResponse
     {
         if (\Auth::user()->can('edit loan option')) {
             if ($loanoption->created_by == \Auth::user()->creatorId()) {
@@ -96,7 +97,7 @@ class LoanOptionController extends Controller
         }
     }
 
-    public function destroy(LoanOption $loanoption)
+    public function destroy(LoanOption $loanoption): RedirectResponse
     {
         if (\Auth::user()->can('delete loan option')) {
             if ($loanoption->created_by == \Auth::user()->creatorId()) {

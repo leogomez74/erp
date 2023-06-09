@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Models\EmailTemplate;
 use App\Models\EmailTemplateLang;
 use App\Models\UserEmailTemplate;
@@ -50,7 +52,7 @@ class EmailTemplateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
 //        return redirect()->back()->with('error', 'Permission denied.');
 
@@ -89,7 +91,7 @@ class EmailTemplateController extends Controller
      * @param  \App\EmailTemplate  $emailTemplate
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show(): RedirectResponse
     {
         return redirect()->back()->with('error', 'Permission denied.');
     }
@@ -100,7 +102,7 @@ class EmailTemplateController extends Controller
      * @param  \App\EmailTemplate  $emailTemplate
      * @return \Illuminate\Http\Response
      */
-    public function edit(EmailTemplate $emailTemplate)
+    public function edit(EmailTemplate $emailTemplate): RedirectResponse
     {
         return redirect()->back()->with('error', 'Permission denied.');
     }
@@ -111,7 +113,7 @@ class EmailTemplateController extends Controller
      * @param  \App\EmailTemplate  $emailTemplate
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
 //        if(\Auth::user()->can('Edit Email Template'))
 //        {
@@ -170,7 +172,7 @@ class EmailTemplateController extends Controller
      * @param  \App\EmailTemplate  $emailTemplate
      * @return \Illuminate\Http\Response
      */
-    public function destroy(EmailTemplate $emailTemplate)
+    public function destroy(EmailTemplate $emailTemplate): RedirectResponse
     {
         return redirect()->back()->with('error', 'Permission denied.');
     }
@@ -206,7 +208,7 @@ class EmailTemplateController extends Controller
     }
 
     // Used For Store Email Template Language Wise
-    public function storeEmailLang(Request $request, $id)
+    public function storeEmailLang(Request $request, $id): RedirectResponse
     {
 //        dd($request,$id);
 
@@ -255,7 +257,7 @@ class EmailTemplateController extends Controller
     }
 
     // Used For Update Status Company Wise.
-    public function updateStatus(Request $request, $id)
+    public function updateStatus(Request $request, $id): JsonResponse
     {
         $usr = \Auth::user();
 

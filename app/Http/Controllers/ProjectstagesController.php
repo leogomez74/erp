@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\Projectstages;
 use App\Models\Task;
 use Illuminate\Http\Request;
@@ -28,7 +29,7 @@ class ProjectstagesController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create project stage')) {
             $validator = \Validator::make(
@@ -70,7 +71,7 @@ class ProjectstagesController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         if (\Auth::user()->can('edit project stage')) {
             $leadstages = Projectstages::findOrfail($id);
@@ -100,7 +101,7 @@ class ProjectstagesController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         if (\Auth::user()->can('delete project stage')) {
             $projectstages = Projectstages::findOrfail($id);

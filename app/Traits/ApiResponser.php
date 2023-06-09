@@ -2,6 +2,8 @@
 
 namespace App\Traits;
 
+use Illuminate\Http\JsonResponse;
+
 /*
 |--------------------------------------------------------------------------
 | Api Responser Trait
@@ -21,7 +23,7 @@ trait ApiResponser
      * @param  int|null  $code
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function success($data, string $message = null, int $code = 200)
+    protected function success($data, string $message = null, int $code = 200): JsonResponse
     {
         return response()->json([
             'is_success' => true,
@@ -37,7 +39,7 @@ trait ApiResponser
      * @param  array|string|null  $data
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function error(string $message = null, int $code, $data = null)
+    protected function error(string $message = null, int $code, $data = null): JsonResponse
     {
         return response()->json([
             'is_success' => false,

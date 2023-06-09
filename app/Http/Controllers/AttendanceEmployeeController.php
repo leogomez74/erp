@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\AttendanceEmployee;
 use App\Models\Branch;
 use App\Models\Department;
@@ -120,7 +121,7 @@ class AttendanceEmployeeController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create attendance')) {
             $validator = \Validator::make(
@@ -202,7 +203,7 @@ class AttendanceEmployeeController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         //        dd($request->all());
         $employeeId = ! empty(\Auth::user()->employee) ? \Auth::user()->employee->id : 0;
@@ -294,7 +295,7 @@ class AttendanceEmployeeController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         if (\Auth::user()->can('delete attendance')) {
             $attendance = AttendanceEmployee::where('id', $id)->first();
@@ -307,7 +308,7 @@ class AttendanceEmployeeController extends Controller
         }
     }
 
-    public function attendance(Request $request)
+    public function attendance(Request $request): RedirectResponse
     {
         $settings = Utility::settings();
 
@@ -398,7 +399,7 @@ class AttendanceEmployeeController extends Controller
         }
     }
 
-    public function bulkAttendanceData(Request $request)
+    public function bulkAttendanceData(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create attendance')) {
             if (! empty($request->branch) && ! empty($request->department)) {

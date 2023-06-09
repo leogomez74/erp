@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\Coupon;
 use App\Models\Customer;
 use App\Models\Invoice;
@@ -115,7 +116,7 @@ class FlutterwavePaymentController extends Controller
         }
     }
 
-    public function getPaymentStatus(Request $request, $pay_id, $plan)
+    public function getPaymentStatus(Request $request, $pay_id, $plan): RedirectResponse
     {
         $payment = $this->paymentConfig();
         $planID = \Illuminate\Support\Facades\Crypt::decrypt($plan);
@@ -219,7 +220,7 @@ class FlutterwavePaymentController extends Controller
         }
     }
 
-    public function getInvoicePaymentStatus(Request $request, $pay_id, $invoice_id)
+    public function getInvoicePaymentStatus(Request $request, $pay_id, $invoice_id): RedirectResponse
     {
         $invoiceID = \Illuminate\Support\Facades\Crypt::decrypt($invoice_id);
         $invoice = Invoice::find($invoiceID);

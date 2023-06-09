@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Models\Coupon;
 use App\Models\Plan;
 use App\Models\UserCoupon;
@@ -29,7 +32,7 @@ class CouponController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create coupon')) {
             $validator = \Validator::make(
@@ -69,7 +72,7 @@ class CouponController extends Controller
         }
     }
 
-    public function show(Coupon $coupon)
+    public function show(Coupon $coupon): View
     {
         $userCoupons = UserCoupon::where('coupon', $coupon->id)->get();
 
@@ -85,7 +88,7 @@ class CouponController extends Controller
         }
     }
 
-    public function update(Request $request, Coupon $coupon)
+    public function update(Request $request, Coupon $coupon): RedirectResponse
     {
         if (\Auth::user()->can('edit coupon')) {
             $validator = \Validator::make(
@@ -116,7 +119,7 @@ class CouponController extends Controller
         }
     }
 
-    public function destroy(Coupon $coupon)
+    public function destroy(Coupon $coupon): RedirectResponse
     {
         if (\Auth::user()->can('delete coupon')) {
             $coupon->delete();
@@ -127,7 +130,7 @@ class CouponController extends Controller
         }
     }
 
-    public function applyCoupon(Request $request)
+    public function applyCoupon(Request $request): JsonResponse
     {
         $plan = Plan::find(\Illuminate\Support\Facades\Crypt::decrypt($request->plan_id));
         if ($plan && $request->coupon != '') {

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Models\Branch;
 use App\Models\CustomQuestion;
 use App\Models\Job;
@@ -29,7 +31,7 @@ class JobController extends Controller
         }
     }
 
-    public function create()
+    public function create(): View
     {
         $categories = JobCategory::where('created_by', \Auth::user()->creatorId())->get()->pluck('title', 'id');
         $categories->prepend('--', '');
@@ -44,7 +46,7 @@ class JobController extends Controller
         return view('job.create', compact('categories', 'status', 'branches', 'customQuestion'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create job')) {
             $validator = \Validator::make(
@@ -91,7 +93,7 @@ class JobController extends Controller
         }
     }
 
-    public function show(Job $job)
+    public function show(Job $job): View
     {
         $status = Job::$status;
         $job->applicant = ! empty($job->applicant) ? explode(',', $job->applicant) : '';
@@ -101,7 +103,7 @@ class JobController extends Controller
         return view('job.show', compact('status', 'job'));
     }
 
-    public function edit(Job $job)
+    public function edit(Job $job): View
     {
         $categories = JobCategory::where('created_by', \Auth::user()->creatorId())->get()->pluck('title', 'id');
         $categories->prepend('--', '');
@@ -120,7 +122,7 @@ class JobController extends Controller
         return view('job.edit', compact('categories', 'status', 'branches', 'job', 'customQuestion'));
     }
 
-    public function update(Request $request, Job $job)
+    public function update(Request $request, Job $job): RedirectResponse
     {
         if (\Auth::user()->can('edit job')) {
             $validator = \Validator::make(
@@ -164,7 +166,7 @@ class JobController extends Controller
         }
     }
 
-    public function destroy(Job $job)
+    public function destroy(Job $job): RedirectResponse
     {
         $application = JobApplication::where('job', $job->id)->get()->pluck('id');
         JobApplicationNote::whereIn('application_id', $application)->delete();
@@ -174,7 +176,7 @@ class JobController extends Controller
         return redirect()->route('job.index')->with('success', __('Job  successfully deleted.'));
     }
 
-    public function career($id, $lang)
+    public function career($id, $lang): View
     {
         $jobs = Job::where('created_by', $id)->get();
 
@@ -222,7 +224,7 @@ class JobController extends Controller
         return view('job.requirement', compact('companySettings', 'job', 'languages', 'currantLang'));
     }
 
-    public function jobApply($code, $lang)
+    public function jobApply($code, $lang): View
     {
         \Session::put('lang', $lang);
 
@@ -246,7 +248,7 @@ class JobController extends Controller
         return view('job.apply', compact('companySettings', 'job', 'questions', 'languages', 'currantLang'));
     }
 
-    public function jobApplyData(Request $request, $code)
+    public function jobApplyData(Request $request, $code): RedirectResponse
     {
         $validator = \Validator::make(
             $request->all(), [

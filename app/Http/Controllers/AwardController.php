@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\Award;
 use App\Models\AwardType;
 use App\Models\Employee;
@@ -43,7 +44,7 @@ class AwardController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create award')) {
             $validator = \Validator::make(
@@ -109,7 +110,7 @@ class AwardController extends Controller
         }
     }
 
-    public function show(Award $award)
+    public function show(Award $award): RedirectResponse
     {
         return redirect()->route('award.index');
     }
@@ -130,7 +131,7 @@ class AwardController extends Controller
         }
     }
 
-    public function update(Request $request, Award $award)
+    public function update(Request $request, Award $award): RedirectResponse
     {
         if (\Auth::user()->can('edit award')) {
             if ($award->created_by == \Auth::user()->creatorId()) {
@@ -164,7 +165,7 @@ class AwardController extends Controller
         }
     }
 
-    public function destroy(Award $award)
+    public function destroy(Award $award): RedirectResponse
     {
         if (\Auth::user()->can('delete award')) {
             if ($award->created_by == \Auth::user()->creatorId()) {

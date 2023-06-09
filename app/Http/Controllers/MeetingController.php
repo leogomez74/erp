@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Models\Branch;
 use App\Models\Department;
 use App\Models\Employee;
@@ -54,7 +56,7 @@ class MeetingController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $validator = \Validator::make(
             $request->all(), [
@@ -122,7 +124,7 @@ class MeetingController extends Controller
         }
     }
 
-    public function show(Meeting $meeting)
+    public function show(Meeting $meeting): RedirectResponse
     {
         return redirect()->route('meeting.index');
     }
@@ -147,7 +149,7 @@ class MeetingController extends Controller
         }
     }
 
-    public function update(Request $request, Meeting $meeting)
+    public function update(Request $request, Meeting $meeting): RedirectResponse
     {
         if (\Auth::user()->can('edit meeting')) {
             $validator = \Validator::make(
@@ -180,7 +182,7 @@ class MeetingController extends Controller
         }
     }
 
-    public function destroy(Meeting $meeting)
+    public function destroy(Meeting $meeting): RedirectResponse
     {
         if (\Auth::user()->can('delete meeting')) {
             if ($meeting->created_by == \Auth::user()->creatorId()) {
@@ -195,7 +197,7 @@ class MeetingController extends Controller
         }
     }
 
-    public function getdepartment(Request $request)
+    public function getdepartment(Request $request): JsonResponse
     {
         if ($request->branch_id == 0) {
             $departments = Department::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id')->toArray();
@@ -206,7 +208,7 @@ class MeetingController extends Controller
         return response()->json($departments);
     }
 
-    public function getemployee(Request $request)
+    public function getemployee(Request $request): JsonResponse
     {
         if (in_array('0', $request->department_id)) {
             $employees = Employee::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id')->toArray();

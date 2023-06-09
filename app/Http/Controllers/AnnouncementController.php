@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Models\Announcement;
 use App\Models\AnnouncementEmployee;
 use App\Models\Branch;
@@ -47,7 +49,7 @@ class AnnouncementController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create announcement')) {
             $validator = \Validator::make(
@@ -113,7 +115,7 @@ class AnnouncementController extends Controller
         }
     }
 
-    public function show(Announcement $announcement)
+    public function show(Announcement $announcement): RedirectResponse
     {
         return redirect()->route('announcement.index');
     }
@@ -135,7 +137,7 @@ class AnnouncementController extends Controller
         }
     }
 
-    public function update(Request $request, Announcement $announcement)
+    public function update(Request $request, Announcement $announcement): RedirectResponse
     {
         if (\Auth::user()->can('edit announcement')) {
             if ($announcement->created_by == \Auth::user()->creatorId()) {
@@ -171,7 +173,7 @@ class AnnouncementController extends Controller
         }
     }
 
-    public function destroy(Announcement $announcement)
+    public function destroy(Announcement $announcement): RedirectResponse
     {
         if (\Auth::user()->can('delete announcement')) {
             if ($announcement->created_by == \Auth::user()->creatorId()) {
@@ -186,7 +188,7 @@ class AnnouncementController extends Controller
         }
     }
 
-    public function getdepartment(Request $request)
+    public function getdepartment(Request $request): JsonResponse
     {
         if ($request->branch_id == 0) {
             $departments = Department::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id')->toArray();

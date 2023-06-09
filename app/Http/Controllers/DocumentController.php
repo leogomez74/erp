@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\Document;
 use Illuminate\Http\Request;
 
@@ -27,7 +28,7 @@ class DocumentController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create document type')) {
             $validator = \Validator::make(
@@ -53,7 +54,7 @@ class DocumentController extends Controller
         }
     }
 
-    public function show(Document $document)
+    public function show(Document $document): RedirectResponse
     {
         return redirect()->route('document.index');
     }
@@ -71,7 +72,7 @@ class DocumentController extends Controller
         }
     }
 
-    public function update(Request $request, Document $document)
+    public function update(Request $request, Document $document): RedirectResponse
     {
         if (\Auth::user()->can('edit document type')) {
             if ($document->created_by == \Auth::user()->creatorId()) {
@@ -99,7 +100,7 @@ class DocumentController extends Controller
         }
     }
 
-    public function destroy(Document $document)
+    public function destroy(Document $document): RedirectResponse
     {
         if (\Auth::user()->can('delete document type')) {
             if ($document->created_by == \Auth::user()->creatorId()) {

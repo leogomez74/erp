@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use App\Models\ActivityLog;
 use App\Models\Bug;
 use App\Models\BugStatus;
@@ -53,7 +56,7 @@ class ProjectTaskController extends Controller
         }
     }
 
-    public function store(Request $request, $project_id, $stage_id)
+    public function store(Request $request, $project_id, $stage_id): RedirectResponse
     {
         if (\Auth::user()->can('create project task')) {
             $validator = Validator::make(
@@ -158,7 +161,7 @@ class ProjectTaskController extends Controller
     }
 
     // For Load Task using ajax
-    public function taskboardView(Request $request)
+    public function taskboardView(Request $request): JsonResponse
     {
         $usr = Auth::user();
         if (\Auth::user()->type == 'client') {
@@ -254,7 +257,7 @@ class ProjectTaskController extends Controller
         }
     }
 
-    public function update(Request $request, $project_id, $task_id)
+    public function update(Request $request, $project_id, $task_id): RedirectResponse
     {
         if (\Auth::user()->can('edit project task')) {
             $validator = Validator::make(
@@ -279,7 +282,7 @@ class ProjectTaskController extends Controller
         }
     }
 
-    public function destroy($project_id, $task_id)
+    public function destroy($project_id, $task_id): RedirectResponse
     {
         if (\Auth::user()->can('delete project task')) {
             ProjectTask::deleteTask([$task_id]);
@@ -290,7 +293,7 @@ class ProjectTaskController extends Controller
         }
     }
 
-    public function getStageTasks(Request $request, $stage_id)
+    public function getStageTasks(Request $request, $stage_id): RedirectResponse
     {
         if (\Auth::user()->can('view project task')) {
             $count = ProjectTask::where('stage_id', $stage_id)->count();
@@ -533,7 +536,7 @@ class ProjectTaskController extends Controller
         }
     }
 
-    public function updateTaskPriorityColor(Request $request)
+    public function updateTaskPriorityColor(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('view project task')) {
             $task_id = $request->input('task_id');
@@ -635,7 +638,7 @@ class ProjectTaskController extends Controller
         }
     }
 
-    public function taskGet($task_id)
+    public function taskGet($task_id): RedirectResponse
     {
         if (\Auth::user()->can('view project task')) {
             $task = ProjectTask::find($task_id);
@@ -820,7 +823,7 @@ class ProjectTaskController extends Controller
     }
 
     // Calendar Show
-    public function calendarShow($id)
+    public function calendarShow($id): View
     {
         $task = ProjectTask::find($id);
 

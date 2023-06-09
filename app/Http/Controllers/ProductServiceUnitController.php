@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\ProductService;
 use App\Models\ProductServiceUnit;
 use Illuminate\Http\Request;
@@ -28,7 +29,7 @@ class ProductServiceUnitController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create constant unit')) {
             $validator = \Validator::make(
@@ -64,7 +65,7 @@ class ProductServiceUnitController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         if (\Auth::user()->can('edit constant unit')) {
             $unit = ProductServiceUnit::find($id);
@@ -92,7 +93,7 @@ class ProductServiceUnitController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         if (\Auth::user()->can('delete constant unit')) {
             $unit = ProductServiceUnit::find($id);

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Models\Appraisal;
 use App\Models\Branch;
 use App\Models\Competencies;
@@ -44,7 +46,7 @@ class AppraisalController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create appraisal')) {
             $validator = \Validator::make(
@@ -72,7 +74,7 @@ class AppraisalController extends Controller
         }
     }
 
-    public function show(Appraisal $appraisal)
+    public function show(Appraisal $appraisal): View
     {
         $ratings = json_decode($appraisal->rating, true);
         $performance = PerformanceType::where('created_by', '=', \Auth::user()->creatorId())->get();
@@ -100,7 +102,7 @@ class AppraisalController extends Controller
         }
     }
 
-    public function update(Request $request, Appraisal $appraisal)
+    public function update(Request $request, Appraisal $appraisal): RedirectResponse
     {
         if (\Auth::user()->can('edit appraisal')) {
             $validator = \Validator::make(
@@ -126,7 +128,7 @@ class AppraisalController extends Controller
         }
     }
 
-    public function destroy(Appraisal $appraisal)
+    public function destroy(Appraisal $appraisal): RedirectResponse
     {
         if (\Auth::user()->can('delete appraisal')) {
             if ($appraisal->created_by == \Auth::user()->creatorId()) {

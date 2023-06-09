@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\Holiday;
 use App\Models\Utility;
 use Illuminate\Http\Request;
@@ -36,7 +37,7 @@ class HolidayController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create holiday')) {
             $validator = \Validator::make(
@@ -95,7 +96,7 @@ class HolidayController extends Controller
         }
     }
 
-    public function update(Request $request, Holiday $holiday)
+    public function update(Request $request, Holiday $holiday): RedirectResponse
     {
         if (\Auth::user()->can('edit holiday')) {
             $validator = \Validator::make(
@@ -124,7 +125,7 @@ class HolidayController extends Controller
         }
     }
 
-    public function destroy(Holiday $holiday)
+    public function destroy(Holiday $holiday): RedirectResponse
     {
         if (\Auth::user()->can('delete holiday')) {
             $holiday->delete();

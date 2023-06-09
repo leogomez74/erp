@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Models\Contract;
 use App\Models\ContractType;
 use Illuminate\Http\Request;
@@ -19,12 +21,12 @@ class ContractTypeController extends Controller
         }
     }
 
-    public function create()
+    public function create(): View
     {
         return view('contractType.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->type == 'company') {
             $validator = \Validator::make(
@@ -54,12 +56,12 @@ class ContractTypeController extends Controller
         //
     }
 
-    public function edit(ContractType $contractType)
+    public function edit(ContractType $contractType): View
     {
         return view('contractType.edit', compact('contractType'));
     }
 
-    public function update(Request $request, ContractType $contractType)
+    public function update(Request $request, ContractType $contractType): RedirectResponse
     {
         if (\Auth::user()->type == 'company') {
             $validator = \Validator::make(
@@ -83,7 +85,7 @@ class ContractTypeController extends Controller
         }
     }
 
-    public function destroy(ContractType $contractType)
+    public function destroy(ContractType $contractType): RedirectResponse
     {
         if (\Auth::user()->type == 'company') {
             $data = Contract::where('type', $contractType->id)->first();

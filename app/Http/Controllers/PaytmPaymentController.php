@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\Coupon;
 use App\Models\Customer;
 use App\Models\Invoice;
@@ -130,7 +131,7 @@ class PaytmPaymentController extends Controller
         }
     }
 
-    public function getPaymentStatus(Request $request, $plan)
+    public function getPaymentStatus(Request $request, $plan): RedirectResponse
     {
         $planID = \Illuminate\Support\Facades\Crypt::decrypt($plan);
         $plan = Plan::find($planID);
@@ -235,7 +236,7 @@ class PaytmPaymentController extends Controller
         }
     }
 
-    public function getInvoicePaymentStatus(Request $request, $invoice_id, $amount)
+    public function getInvoicePaymentStatus(Request $request, $invoice_id, $amount): RedirectResponse
     {
         $invoiceID = \Illuminate\Support\Facades\Crypt::decrypt($invoice_id);
         $invoice = Invoice::find($invoiceID);

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Models\DeductionOption;
 use App\Models\Employee;
 use App\Models\SaturationDeduction;
@@ -9,7 +11,7 @@ use Illuminate\Http\Request;
 
 class SaturationDeductionController extends Controller
 {
-    public function saturationdeductionCreate($id)
+    public function saturationdeductionCreate($id): View
     {
         $employee = Employee::find($id);
         $deduction_options = DeductionOption::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
@@ -18,7 +20,7 @@ class SaturationDeductionController extends Controller
         return view('saturationdeduction.create', compact('employee', 'deduction_options', 'saturationdeduc'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create saturation deduction')) {
             $validator = \Validator::make(
@@ -50,7 +52,7 @@ class SaturationDeductionController extends Controller
         }
     }
 
-    public function show(SaturationDeduction $saturationdeduction)
+    public function show(SaturationDeduction $saturationdeduction): RedirectResponse
     {
         return redirect()->route('commision.index');
     }
@@ -72,7 +74,7 @@ class SaturationDeductionController extends Controller
         }
     }
 
-    public function update(Request $request, SaturationDeduction $saturationdeduction)
+    public function update(Request $request, SaturationDeduction $saturationdeduction): RedirectResponse
     {
         if (\Auth::user()->can('edit saturation deduction')) {
             if ($saturationdeduction->created_by == \Auth::user()->creatorId()) {
@@ -105,7 +107,7 @@ class SaturationDeductionController extends Controller
         }
     }
 
-    public function destroy(SaturationDeduction $saturationdeduction)
+    public function destroy(SaturationDeduction $saturationdeduction): RedirectResponse
     {
         if (\Auth::user()->can('delete saturation deduction')) {
             if ($saturationdeduction->created_by == \Auth::user()->creatorId()) {

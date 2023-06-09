@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\PayslipType;
 use Illuminate\Http\Request;
 
@@ -27,7 +28,7 @@ class PayslipTypeController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create payslip type')) {
             $validator = \Validator::make(
@@ -51,7 +52,7 @@ class PayslipTypeController extends Controller
         }
     }
 
-    public function show(PayslipType $paysliptype)
+    public function show(PayslipType $paysliptype): RedirectResponse
     {
         return redirect()->route('paysliptype.index');
     }
@@ -69,7 +70,7 @@ class PayslipTypeController extends Controller
         }
     }
 
-    public function update(Request $request, PayslipType $paysliptype)
+    public function update(Request $request, PayslipType $paysliptype): RedirectResponse
     {
         if (\Auth::user()->can('edit payslip type')) {
             if ($paysliptype->created_by == \Auth::user()->creatorId()) {
@@ -97,7 +98,7 @@ class PayslipTypeController extends Controller
         }
     }
 
-    public function destroy(PayslipType $paysliptype)
+    public function destroy(PayslipType $paysliptype): RedirectResponse
     {
         if (\Auth::user()->can('delete payslip type')) {
             if ($paysliptype->created_by == \Auth::user()->creatorId()) {

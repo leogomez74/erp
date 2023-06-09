@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\Bill;
 use App\Models\DebitNote;
 use App\Models\Utility;
@@ -36,7 +37,7 @@ class DebitNoteController extends Controller
         }
     }
 
-    public function store(Request $request, $bill_id)
+    public function store(Request $request, $bill_id): RedirectResponse
     {
         if (\Auth::user()->can('create debit note')) {
             $validator = \Validator::make(
@@ -83,7 +84,7 @@ class DebitNoteController extends Controller
         }
     }
 
-    public function update(Request $request, $bill_id, $debitNote_id)
+    public function update(Request $request, $bill_id, $debitNote_id): RedirectResponse
     {
         if (\Auth::user()->can('edit debit note')) {
             $validator = \Validator::make(
@@ -117,7 +118,7 @@ class DebitNoteController extends Controller
         }
     }
 
-    public function destroy($bill_id, $debitNote_id)
+    public function destroy($bill_id, $debitNote_id): RedirectResponse
     {
         if (\Auth::user()->can('delete debit note')) {
             $debitNote = DebitNote::find($debitNote_id);
@@ -142,7 +143,7 @@ class DebitNoteController extends Controller
         }
     }
 
-    public function customStore(Request $request)
+    public function customStore(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create debit note')) {
             $validator = \Validator::make(

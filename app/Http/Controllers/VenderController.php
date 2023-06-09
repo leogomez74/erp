@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Exports\VenderExport;
 use App\Imports\VenderImport;
 use App\Models\CustomField;
@@ -22,7 +24,7 @@ use Spatie\Permission\Models\Role;
 
 class VenderController extends Controller
 {
-    public function dashboard()
+    public function dashboard(): View
     {
         $data['billChartData'] = \Auth::user()->billChartData();
 
@@ -55,7 +57,7 @@ class VenderController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create vender')) {
             $rules = [
@@ -137,7 +139,7 @@ class VenderController extends Controller
         }
     }
 
-    public function show($ids)
+    public function show($ids): View
     {
         $id = \Crypt::decrypt($ids);
         $vendor = Vender::find($id);
@@ -161,7 +163,7 @@ class VenderController extends Controller
         }
     }
 
-    public function update(Request $request, Vender $vender)
+    public function update(Request $request, Vender $vender): RedirectResponse
     {
         if (\Auth::user()->can('edit vender')) {
             $rules = [
@@ -209,7 +211,7 @@ class VenderController extends Controller
         }
     }
 
-    public function destroy(Vender $vender)
+    public function destroy(Vender $vender): RedirectResponse
     {
         if (\Auth::user()->can('delete vender')) {
             if ($vender->created_by == \Auth::user()->creatorId()) {
@@ -234,7 +236,7 @@ class VenderController extends Controller
         return $latest->vender_id + 1;
     }
 
-    public function venderLogout(Request $request)
+    public function venderLogout(Request $request): RedirectResponse
     {
         \Auth::guard('vender')->logout();
 
@@ -296,7 +298,7 @@ class VenderController extends Controller
         }
     }
 
-    public function profile()
+    public function profile(): View
     {
         $userDetail = \Auth::user();
         $userDetail->customField = CustomField::getData($userDetail, 'vendor');
@@ -305,7 +307,7 @@ class VenderController extends Controller
         return view('vender.profile', compact('userDetail', 'customFields'));
     }
 
-    public function editprofile(Request $request)
+    public function editprofile(Request $request): RedirectResponse
     {
         $userDetail = \Auth::user();
         $user = Vender::findOrFail($userDetail['id']);
@@ -350,7 +352,7 @@ class VenderController extends Controller
         );
     }
 
-    public function editBilling(Request $request)
+    public function editBilling(Request $request): RedirectResponse
     {
         $userDetail = \Auth::user();
         $user = Vender::findOrFail($userDetail['id']);
@@ -373,7 +375,7 @@ class VenderController extends Controller
         );
     }
 
-    public function editShipping(Request $request)
+    public function editShipping(Request $request): RedirectResponse
     {
         $userDetail = \Auth::user();
         $user = Vender::findOrFail($userDetail['id']);
@@ -396,7 +398,7 @@ class VenderController extends Controller
         );
     }
 
-    public function changeLanquage($lang)
+    public function changeLanquage($lang): RedirectResponse
     {
         $user = Auth::user();
         $user->lang = $lang;
@@ -413,12 +415,12 @@ class VenderController extends Controller
         return $data;
     }
 
-    public function importFile()
+    public function importFile(): View
     {
         return view('vender.import');
     }
 
-    public function import(Request $request)
+    public function import(Request $request): RedirectResponse
     {
         $rules = [
             'file' => 'required|mimes:csv,txt',

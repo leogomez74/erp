@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\Branch;
 use App\Models\Department;
 use App\Models\Employee;
@@ -41,7 +42,7 @@ class TransferController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create transfer')) {
             $validator = \Validator::make(
@@ -98,7 +99,7 @@ class TransferController extends Controller
         }
     }
 
-    public function show(Transfer $transfer)
+    public function show(Transfer $transfer): RedirectResponse
     {
         return redirect()->route('transfer.index');
     }
@@ -119,7 +120,7 @@ class TransferController extends Controller
         }
     }
 
-    public function update(Request $request, Transfer $transfer)
+    public function update(Request $request, Transfer $transfer): RedirectResponse
     {
         if (\Auth::user()->can('edit transfer')) {
             if ($transfer->created_by == \Auth::user()->creatorId()) {
@@ -153,7 +154,7 @@ class TransferController extends Controller
         }
     }
 
-    public function destroy(Transfer $transfer)
+    public function destroy(Transfer $transfer): RedirectResponse
     {
         if (\Auth::user()->can('delete transfer')) {
             if ($transfer->created_by == \Auth::user()->creatorId()) {

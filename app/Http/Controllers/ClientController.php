@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Models\ClientDeal;
 use App\Models\ClientPermission;
 use App\Models\Contract;
@@ -192,7 +194,7 @@ class ClientController extends Controller
         }
     }
 
-    public function update(User $client, Request $request)
+    public function update(User $client, Request $request): RedirectResponse
     {
         if (\Auth::user()->can('edit client')) {
             $user = \Auth::user();
@@ -230,7 +232,7 @@ class ClientController extends Controller
         }
     }
 
-    public function destroy(User $client)
+    public function destroy(User $client): RedirectResponse
     {
         $user = \Auth::user();
         if ($client->created_by == $user->creatorId()) {
@@ -249,7 +251,7 @@ class ClientController extends Controller
         }
     }
 
-    public function clientPassword($id)
+    public function clientPassword($id): View
     {
         $eId = \Crypt::decrypt($id);
         $user = User::find($eId);
@@ -258,7 +260,7 @@ class ClientController extends Controller
         return view('clients.reset', compact('user', 'client'));
     }
 
-    public function clientPasswordReset(Request $request, $id)
+    public function clientPasswordReset(Request $request, $id): RedirectResponse
     {
         $validator = \Validator::make(
             $request->all(), [

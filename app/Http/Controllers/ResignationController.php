@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\Employee;
 use App\Models\Resignation;
 use App\Models\Utility;
@@ -37,7 +38,7 @@ class ResignationController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create resignation')) {
             $validator = \Validator::make(
@@ -94,7 +95,7 @@ class ResignationController extends Controller
         }
     }
 
-    public function show(Resignation $resignation)
+    public function show(Resignation $resignation): RedirectResponse
     {
         return redirect()->route('resignation.index');
     }
@@ -113,7 +114,7 @@ class ResignationController extends Controller
         }
     }
 
-    public function update(Request $request, Resignation $resignation)
+    public function update(Request $request, Resignation $resignation): RedirectResponse
     {
         if (\Auth::user()->can('edit resignation')) {
             if ($resignation->created_by == \Auth::user()->creatorId()) {
@@ -150,7 +151,7 @@ class ResignationController extends Controller
         }
     }
 
-    public function destroy(Resignation $resignation)
+    public function destroy(Resignation $resignation): RedirectResponse
     {
         if (\Auth::user()->can('delete resignation')) {
             if ($resignation->created_by == \Auth::user()->creatorId()) {

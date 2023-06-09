@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\Coupon;
 use App\Models\Customer;
 use App\Models\Invoice;
@@ -54,7 +55,7 @@ class PaypalController extends Controller
         $this->_api_context->setConfig($paypal_conf['settings']);
     }
 
-    public function planPayWithPaypal(Request $request)
+    public function planPayWithPaypal(Request $request): RedirectResponse
     {
         $planID = \Illuminate\Support\Facades\Crypt::decrypt($request->plan_id);
         $plan = Plan::find($planID);
@@ -138,7 +139,7 @@ class PaypalController extends Controller
         }
     }
 
-    public function planGetPaymentStatus(Request $request, $plan_id)
+    public function planGetPaymentStatus(Request $request, $plan_id): RedirectResponse
     {
         $user = Auth::user();
         $plan = Plan::find($plan_id);
@@ -205,7 +206,7 @@ class PaypalController extends Controller
         }
     }
 
-    public function customerPayWithPaypal(Request $request, $invoice_id)
+    public function customerPayWithPaypal(Request $request, $invoice_id): RedirectResponse
     {
         $invoice = Invoice::find($invoice_id);
         $this->invoiceData = $invoice;
@@ -283,7 +284,7 @@ class PaypalController extends Controller
         }
     }
 
-    public function customerGetPaymentStatus(Request $request, $invoice_id)
+    public function customerGetPaymentStatus(Request $request, $invoice_id): RedirectResponse
     {
         $invoice = Invoice::find($invoice_id);
         $this->invoiceData = $invoice;

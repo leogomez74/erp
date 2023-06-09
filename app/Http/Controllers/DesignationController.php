@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\Department;
 use App\Models\Designation;
 use Illuminate\Http\Request;
@@ -31,7 +32,7 @@ class DesignationController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create designation')) {
             $validator = \Validator::make(
@@ -59,7 +60,7 @@ class DesignationController extends Controller
         }
     }
 
-    public function show(Designation $designation)
+    public function show(Designation $designation): RedirectResponse
     {
         return redirect()->route('designation.index');
     }
@@ -80,7 +81,7 @@ class DesignationController extends Controller
         }
     }
 
-    public function update(Request $request, Designation $designation)
+    public function update(Request $request, Designation $designation): RedirectResponse
     {
         if (\Auth::user()->can('edit designation')) {
             if ($designation->created_by == \Auth::user()->creatorId()) {
@@ -108,7 +109,7 @@ class DesignationController extends Controller
         }
     }
 
-    public function destroy(Designation $designation)
+    public function destroy(Designation $designation): RedirectResponse
     {
         if (\Auth::user()->can('delete designation')) {
             if ($designation->created_by == \Auth::user()->creatorId()) {

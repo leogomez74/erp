@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use App\Exports\BillExport;
 use App\Models\BankAccount;
 use App\Models\Bill;
@@ -87,7 +89,7 @@ class BillController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create bill')) {
             $validator = \Validator::make(
@@ -232,7 +234,7 @@ class BillController extends Controller
         }
     }
 
-    public function update(Request $request, Bill $bill)
+    public function update(Request $request, Bill $bill): RedirectResponse
     {
         if (\Auth::user()->can('edit bill')) {
             if ($bill->created_by == \Auth::user()->creatorId()) {
@@ -302,7 +304,7 @@ class BillController extends Controller
         }
     }
 
-    public function destroy(Bill $bill)
+    public function destroy(Bill $bill): RedirectResponse
     {
         if (\Auth::user()->can('delete bill')) {
             if ($bill->created_by == \Auth::user()->creatorId()) {
@@ -353,7 +355,7 @@ class BillController extends Controller
         return json_encode($data);
     }
 
-    public function productDestroy(Request $request)
+    public function productDestroy(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('delete bill product')) {
             BillProduct::where('id', '=', $request->id)->delete();
@@ -364,7 +366,7 @@ class BillController extends Controller
         }
     }
 
-    public function sent($id)
+    public function sent($id): RedirectResponse
     {
         if (\Auth::user()->can('send bill')) {
             $bill = Bill::where('id', $id)->first();
@@ -397,7 +399,7 @@ class BillController extends Controller
         }
     }
 
-    public function resent($id)
+    public function resent($id): RedirectResponse
     {
 //        if(\Auth::user()->can('send bill'))
 //        {
@@ -457,7 +459,7 @@ class BillController extends Controller
         }
     }
 
-    public function createPayment(Request $request, $bill_id)
+    public function createPayment(Request $request, $bill_id): RedirectResponse
     {
         if (\Auth::user()->can('create payment bill')) {
             $validator = \Validator::make(
@@ -552,7 +554,7 @@ class BillController extends Controller
         }
     }
 
-    public function paymentDestroy(Request $request, $bill_id, $payment_id)
+    public function paymentDestroy(Request $request, $bill_id, $payment_id): RedirectResponse
     {
         if (\Auth::user()->can('delete payment bill')) {
             $payment = BillPayment::find($payment_id);
@@ -628,19 +630,19 @@ class BillController extends Controller
         }
     }
 
-    public function vender(Request $request)
+    public function vender(Request $request): View
     {
         $vender = Vender::where('id', '=', $request->id)->first();
 
         return view('bill.vender_detail', compact('vender'));
     }
 
-    public function venderBillSend($bill_id)
+    public function venderBillSend($bill_id): View
     {
         return view('vender.bill_send', compact('bill_id'));
     }
 
-    public function venderBillSendMail(Request $request, $bill_id)
+    public function venderBillSendMail(Request $request, $bill_id): RedirectResponse
     {
         $validator = \Validator::make(
             $request->all(), [
@@ -672,7 +674,7 @@ class BillController extends Controller
         return redirect()->back()->with('success', __('Bill successfully sent.').((isset($smtp_error)) ? '<br> <span class="text-danger">'.$smtp_error.'</span>' : ''));
     }
 
-    public function shippingDisplay(Request $request, $id)
+    public function shippingDisplay(Request $request, $id): RedirectResponse
     {
         $bill = Bill::find($id);
 
@@ -686,7 +688,7 @@ class BillController extends Controller
         return redirect()->back()->with('success', __('Shipping address status successfully changed.'));
     }
 
-    public function duplicate($bill_id)
+    public function duplicate($bill_id): RedirectResponse
     {
         if (\Auth::user()->can('duplicate bill')) {
             $bill = Bill::where('id', $bill_id)->first();
@@ -724,7 +726,7 @@ class BillController extends Controller
         }
     }
 
-    public function previewBill($template, $color)
+    public function previewBill($template, $color): View
     {
         $objUser = \Auth::user();
         $settings = Utility::settings();
@@ -913,7 +915,7 @@ class BillController extends Controller
         }
     }
 
-    public function saveBillTemplateSettings(Request $request)
+    public function saveBillTemplateSettings(Request $request): RedirectResponse
     {
         $post = $request->all();
         unset($post['_token']);
@@ -958,7 +960,7 @@ class BillController extends Controller
         return json_encode($items);
     }
 
-    public function invoiceLink($billId)
+    public function invoiceLink($billId): View
     {
         $id = Crypt::decrypt($billId);
 

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Illuminate\View\View;
 use App\Models\AttendanceEmployee;
 use App\Models\BankAccount;
 use App\Models\Bill;
@@ -1764,7 +1766,7 @@ class ReportController extends Controller
         }
     }
 
-    public function exportCsv($filter_month, $branch, $department)
+    public function exportCsv($filter_month, $branch, $department): StreamedResponse
     {
         $data['branch'] = __('All');
         $data['department'] = __('All');
@@ -1857,7 +1859,7 @@ class ReportController extends Controller
         }
     }
 
-    public function account(Request $request)
+    public function account(Request $request): View
     {
         $data['yearList'] = $this->yearList();
 
@@ -1911,7 +1913,7 @@ class ReportController extends Controller
         return view('report.account', $data);
     }
 
-   public function profitLossTotal(Request $request)
+   public function profitLossTotal(Request $request): View
    {
        if (isset($request->start_date) && isset($request->end_date) && isset($request->start_date1) && isset($request->end_date1)) {
            $start_date = $request->start_date;

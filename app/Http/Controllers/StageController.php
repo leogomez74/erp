@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use App\Models\Deal;
 use App\Models\Pipeline;
 use App\Models\Stage;
@@ -67,7 +69,7 @@ class StageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create stage')) {
             $validator = \Validator::make(
@@ -100,7 +102,7 @@ class StageController extends Controller
      * @param  \App\Stage  $stage
      * @return \Illuminate\Http\Response
      */
-    public function show(Stage $stage)
+    public function show(Stage $stage): RedirectResponse
     {
         return redirect()->route('stages.index');
     }
@@ -132,7 +134,7 @@ class StageController extends Controller
      * @param  \App\Stage  $stage
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Stage $stage)
+    public function update(Request $request, Stage $stage): RedirectResponse
     {
         if (\Auth::user()->can('edit stage')) {
             if ($stage->created_by == \Auth::user()->ownerId()) {
@@ -167,7 +169,7 @@ class StageController extends Controller
      * @param  \App\Stage  $stage
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Stage $stage)
+    public function destroy(Stage $stage): RedirectResponse
     {
         if (\Auth::user()->can('delete stage')) {
             if ($stage->created_by == \Auth::user()->ownerId()) {
@@ -198,7 +200,7 @@ class StageController extends Controller
         }
     }
 
-    public function json(Request $request)
+    public function json(Request $request): JsonResponse
     {
         $stage = new Stage();
         if ($request->pipeline_id) {

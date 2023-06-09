@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Models\ChartOfAccountType;
 use Illuminate\Http\Request;
 
@@ -18,12 +20,12 @@ class ChartOfAccountTypeController extends Controller
         }
     }
 
-    public function create()
+    public function create(): View
     {
         return view('chartOfAccountType.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create constant chart of account type')) {
             $validator = \Validator::make(
@@ -53,12 +55,12 @@ class ChartOfAccountTypeController extends Controller
         //
     }
 
-    public function edit(ChartOfAccountType $chartOfAccountType)
+    public function edit(ChartOfAccountType $chartOfAccountType): View
     {
         return view('chartOfAccountType.edit', compact('chartOfAccountType'));
     }
 
-    public function update(Request $request, ChartOfAccountType $chartOfAccountType)
+    public function update(Request $request, ChartOfAccountType $chartOfAccountType): RedirectResponse
     {
         if (\Auth::user()->can('edit constant chart of account type')) {
             $validator = \Validator::make(
@@ -81,7 +83,7 @@ class ChartOfAccountTypeController extends Controller
         }
     }
 
-    public function destroy(ChartOfAccountType $chartOfAccountType)
+    public function destroy(ChartOfAccountType $chartOfAccountType): RedirectResponse
     {
         if (\Auth::user()->can('delete constant chart of account type')) {
             $chartOfAccountType->delete();

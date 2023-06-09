@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Models\Employee;
 use App\Models\OtherPayment;
 use Illuminate\Http\Request;
 
 class OtherPaymentController extends Controller
 {
-    public function otherpaymentCreate($id)
+    public function otherpaymentCreate($id): View
     {
         $employee = Employee::find($id);
         $otherpaytype = OtherPayment::$otherPaymenttype;
@@ -16,7 +18,7 @@ class OtherPaymentController extends Controller
         return view('otherpayment.create', compact('employee', 'otherpaytype'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create other payment')) {
             $validator = \Validator::make(
@@ -46,7 +48,7 @@ class OtherPaymentController extends Controller
         }
     }
 
-    public function show(OtherPayment $otherpayment)
+    public function show(OtherPayment $otherpayment): RedirectResponse
     {
         return redirect()->route('commision.index');
     }
@@ -67,7 +69,7 @@ class OtherPaymentController extends Controller
         }
     }
 
-    public function update(Request $request, OtherPayment $otherpayment)
+    public function update(Request $request, OtherPayment $otherpayment): RedirectResponse
     {
         if (\Auth::user()->can('edit other payment')) {
             if ($otherpayment->created_by == \Auth::user()->creatorId()) {
@@ -98,7 +100,7 @@ class OtherPaymentController extends Controller
         }
     }
 
-    public function destroy(OtherPayment $otherpayment)
+    public function destroy(OtherPayment $otherpayment): RedirectResponse
     {
         if (\Auth::user()->can('delete other payment')) {
             if ($otherpayment->created_by == \Auth::user()->creatorId()) {

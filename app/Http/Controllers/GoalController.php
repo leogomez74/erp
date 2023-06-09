@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\Goal;
 use Illuminate\Http\Request;
 
@@ -29,7 +30,7 @@ class GoalController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create goal')) {
             $validator = \Validator::make(
@@ -79,7 +80,7 @@ class GoalController extends Controller
         }
     }
 
-    public function update(Request $request, Goal $goal)
+    public function update(Request $request, Goal $goal): RedirectResponse
     {
         if (\Auth::user()->can('edit goal')) {
             if ($goal->created_by == \Auth::user()->creatorId()) {
@@ -115,7 +116,7 @@ class GoalController extends Controller
         }
     }
 
-    public function destroy(Goal $goal)
+    public function destroy(Goal $goal): RedirectResponse
     {
         if (\Auth::user()->can('delete goal')) {
             if ($goal->created_by == \Auth::user()->creatorId()) {

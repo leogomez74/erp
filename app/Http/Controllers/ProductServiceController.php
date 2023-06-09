@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Exports\ProductServiceExport;
 use App\Imports\ProductServiceImport;
 use App\Models\Currencie;
@@ -53,7 +55,7 @@ class ProductServiceController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create product & service')) {
             $rules = [
@@ -132,7 +134,7 @@ class ProductServiceController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         if (\Auth::user()->can('edit product & service')) {
             $productService = ProductService::find($id);
@@ -184,7 +186,7 @@ class ProductServiceController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         if (\Auth::user()->can('delete product & service')) {
             $productService = ProductService::find($id);
@@ -208,7 +210,7 @@ class ProductServiceController extends Controller
         return $data;
     }
 
-    public function importFile()
+    public function importFile(): View
     {
         return view('productservice.import');
     }
@@ -314,7 +316,7 @@ class ProductServiceController extends Controller
 //        return redirect()->back()->with($data['status'], $data['msg']);
 //    }
 
-    public function import(Request $request)
+    public function import(Request $request): RedirectResponse
     {
         $rules = [
             'file' => 'required',

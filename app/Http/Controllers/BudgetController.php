@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\Bill;
 use App\Models\Budget;
 use App\Models\ChartOfAccount;
@@ -97,7 +98,7 @@ class BudgetController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create budget plan')) {
             $validator = \Validator::make($request->all(), [
@@ -566,7 +567,7 @@ class BudgetController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Budget $budget)
+    public function destroy(Budget $budget): RedirectResponse
     {
         if (\Auth::user()->can('delete budget plan')) {
             if ($budget->created_by == \Auth::user()->creatorId()) {

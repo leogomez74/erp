@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use App\Models\Contract;
 use App\Models\ContractType;
 use App\Models\User;
@@ -25,7 +27,7 @@ class ContractController extends Controller
         }
     }
 
-    public function create()
+    public function create(): View
     {
         $contractTypes = ContractType::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
         $clients = User::where('type', 'client')->where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
@@ -33,7 +35,7 @@ class ContractController extends Controller
         return view('contract.create', compact('contractTypes', 'clients'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create contract')) {
             $rules = [
@@ -104,7 +106,7 @@ class ContractController extends Controller
         //
     }
 
-    public function edit(Contract $contract)
+    public function edit(Contract $contract): View
     {
         $contractTypes = ContractType::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
         $clients = User::where('type', 'client')->where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
@@ -112,7 +114,7 @@ class ContractController extends Controller
         return view('contract.edit', compact('contractTypes', 'clients', 'contract'));
     }
 
-    public function update(Request $request, Contract $contract)
+    public function update(Request $request, Contract $contract): RedirectResponse
     {
         if (\Auth::user()->can('edit contract')) {
             $rules = [
@@ -148,7 +150,7 @@ class ContractController extends Controller
         }
     }
 
-    public function destroy(Contract $contract)
+    public function destroy(Contract $contract): RedirectResponse
     {
         if (\Auth::user()->can('delete contract')) {
             $contract->delete();
@@ -159,7 +161,7 @@ class ContractController extends Controller
         }
     }
 
-    public function description($id)
+    public function description($id): View
     {
         $contract = Contract::find($id);
 

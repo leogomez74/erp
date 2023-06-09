@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\BankAccount;
 use App\Models\BillPayment;
 use App\Models\ChartOfAccount;
@@ -89,7 +90,7 @@ class PaymentController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
 //        dd($request->all());
 
@@ -198,7 +199,7 @@ class PaymentController extends Controller
         }
     }
 
-    public function update(Request $request, Payment $payment)
+    public function update(Request $request, Payment $payment): RedirectResponse
     {
         if (\Auth::user()->can('edit payment')) {
             $validator = \Validator::make(
@@ -257,7 +258,7 @@ class PaymentController extends Controller
         }
     }
 
-    public function destroy(Payment $payment)
+    public function destroy(Payment $payment): RedirectResponse
     {
         if (\Auth::user()->can('delete payment')) {
             if ($payment->created_by == \Auth::user()->creatorId()) {

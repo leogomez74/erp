@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\Bill;
 use App\Models\Invoice;
 use App\Models\ProductService;
@@ -32,7 +33,7 @@ class ProductServiceCategoryController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create constant category')) {
             $validator = \Validator::make(
@@ -73,7 +74,7 @@ class ProductServiceCategoryController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         if (\Auth::user()->can('edit constant category')) {
             $category = ProductServiceCategory::find($id);
@@ -105,7 +106,7 @@ class ProductServiceCategoryController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         if (\Auth::user()->can('delete constant category')) {
             $category = ProductServiceCategory::find($id);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\Employee;
 use App\Models\Utility;
 use App\Models\Warning;
@@ -45,7 +46,7 @@ class WarningController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create warning')) {
             if (\Auth::user()->type != 'employee') {
@@ -106,7 +107,7 @@ class WarningController extends Controller
         }
     }
 
-    public function show(Warning $warning)
+    public function show(Warning $warning): RedirectResponse
     {
         return redirect()->route('warning.index');
     }
@@ -133,7 +134,7 @@ class WarningController extends Controller
         }
     }
 
-    public function update(Request $request, Warning $warning)
+    public function update(Request $request, Warning $warning): RedirectResponse
     {
         if (\Auth::user()->can('edit warning')) {
             if ($warning->created_by == \Auth::user()->creatorId()) {
@@ -181,7 +182,7 @@ class WarningController extends Controller
         }
     }
 
-    public function destroy(Warning $warning)
+    public function destroy(Warning $warning): RedirectResponse
     {
         if (\Auth::user()->can('delete warning')) {
             if ($warning->created_by == \Auth::user()->creatorId()) {

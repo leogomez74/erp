@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Models\Coupon;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
@@ -20,7 +22,7 @@ class PaymentWallPaymentController extends Controller
 
     public $is_enabled;
 
-    public function paymentwall(Request $request)
+    public function paymentwall(Request $request): View
     {
         $data = $request->all();
 
@@ -211,7 +213,7 @@ class PaymentWallPaymentController extends Controller
         }
     }
 
-    public function planeerror(Request $request, $flag)
+    public function planeerror(Request $request, $flag): RedirectResponse
     {
         if ($flag == 1) {
             return redirect()->route('plans.index')->with('error', __('Transaction has been Successfull! '));
@@ -220,7 +222,7 @@ class PaymentWallPaymentController extends Controller
         }
     }
 
-    public function invoicepaymentwall(Request $request)
+    public function invoicepaymentwall(Request $request): View
     {
         $data = $request->all();
         $company_payment_setting = Utility::getCompanyPayment();
@@ -228,7 +230,7 @@ class PaymentWallPaymentController extends Controller
         return view('invoice.paymentwall', compact('data', 'company_payment_setting'));
     }
 
-    public function invoiceerror(Request $request, $flag, $invoice_id)
+    public function invoiceerror(Request $request, $flag, $invoice_id): RedirectResponse
     {
         if ($flag == 1) {
             return redirect()->route('invoice.show', encrypt($invoice_id))->with('error', __('Payment successfully added. '));

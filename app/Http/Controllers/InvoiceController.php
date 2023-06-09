@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Exports\InvoiceExport;
 use App\Models\BankAccount;
 use App\Models\Charges;
@@ -87,14 +90,14 @@ class InvoiceController extends Controller
         }
     }
 
-    public function customer(Request $request)
+    public function customer(Request $request): View
     {
         $customer = Customer::with('clienttype', 'paytype')->where('id', '=', $request->id)->first();
 
         return view('invoice.customer_detail', compact('customer'));
     }
 
-    public function customer2($id)
+    public function customer2($id): JsonResponse
     {
         $customer = Customer::with('clienttype', 'paytype')->where('id', '=', $id)->first();
 
@@ -115,7 +118,7 @@ class InvoiceController extends Controller
         return json_encode($data);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create invoice')) {
             $validator = \Validator::make(
@@ -226,7 +229,7 @@ class InvoiceController extends Controller
         }
     }
 
-    public function update(Request $request, Invoice $invoice)
+    public function update(Request $request, Invoice $invoice): RedirectResponse
     {
         if (\Auth::user()->can('edit bill')) {
             if ($invoice->created_by == \Auth::user()->creatorId()) {
@@ -330,7 +333,7 @@ class InvoiceController extends Controller
         }
     }
 
-    public function destroy(Invoice $invoice, Request $request)
+    public function destroy(Invoice $invoice, Request $request): RedirectResponse
     {
         if (\Auth::user()->can('delete invoice')) {
             if ($invoice->created_by == \Auth::user()->creatorId()) {
@@ -354,7 +357,7 @@ class InvoiceController extends Controller
         }
     }
 
-    public function productDestroy(Request $request)
+    public function productDestroy(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('delete invoice product')) {
             InvoiceProduct::where('id', '=', $request->id)->delete();
@@ -405,7 +408,7 @@ class InvoiceController extends Controller
         }
     }
 
-    public function sent($id)
+    public function sent($id): RedirectResponse
     {
         if (\Auth::user()->can('send invoice')) {
             // Send Email
@@ -448,7 +451,7 @@ class InvoiceController extends Controller
 
     ///Function was created by ahixel rojas at 22/09/2022 17:30
     /// Function to mark as sent the invoice
-    public function markSent($id)
+    public function markSent($id): RedirectResponse
     {
         if (\Auth::user()->can('send invoice')) {
             // Send Email
@@ -468,7 +471,7 @@ class InvoiceController extends Controller
         }
     }
 
-    public function resent($id)
+    public function resent($id): RedirectResponse
     {
 //        dd($id);
         if (\Auth::user()->can('send invoice')) {
@@ -515,7 +518,7 @@ class InvoiceController extends Controller
         }
     }
 
-    public function createPayment(Request $request, $invoice_id)
+    public function createPayment(Request $request, $invoice_id): RedirectResponse
     {
         if (\Auth::user()->can('create payment invoice')) {
             $validator = \Validator::make(
@@ -613,7 +616,7 @@ class InvoiceController extends Controller
         }
     }
 
-    public function paymentDestroy(Request $request, $invoice_id, $payment_id)
+    public function paymentDestroy(Request $request, $invoice_id, $payment_id): RedirectResponse
     {
         if (\Auth::user()->can('delete payment invoice')) {
             $payment = InvoicePayment::find($payment_id);
@@ -645,7 +648,7 @@ class InvoiceController extends Controller
         }
     }
 
-    public function paymentReminder($invoice_id)
+    public function paymentReminder($invoice_id): RedirectResponse
     {
 //        dd($invoice_id);
         $invoice = Invoice::find($invoice_id);
@@ -688,12 +691,12 @@ class InvoiceController extends Controller
         return redirect()->back()->with('success', __('Payment reminder successfully send.').(($resp['is_success'] == false && ! empty($resp['error'])) ? '<br> <span class="text-danger">'.$resp['error'].'</span>' : ''));
     }
 
-    public function customerInvoiceSend($invoice_id)
+    public function customerInvoiceSend($invoice_id): View
     {
         return view('customer.invoice_send', compact('invoice_id'));
     }
 
-    public function customerInvoiceSendMail(Request $request, $invoice_id)
+    public function customerInvoiceSendMail(Request $request, $invoice_id): RedirectResponse
     {
         $validator = \Validator::make(
             $request->all(), [
@@ -725,7 +728,7 @@ class InvoiceController extends Controller
         return redirect()->back()->with('success', __('Invoice successfully sent.').((isset($smtp_error)) ? '<br> <span class="text-danger">'.$smtp_error.'</span>' : ''));
     }
 
-    public function shippingDisplay(Request $request, $id)
+    public function shippingDisplay(Request $request, $id): RedirectResponse
     {
         $invoice = Invoice::find($id);
 
@@ -739,7 +742,7 @@ class InvoiceController extends Controller
         return redirect()->back()->with('success', __('Shipping address status successfully changed.'));
     }
 
-    public function duplicate($invoice_id)
+    public function duplicate($invoice_id): RedirectResponse
     {
         if (\Auth::user()->can('duplicate invoice')) {
             $invoice = Invoice::where('id', $invoice_id)->first();
@@ -776,7 +779,7 @@ class InvoiceController extends Controller
         }
     }
 
-    public function previewInvoice($template, $color)
+    public function previewInvoice($template, $color): View
     {
         $objUser = \Auth::user();
         $settings = Utility::settings();
@@ -967,7 +970,7 @@ class InvoiceController extends Controller
         }
     }
 
-    public function saveTemplateSettings(Request $request)
+    public function saveTemplateSettings(Request $request): RedirectResponse
     {
         $post = $request->all();
         unset($post['_token']);
@@ -1012,7 +1015,7 @@ class InvoiceController extends Controller
         return json_encode($items);
     }
 
-    public function invoiceLink($invoiceId)
+    public function invoiceLink($invoiceId): View
     {
         $id = Crypt::decrypt($invoiceId);
         $invoice = Invoice::find($id);
@@ -1043,7 +1046,7 @@ class InvoiceController extends Controller
         return $data;
     }
 
-    public function invoiceToCharge($invoice_id)
+    public function invoiceToCharge($invoice_id): RedirectResponse
     {
         $invoice = Invoice::where('id', $invoice_id)->first();
 //        dd($invoice);

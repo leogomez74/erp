@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\AllowanceOption;
 use Illuminate\Http\Request;
 
@@ -27,7 +28,7 @@ class AllowanceOptionController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create allowance option')) {
             $validator = \Validator::make(
@@ -52,7 +53,7 @@ class AllowanceOptionController extends Controller
         }
     }
 
-    public function show(AllowanceOption $allowanceoption)
+    public function show(AllowanceOption $allowanceoption): RedirectResponse
     {
         return redirect()->route('allowanceoption.index');
     }
@@ -70,7 +71,7 @@ class AllowanceOptionController extends Controller
         }
     }
 
-    public function update(Request $request, AllowanceOption $allowanceoption)
+    public function update(Request $request, AllowanceOption $allowanceoption): RedirectResponse
     {
         if (\Auth::user()->can('edit allowance option')) {
             if ($allowanceoption->created_by == \Auth::user()->creatorId()) {
@@ -98,7 +99,7 @@ class AllowanceOptionController extends Controller
         }
     }
 
-    public function destroy(AllowanceOption $allowanceoption)
+    public function destroy(AllowanceOption $allowanceoption): RedirectResponse
     {
         if (\Auth::user()->can('delete allowance option')) {
             if ($allowanceoption->created_by == \Auth::user()->creatorId()) {

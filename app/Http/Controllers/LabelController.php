@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\Label;
 use App\Models\Pipeline;
 use Illuminate\Http\Request;
@@ -68,7 +69,7 @@ class LabelController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create label')) {
             $validator = \Validator::make(
@@ -104,7 +105,7 @@ class LabelController extends Controller
      * @param  \App\Label  $label
      * @return \Illuminate\Http\Response
      */
-    public function show(Label $label)
+    public function show(Label $label): RedirectResponse
     {
         return redirect()->route('labels.index');
     }
@@ -137,7 +138,7 @@ class LabelController extends Controller
      * @param  \App\Label  $label
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Label $label)
+    public function update(Request $request, Label $label): RedirectResponse
     {
         if (\Auth::user()->can('edit label')) {
             if ($label->created_by == \Auth::user()->ownerId()) {
@@ -175,7 +176,7 @@ class LabelController extends Controller
      * @param  \App\Label  $label
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Label $label)
+    public function destroy(Label $label): RedirectResponse
     {
         if (\Auth::user()->can('delete label')) {
             if ($label->created_by == \Auth::user()->ownerId()) {

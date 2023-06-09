@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
 use App\Models\Branch;
 use App\Models\Department;
 use App\Models\Designation;
@@ -60,7 +63,7 @@ class EmployeeController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create employee')) {
             $validator = \Validator::make(
@@ -202,7 +205,7 @@ class EmployeeController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         if (\Auth::user()->can('edit employee')) {
             $validator = \Validator::make(
@@ -279,7 +282,7 @@ class EmployeeController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         if (Auth::user()->can('delete employee')) {
             $employee = Employee::findOrFail($id);
@@ -319,7 +322,7 @@ class EmployeeController extends Controller
         }
     }
 
-    public function json(Request $request)
+    public function json(Request $request): JsonResponse
     {
         $designations = Designation::where('department_id', $request->department_id)->get()->pluck('name', 'id')->toArray();
 
@@ -383,21 +386,21 @@ class EmployeeController extends Controller
         }
     }
 
-    public function lastLogin()
+    public function lastLogin(): View
     {
         $users = User::where('created_by', \Auth::user()->creatorId())->get();
 
         return view('employee.lastLogin', compact('users'));
     }
 
-    public function employeeJson(Request $request)
+    public function employeeJson(Request $request): JsonResponse
     {
         $employees = Employee::where('branch_id', $request->branch)->get()->pluck('name', 'id')->toArray();
 
         return response()->json($employees);
     }
 
-    public function getdepartment(Request $request)
+    public function getdepartment(Request $request): JsonResponse
     {
         if ($request->branch_id == 0) {
             $departments = Department::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id')->toArray();

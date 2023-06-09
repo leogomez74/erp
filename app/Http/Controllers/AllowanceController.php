@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Models\Allowance;
 use App\Models\AllowanceOption;
 use App\Models\Employee;
@@ -9,7 +11,7 @@ use Illuminate\Http\Request;
 
 class AllowanceController extends Controller
 {
-    public function allowanceCreate($id)
+    public function allowanceCreate($id): View
     {
         $allowance_options = AllowanceOption::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
         $employee = Employee::find($id);
@@ -18,7 +20,7 @@ class AllowanceController extends Controller
         return view('allowance.create', compact('employee', 'allowance_options', 'Allowancetypes'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create allowance')) {
             $validator = \Validator::make(
@@ -50,7 +52,7 @@ class AllowanceController extends Controller
         }
     }
 
-    public function show(Allowance $allowance)
+    public function show(Allowance $allowance): RedirectResponse
     {
         return redirect()->route('allowance.index');
     }
@@ -72,7 +74,7 @@ class AllowanceController extends Controller
         }
     }
 
-    public function update(Request $request, Allowance $allowance)
+    public function update(Request $request, Allowance $allowance): RedirectResponse
     {
         if (\Auth::user()->can('edit allowance')) {
             if ($allowance->created_by == \Auth::user()->creatorId()) {
@@ -105,7 +107,7 @@ class AllowanceController extends Controller
         }
     }
 
-    public function destroy(Allowance $allowance)
+    public function destroy(Allowance $allowance): RedirectResponse
     {
         if (\Auth::user()->can('delete allowance')) {
             if ($allowance->created_by == \Auth::user()->creatorId()) {

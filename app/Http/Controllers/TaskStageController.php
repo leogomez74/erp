@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\TaskStage;
 use App\Models\Utility;
 use Illuminate\Http\Request;
@@ -30,7 +31,7 @@ class TaskStageController extends Controller
       *
       * @return \Illuminate\Http\Response
       */
-     public function storingValue(Request $request)
+     public function storingValue(Request $request): RedirectResponse
      {
          if (\Auth::user()->can('create project task stage')) {
              $validator = \Validator::make(
@@ -71,7 +72,7 @@ class TaskStageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create project task stage')) {
             $rules = [
@@ -152,7 +153,7 @@ class TaskStageController extends Controller
      * @param  \App\TaskStage  $taskStage
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TaskStage $taskStage, $id)
+    public function update(Request $request, TaskStage $taskStage, $id): RedirectResponse
     {
         $taskStage = TaskStage::findOrfail($id);
         if ($taskStage->created_by == \Auth::user()->creatorId()) {
@@ -183,7 +184,7 @@ class TaskStageController extends Controller
      * @param  \App\TaskStage  $taskStage
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TaskStage $taskStage, $id)
+    public function destroy(TaskStage $taskStage, $id): RedirectResponse
     {
         if (\Auth::user()->can('delete project task stage')) {
             $taskstage = TaskStage::find($id);

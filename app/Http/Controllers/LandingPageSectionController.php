@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\LandingPageSection;
 use Illuminate\Http\Request;
 
@@ -392,7 +393,7 @@ class LandingPageSectionController extends Controller
         return redirect()->back()->with('error', 'Permission denied.');
     }
 
-    public function removeSection($id)
+    public function removeSection($id): RedirectResponse
     {
         if (\Auth::user()->type == 'super admin') {
             $Landing_page_section = LandingPageSection::findOrfail($id);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\Branch;
 use App\Models\Employee;
 use App\Models\GoalTracking;
@@ -42,7 +43,7 @@ class GoalTrackingController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create goal tracking')) {
             $validator = \Validator::make(
@@ -100,7 +101,7 @@ class GoalTrackingController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         if (\Auth::user()->can('edit goal tracking')) {
             $goalTracking = GoalTracking::find($id);
@@ -138,7 +139,7 @@ class GoalTrackingController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         if (\Auth::user()->can('delete goal tracking')) {
             $goalTracking = GoalTracking::find($id);

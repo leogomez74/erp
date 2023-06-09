@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Models\Branch;
 use App\Models\Trainer;
 use Illuminate\Http\Request;
@@ -30,7 +32,7 @@ class TrainerController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create trainer')) {
             $validator = \Validator::make(
@@ -65,7 +67,7 @@ class TrainerController extends Controller
         }
     }
 
-    public function show(Trainer $trainer)
+    public function show(Trainer $trainer): View
     {
         return view('trainer.show', compact('trainer'));
     }
@@ -81,7 +83,7 @@ class TrainerController extends Controller
         }
     }
 
-    public function update(Request $request, Trainer $trainer)
+    public function update(Request $request, Trainer $trainer): RedirectResponse
     {
         if (\Auth::user()->can('edit trainer')) {
             $validator = \Validator::make(
@@ -114,7 +116,7 @@ class TrainerController extends Controller
         }
     }
 
-    public function destroy(Trainer $trainer)
+    public function destroy(Trainer $trainer): RedirectResponse
     {
         if (\Auth::user()->can('delete trainer')) {
             if ($trainer->created_by == \Auth::user()->creatorId()) {

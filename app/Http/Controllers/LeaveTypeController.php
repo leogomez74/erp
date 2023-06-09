@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\LeaveType;
 use Illuminate\Http\Request;
 
@@ -27,7 +28,7 @@ class LeaveTypeController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create leave type')) {
             $validator = \Validator::make(
@@ -55,7 +56,7 @@ class LeaveTypeController extends Controller
         }
     }
 
-    public function show(LeaveType $leavetype)
+    public function show(LeaveType $leavetype): RedirectResponse
     {
         return redirect()->route('leavetype.index');
     }
@@ -73,7 +74,7 @@ class LeaveTypeController extends Controller
         }
     }
 
-    public function update(Request $request, LeaveType $leavetype)
+    public function update(Request $request, LeaveType $leavetype): RedirectResponse
     {
         if (\Auth::user()->can('edit leave type')) {
             if ($leavetype->created_by == \Auth::user()->creatorId()) {
@@ -103,7 +104,7 @@ class LeaveTypeController extends Controller
         }
     }
 
-    public function destroy(LeaveType $leavetype)
+    public function destroy(LeaveType $leavetype): RedirectResponse
     {
         if (\Auth::user()->can('delete leave type')) {
             if ($leavetype->created_by == \Auth::user()->creatorId()) {

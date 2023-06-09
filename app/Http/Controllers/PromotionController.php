@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\Designation;
 use App\Models\Employee;
 use App\Models\Promotion;
@@ -39,7 +40,7 @@ class PromotionController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create promotion')) {
             $validator = \Validator::make(
@@ -90,7 +91,7 @@ class PromotionController extends Controller
         }
     }
 
-    public function show(Promotion $promotion)
+    public function show(Promotion $promotion): RedirectResponse
     {
         return redirect()->route('promotion.index');
     }
@@ -110,7 +111,7 @@ class PromotionController extends Controller
         }
     }
 
-    public function update(Request $request, Promotion $promotion)
+    public function update(Request $request, Promotion $promotion): RedirectResponse
     {
         if (\Auth::user()->can('edit promotion')) {
             if ($promotion->created_by == \Auth::user()->creatorId()) {
@@ -145,7 +146,7 @@ class PromotionController extends Controller
         }
     }
 
-    public function destroy(Promotion $promotion)
+    public function destroy(Promotion $promotion): RedirectResponse
     {
         if (\Auth::user()->can('delete promotion')) {
             if ($promotion->created_by == \Auth::user()->creatorId()) {

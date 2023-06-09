@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\ActivityLog;
 use App\Models\ClientDeal;
 use App\Models\Deal;
@@ -60,7 +61,7 @@ class PipelineController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create pipeline')) {
             $validator = \Validator::make(
@@ -92,7 +93,7 @@ class PipelineController extends Controller
      * @param  \App\Pipeline  $pipeline
      * @return \Illuminate\Http\Response
      */
-    public function show(Pipeline $pipeline)
+    public function show(Pipeline $pipeline): RedirectResponse
     {
         return redirect()->route('pipelines.index');
     }
@@ -122,7 +123,7 @@ class PipelineController extends Controller
      * @param  \App\Pipeline  $pipeline
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pipeline $pipeline)
+    public function update(Request $request, Pipeline $pipeline): RedirectResponse
     {
         if (\Auth::user()->can('edit pipeline')) {
             if ($pipeline->created_by == \Auth::user()->creatorId()) {
@@ -156,7 +157,7 @@ class PipelineController extends Controller
      * @param  \App\Pipeline  $pipeline
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Pipeline $pipeline)
+    public function destroy(Pipeline $pipeline): RedirectResponse
     {
         if (\Auth::user()->can('delete pipeline')) {
             if ($pipeline->created_by == \Auth::user()->creatorId()) {

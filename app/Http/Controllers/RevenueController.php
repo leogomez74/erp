@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\BankAccount;
 use App\Models\ChartOfAccount;
 use App\Models\ChartOfAccountType;
@@ -94,7 +95,7 @@ class RevenueController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create revenue')) {
             $validator = \Validator::make(
@@ -208,7 +209,7 @@ class RevenueController extends Controller
         }
     }
 
-    public function update(Request $request, Revenue $revenue)
+    public function update(Request $request, Revenue $revenue): RedirectResponse
     {
         if (\Auth::user()->can('edit revenue')) {
             $validator = \Validator::make(
@@ -267,7 +268,7 @@ class RevenueController extends Controller
         }
     }
 
-    public function destroy(Revenue $revenue)
+    public function destroy(Revenue $revenue): RedirectResponse
     {
         if (\Auth::user()->can('delete revenue')) {
             if ($revenue->created_by == \Auth::user()->creatorId()) {

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Models\Support;
 use App\Models\SupportReply;
 use App\Models\User;
@@ -11,7 +13,7 @@ use Illuminate\Support\Facades\Mail;
 
 class SupportController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         if (\Auth::user()->type == 'company') {
             $supports = Support::where('created_by', \Auth::user()->creatorId())->get();
@@ -40,7 +42,7 @@ class SupportController extends Controller
         }
     }
 
-    public function create()
+    public function create(): View
     {
         $priority = [
             __('Low'),
@@ -54,7 +56,7 @@ class SupportController extends Controller
         return view('support.create', compact('priority', 'users', 'status'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $validator = \Validator::make(
             $request->all(), [
@@ -132,7 +134,7 @@ class SupportController extends Controller
         //
     }
 
-    public function edit(Support $support)
+    public function edit(Support $support): View
     {
         $priority = [
             __('Low'),
@@ -146,7 +148,7 @@ class SupportController extends Controller
         return view('support.edit', compact('priority', 'users', 'support', 'status'));
     }
 
-    public function update(Request $request, Support $support)
+    public function update(Request $request, Support $support): RedirectResponse
     {
         $validator = \Validator::make(
             $request->all(), [
@@ -178,7 +180,7 @@ class SupportController extends Controller
         return redirect()->route('support.index')->with('success', __('Support successfully updated.'));
     }
 
-    public function destroy(Support $support)
+    public function destroy(Support $support): RedirectResponse
     {
         $support->delete();
         if ($support->attachment) {
@@ -188,7 +190,7 @@ class SupportController extends Controller
         return redirect()->route('support.index')->with('success', __('Support successfully deleted.'));
     }
 
-    public function reply($ids)
+    public function reply($ids): View
     {
         $id = \Crypt::decrypt($ids);
         $replyes = SupportReply::where('support_id', $id)->get();
@@ -203,7 +205,7 @@ class SupportController extends Controller
         return view('support.reply', compact('support', 'replyes'));
     }
 
-    public function replyAnswer(Request $request, $id)
+    public function replyAnswer(Request $request, $id): RedirectResponse
     {
         $supportReply = new SupportReply();
         $supportReply->support_id = $id;
