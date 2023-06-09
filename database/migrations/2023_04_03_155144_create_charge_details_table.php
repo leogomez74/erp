@@ -16,7 +16,7 @@ class CreateChargeDetailsTable extends Migration
         Schema::create('charges_detail', function (Blueprint $table) {
             $table->id();
             $table->foreignId('charges_id')->constrained();
-            $table->text("comprobante");
+            $table->text('comprobante');
             $table->timestamps();
         });
     }

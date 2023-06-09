@@ -9,118 +9,92 @@ class JobStageController extends Controller
 {
     public function index()
     {
-        if(\Auth::user()->can('manage job stage'))
-        {
+        if (\Auth::user()->can('manage job stage')) {
             $stages = JobStage::where('created_by', '=', \Auth::user()->creatorId())->orderBy('order', 'asc')->get();
 
             return view('jobStage.index', compact('stages'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
-
 
     public function create()
     {
         return view('jobStage.create');
     }
 
-
     public function store(Request $request)
     {
-        if(\Auth::user()->can('create job stage'))
-        {
-
+        if (\Auth::user()->can('create job stage')) {
             $validator = \Validator::make(
                 $request->all(), [
-                                   'title' => 'required',
-                               ]
+                    'title' => 'required',
+                ]
             );
 
-            if($validator->fails())
-            {
+            if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
 
                 return redirect()->back()->with('error', $messages->first());
             }
 
-            $jobStage             = new JobStage();
-            $jobStage->title      = $request->title;
+            $jobStage = new JobStage();
+            $jobStage->title = $request->title;
             $jobStage->created_by = \Auth::user()->creatorId();
             $jobStage->save();
 
             return redirect()->back()->with('success', __('Job stage  successfully created.'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
-
 
     public function show(JobStage $jobStage)
     {
         //
     }
 
-
     public function edit(JobStage $jobStage)
     {
         return view('jobStage.edit', compact('jobStage'));
     }
 
-
     public function update(Request $request, JobStage $jobStage)
     {
-        if(\Auth::user()->can('edit job stage'))
-        {
-
+        if (\Auth::user()->can('edit job stage')) {
             $validator = \Validator::make(
                 $request->all(), [
-                                   'title' => 'required',
-                               ]
+                    'title' => 'required',
+                ]
             );
 
-            if($validator->fails())
-            {
+            if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
 
                 return redirect()->back()->with('error', $messages->first());
             }
 
-
-            $jobStage->title      = $request->title;
+            $jobStage->title = $request->title;
             $jobStage->created_by = \Auth::user()->creatorId();
             $jobStage->save();
 
             return redirect()->back()->with('success', __('Job stage  successfully updated.'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
-
     public function destroy(JobStage $jobStage)
     {
-        if(\Auth::user()->can('delete job stage'))
-        {
-            if($jobStage->created_by == \Auth::user()->creatorId())
-            {
+        if (\Auth::user()->can('delete job stage')) {
+            if ($jobStage->created_by == \Auth::user()->creatorId()) {
                 $jobStage->delete();
 
                 return redirect()->back()->with('success', __('Job stage successfully deleted.'));
-            }
-            else
-            {
+            } else {
                 return redirect()->back()->with('error', __('Permission denied.'));
             }
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
@@ -128,9 +102,8 @@ class JobStageController extends Controller
     public function order(Request $request)
     {
         $post = $request->all();
-        foreach($post['order'] as $key => $item)
-        {
-            $stage        = JobStage::where('id', '=', $item)->first();
+        foreach ($post['order'] as $key => $item) {
+            $stage = JobStage::where('id', '=', $item)->first();
             $stage->order = $key;
             $stage->save();
         }

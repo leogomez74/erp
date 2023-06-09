@@ -18,7 +18,6 @@ class Competencies extends Model
 //        'behavioural' => 'Behavioural',
 //    ];
 
-
     public function performance()
     {
         return $this->hasOne('App\Models\PerformanceType', 'id', 'type');

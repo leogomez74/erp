@@ -26,12 +26,12 @@ class Contract extends Model
     {
         return $this->hasOne('App\Models\ContractType', 'id', 'type');
     }
+
     public static function getContractSummary($contracts)
     {
         $total = 0;
 
-        foreach($contracts as $contract)
-        {
+        foreach ($contracts as $contract) {
             $total += $contract->value;
         }
 

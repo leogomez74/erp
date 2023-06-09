@@ -28,7 +28,6 @@ class CreateZoomMeetingsTable extends Migration
             $table->string('status')->default('waiting')->nullable();
             $table->integer('created_by')->default(0);
             $table->timestamps();
-
         });
     }
 

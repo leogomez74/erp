@@ -23,6 +23,7 @@ class Revenue extends Model
     {
         return $this->hasOne('App\Models\ProductServiceCategory', 'id', 'category_id');
     }
+
     public function customer()
     {
         return $this->hasOne('App\Models\Customer', 'id', 'customer_id');

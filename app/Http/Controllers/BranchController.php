@@ -10,56 +10,45 @@ class BranchController extends Controller
 {
     public function index()
     {
-        if(\Auth::user()->can('manage branch'))
-        {
+        if (\Auth::user()->can('manage branch')) {
             $branches = Branch::where('created_by', '=', \Auth::user()->creatorId())->get();
 
             return view('branch.index', compact('branches'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
     public function create()
     {
-        if(\Auth::user()->can('create branch'))
-        {
+        if (\Auth::user()->can('create branch')) {
             return view('branch.create');
-        }
-        else
-        {
+        } else {
             return response()->json(['error' => __('Permission denied.')], 401);
         }
     }
 
     public function store(Request $request)
     {
-        if(\Auth::user()->can('create branch'))
-        {
-
+        if (\Auth::user()->can('create branch')) {
             $validator = \Validator::make(
                 $request->all(), [
-                                   'name' => 'required',
-                               ]
+                    'name' => 'required',
+                ]
             );
-            if($validator->fails())
-            {
+            if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
 
                 return redirect()->back()->with('error', $messages->first());
             }
 
-            $branch             = new Branch();
-            $branch->name       = $request->name;
+            $branch = new Branch();
+            $branch->name = $request->name;
             $branch->created_by = \Auth::user()->creatorId();
             $branch->save();
 
             return redirect()->route('branch.index')->with('success', __('Branch  successfully created.'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
@@ -71,37 +60,27 @@ class BranchController extends Controller
 
     public function edit(Branch $branch)
     {
-        if(\Auth::user()->can('edit branch'))
-        {
-            if($branch->created_by == \Auth::user()->creatorId())
-            {
-
+        if (\Auth::user()->can('edit branch')) {
+            if ($branch->created_by == \Auth::user()->creatorId()) {
                 return view('branch.edit', compact('branch'));
-            }
-            else
-            {
+            } else {
                 return response()->json(['error' => __('Permission denied.')], 401);
             }
-        }
-        else
-        {
+        } else {
             return response()->json(['error' => __('Permission denied.')], 401);
         }
     }
 
     public function update(Request $request, Branch $branch)
     {
-        if(\Auth::user()->can('edit branch'))
-        {
-            if($branch->created_by == \Auth::user()->creatorId())
-            {
+        if (\Auth::user()->can('edit branch')) {
+            if ($branch->created_by == \Auth::user()->creatorId()) {
                 $validator = \Validator::make(
                     $request->all(), [
-                                       'name' => 'required',
-                                   ]
+                        'name' => 'required',
+                    ]
                 );
-                if($validator->fails())
-                {
+                if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
 
                     return redirect()->back()->with('error', $messages->first());
@@ -111,48 +90,34 @@ class BranchController extends Controller
                 $branch->save();
 
                 return redirect()->route('branch.index')->with('success', __('Branch successfully updated.'));
-            }
-            else
-            {
+            } else {
                 return redirect()->back()->with('error', __('Permission denied.'));
             }
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
     public function destroy(Branch $branch)
     {
-        if(\Auth::user()->can('delete branch'))
-        {
-            if($branch->created_by == \Auth::user()->creatorId())
-            {
+        if (\Auth::user()->can('delete branch')) {
+            if ($branch->created_by == \Auth::user()->creatorId()) {
                 $branch->delete();
 
                 return redirect()->route('branch.index')->with('success', __('Branch successfully deleted.'));
-            }
-            else
-            {
+            } else {
                 return redirect()->back()->with('error', __('Permission denied.'));
             }
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
     public function getdepartment(Request $request)
     {
-
-        if($request->branch_id == 0)
-        {
+        if ($request->branch_id == 0) {
             $departments = Department::get()->pluck('name', 'id')->toArray();
-        }
-        else
-        {
+        } else {
             $departments = Department::where('branch_id', $request->branch_id)->get()->pluck('name', 'id')->toArray();
         }
 
@@ -161,12 +126,9 @@ class BranchController extends Controller
 
     public function getemployee(Request $request)
     {
-        if(in_array('0', $request->department_id))
-        {
+        if (in_array('0', $request->department_id)) {
             $employees = Employee::get()->pluck('name', 'id')->toArray();
-        }
-        else
-        {
+        } else {
             $employees = Employee::whereIn('department_id', $request->department_id)->get()->pluck('name', 'id')->toArray();
         }
 

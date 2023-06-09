@@ -44,7 +44,6 @@ class Job extends Model
         $ids = explode(',', $this->custom_question);
 
         return CustomQuestion::whereIn('id', $ids)->get();
-
     }
 
     public function createdBy()

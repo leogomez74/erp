@@ -21,7 +21,6 @@ class InvoicePayment extends Model
         'description',
     ];
 
-
     public function bankAccount()
     {
         return $this->hasOne('App\Models\ChartOfAccount', 'id', 'account_id');

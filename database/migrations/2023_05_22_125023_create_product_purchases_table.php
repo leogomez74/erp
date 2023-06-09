@@ -15,9 +15,9 @@ class CreateProductPurchasesTable extends Migration
     {
         Schema::create('product_purchases', function (Blueprint $table) {
             $table->id();
-            $table->integer("product_id");
-            $table->float('sale_price',20)->default('0.0');
-            $table->float('purchase_price',20)->default('0.0');
+            $table->integer('product_id');
+            $table->float('sale_price', 20)->default('0.0');
+            $table->float('purchase_price', 20)->default('0.0');
             $table->integer('quantity')->default('0');
             $table->timestamps();
         });

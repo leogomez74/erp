@@ -15,12 +15,12 @@ class ModifyTableCustomersContactAndBillName extends Migration
     {
         Schema::table('customers', function (Blueprint $table) {
             $table->string('billing_name')->nullable()->change();
-            $table->string('billing_country')->nullable()->change();;
-            $table->string('billing_state')->nullable()->change();;
-            $table->string('billing_city')->nullable()->change();;
-            $table->string('billing_phone')->nullable()->change();;
-            $table->string('billing_zip')->nullable()->change();;
-            $table->text('billing_address')->nullable()->change();;
+            $table->string('billing_country')->nullable()->change();
+            $table->string('billing_state')->nullable()->change();
+            $table->string('billing_city')->nullable()->change();
+            $table->string('billing_phone')->nullable()->change();
+            $table->string('billing_zip')->nullable()->change();
+            $table->text('billing_address')->nullable()->change();
         });
     }
 

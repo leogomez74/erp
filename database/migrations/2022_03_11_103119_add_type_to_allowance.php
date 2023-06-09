@@ -13,7 +13,6 @@ class AddTypeToAllowance extends Migration
      */
     public function up()
     {
-
         Schema::table(
             'allowances',
             function (Blueprint $table) {

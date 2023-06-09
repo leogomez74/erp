@@ -6,7 +6,7 @@ use Livewire\Component;
 
 class Currencies extends Component
 {
-    public $currency_list = array(
+    public $currency_list = [
         // "AFA" => array("name" => "Afghan Afghani", "symbol" => "؋"),
         // "ALL" => array("name" => "Albanian Lek", "symbol" => "Lek"),
         // "DZD" => array("name" => "Algerian Dinar", "symbol" => "دج"),
@@ -25,7 +25,7 @@ class Currencies extends Component
         // "BZD" => array("name" => "Belize Dollar", "symbol" => "$"),
         // "BMD" => array("name" => "Bermudan Dollar", "symbol" => "$"),
         // "BTN" => array("name" => "Bhutanese Ngultrum", "symbol" => "Nu."),
-         "BTC" => array("name" => "Bitcoin", "symbol" => "฿"),
+        'BTC' => ['name' => 'Bitcoin', 'symbol' => '฿'],
         // "BOB" => array("name" => "Bolivian Boliviano", "symbol" => "Bs."),
         // "BAM" => array("name" => "Bosnia", "symbol" => "KM"),
         // "BWP" => array("name" => "Botswanan Pula", "symbol" => "P"),
@@ -46,7 +46,7 @@ class Currencies extends Component
         // "COP" => array("name" => "Colombian Peso", "symbol" => "$"),
         // "KMF" => array("name" => "Comorian Franc", "symbol" => "CF"),
         // "CDF" => array("name" => "Congolese Franc", "symbol" => "FC"),
-         "CRC" => array("name" => "Costa Rican Colón", "symbol" => "₡"),
+        'CRC' => ['name' => 'Costa Rican Colón', 'symbol' => '₡'],
         // "HRK" => array("name" => "Croatian Kuna", "symbol" => "kn"),
         // "CUC" => array("name" => "Cuban Convertible Peso", "symbol" => "$, CUC"),
         // "CZK" => array("name" => "Czech Republic Koruna", "symbol" => "Kč"),
@@ -58,7 +58,7 @@ class Currencies extends Component
         // "ERN" => array("name" => "Eritrean Nakfa", "symbol" => "Nfk"),
         // "EEK" => array("name" => "Estonian Kroon", "symbol" => "kr"),
         // "ETB" => array("name" => "Ethiopian Birr", "symbol" => "Nkf"),
-         "EUR" => array("name" => "Euro", "symbol" => "€"),
+        'EUR' => ['name' => 'Euro', 'symbol' => '€'],
         // "FKP" => array("name" => "Falkland Islands Pound", "symbol" => "£"),
         // "FJD" => array("name" => "Fijian Dollar", "symbol" => "FJ$"),
         // "GMD" => array("name" => "Gambian Dalasi", "symbol" => "D"),
@@ -164,96 +164,98 @@ class Currencies extends Component
         // "UAH" => array("name" => "Ukrainian Hryvnia", "symbol" => "₴"),
         // "AED" => array("name" => "United Arab Emirates Dirham", "symbol" => "إ.د"),
         // "UYU" => array("name" => "Uruguayan Peso", "symbol" => "$"),
-        "ETH" => array("name" => "Ethereum", "symbol" => "Eth"),
-        "USDT" => array("name" => "Tether", "symbol" => "Usdt"),
-        "USDC" => array("name" => "USD Coin", "symbol" => "Usdc"),
-        "USD" => array("name" => "US Dollar", "symbol" => "$")
+        'ETH' => ['name' => 'Ethereum', 'symbol' => 'Eth'],
+        'USDT' => ['name' => 'Tether', 'symbol' => 'Usdt'],
+        'USDC' => ['name' => 'USD Coin', 'symbol' => 'Usdc'],
+        'USD' => ['name' => 'US Dollar', 'symbol' => '$'],
         // "UZS" => array("name" => "Uzbekistan Som", "symbol" => "лв"),
         // "VUV" => array("name" => "Vanuatu Vatu", "symbol" => "VT"),
         // "VEF" => array("name" => "Venezuelan Bolívar", "symbol" => "Bs"),
         // "VND" => array("name" => "Vietnamese Dong", "symbol" => "₫"),
         // "YER" => array("name" => "Yemeni Rial", "symbol" => "﷼"),
         // "ZMK" => array("name" => "Zambian Kwacha", "symbol" => "ZK")
-    );
+    ];
 
-    public $selected_currency = "";
-    public $currencyPosition = "";
+    public $selected_currency = '';
+
+    public $currencyPosition = '';
+
     public $currencies = [];
+
     public $default;
 
     public function render()
     {
-        $this->currencyPosition = \DB::table("settings")->select("value")->whereName("site_currency_symbol_position")->whereCreatedBy(\Auth::user()->creatorId())->value("value");
+        $this->currencyPosition = \DB::table('settings')->select('value')->whereName('site_currency_symbol_position')->whereCreatedBy(\Auth::user()->creatorId())->value('value');
 
-        if (!$this->currencyPosition){
-            \DB::table("settings")->insert([
-                "name"=>"site_currency_symbol_position",
-                "value"=>"pre",
-                "created_by"=>\Auth::user()->creatorId(),
-                "created_at"=>now(),
-                "updated_at"=>now(),
+        if (! $this->currencyPosition) {
+            \DB::table('settings')->insert([
+                'name' => 'site_currency_symbol_position',
+                'value' => 'pre',
+                'created_by' => \Auth::user()->creatorId(),
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
-            $this->currencyPosition = "pre";
+            $this->currencyPosition = 'pre';
         }
 
+        $cc = \DB::table('settings')->whereName('site_currency')->whereCreatedBy(\Auth::user()->creatorId())->first('value');
 
-        $cc = \DB::table("settings")->whereName("site_currency")->whereCreatedBy(\Auth::user()->creatorId())->first("value");
-
-        if ($cc){
+        if ($cc) {
             $cur = $cc->value;
         } else {
-            \DB::table("settings")->insert([
-                "name"=>"site_currency",
-                "value"=>"CRC",
-                "created_by"=>\Auth::user()->creatorId(),
-                "created_at"=>now(),
-                "updated_at"=>now()
+            \DB::table('settings')->insert([
+                'name' => 'site_currency',
+                'value' => 'CRC',
+                'created_by' => \Auth::user()->creatorId(),
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
-            $cur = "CRC";
+            $cur = 'CRC';
         }
 
         //$cur = \DB::table("settings")->whereName("site_currency")->whereCreatedBy(\Auth::user()->creatorId())->first("value")->value;
 
         $this->currencies = \DB::table('currencies')->whereCreatedBy(\Auth::user()->creatorId())->get();
-        $default = collect($this->currencies)->filter(function($val) use($cur){
+        $default = collect($this->currencies)->filter(function ($val) use ($cur) {
             return $val->currency == $cur;
-        })->pluck("id");
-        $this->default = count($default) ? $default[0]:null;
+        })->pluck('id');
+        $this->default = count($default) ? $default[0] : null;
 
-        foreach ($this->currency_list as $item){
-
+        foreach ($this->currency_list as $item) {
         }
+
         return view('livewire.components.currencies');
     }
 
     public function addCurrency()
     {
         \DB::table('currencies')->insert([
-            'currency'=>$this->selected_currency,
-            "name"=>$this->currency_list[$this->selected_currency]['name'],
-            "symbol"=>$this->currency_list[$this->selected_currency]['symbol'],
-            "created_by"=>\Auth::user()->creatorId()
+            'currency' => $this->selected_currency,
+            'name' => $this->currency_list[$this->selected_currency]['name'],
+            'symbol' => $this->currency_list[$this->selected_currency]['symbol'],
+            'created_by' => \Auth::user()->creatorId(),
         ]);
-        $this->selected_currency = "";
+        $this->selected_currency = '';
     }
 
     public function updatedCurrencyPosition()
     {
-       \DB::table("settings")->whereName("site_currency_symbol_position")->whereCreatedBy(\Auth::user()->creatorId())->update(["value"=>$this->currencyPosition,"updated_at"=>now()]);
-       $this->emit("toaster","success",__('Setting saved successfully!'));
+        \DB::table('settings')->whereName('site_currency_symbol_position')->whereCreatedBy(\Auth::user()->creatorId())->update(['value' => $this->currencyPosition, 'updated_at' => now()]);
+        $this->emit('toaster', 'success', __('Setting saved successfully!'));
     }
 
     public function updatedDefault($value)
     {
         $currency = \DB::table('currencies')->whereId($value)->first();
-        
-        \DB::table("settings")->whereName("site_currency")->whereCreatedBy(\Auth::user()->creatorId())->update(["value"=>$currency->currency,"updated_at"=>now()]);
-        \DB::table("settings")->whereName("site_currency_symbol")->whereCreatedBy(\Auth::user()->creatorId())->update(["value"=>$currency->symbol,"updated_at"=>now()]);
-        $this->emit("toaster","success",__('Setting saved successfully!'));
+
+        \DB::table('settings')->whereName('site_currency')->whereCreatedBy(\Auth::user()->creatorId())->update(['value' => $currency->currency, 'updated_at' => now()]);
+        \DB::table('settings')->whereName('site_currency_symbol')->whereCreatedBy(\Auth::user()->creatorId())->update(['value' => $currency->symbol, 'updated_at' => now()]);
+        $this->emit('toaster', 'success', __('Setting saved successfully!'));
     }
 
     public function delCurrency($id)
     {
-        \DB::table("currencies")->whereId($id)->delete();
+        \DB::table('currencies')->whereId($id)->delete();
     }
 }

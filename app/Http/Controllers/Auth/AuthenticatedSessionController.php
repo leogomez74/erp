@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\Customer;
-use App\Models\Plan;
-use App\Models\Vender;
-use  App\Models\Utility;
-use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Customer;
+use  App\Models\Plan;
+use App\Models\Utility;
+use App\Models\Vender;
 use App\Providers\RouteServiceProvider;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -23,8 +23,6 @@ class AuthenticatedSessionController extends Controller
      *
      * @return \Illuminate\View\View
      */
-
-
     public function __construct()
     {
         // if(!file_exists(storage_path() . "/installed"))
@@ -43,15 +41,12 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      *
-     * @param \App\Http\Requests\Auth\LoginRequest $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
 
-
     // protected function authenticated(Request $request)
     //    {
-
 
     //             $user = Auth::user();
     //        if($user->delete_status == 0)
@@ -65,15 +60,12 @@ class AuthenticatedSessionController extends Controller
     //        }
     //    }
 
-
     public function store(LoginRequest $request)
     {
-
         //ReCpatcha
-        if(env('RECAPTCHA_MODULE') == 'yes')
-        {
+        if (env('RECAPTCHA_MODULE') == 'yes') {
             $validation['g-recaptcha-response'] = 'required|captcha';
-        }else{
+        } else {
             $validation = [];
         }
         $this->validate($request, $validation);
@@ -83,42 +75,31 @@ class AuthenticatedSessionController extends Controller
         $user = Auth::user();
         //dd($user);
 
-
-        if($user->delete_status == 0)
-        {
+        if ($user->delete_status == 0) {
             auth()->logout();
         }
 
-        if($user->is_active == 0)
-        {
+        if ($user->is_active == 0) {
             auth()->logout();
         }
         $user = \Auth::user();
-        if($user->type == 'company')
-        {
+        if ($user->type == 'company') {
             $plan = Plan::find($user->plan);
-            if($plan)
-            {
-                if($plan->duration != 'Unlimited')
-                {
+            if ($plan) {
+                if ($plan->duration != 'Unlimited') {
                     $datetime1 = new \DateTime($user->plan_expire_date);
                     $datetime2 = new \DateTime(date('Y-m-d'));
                     //                    $interval  = $datetime1->diff($datetime2);
                     $interval = $datetime2->diff($datetime1);
-                    $days     = $interval->format('%r%a');
-                    if($days <= 0)
-                    {
+                    $days = $interval->format('%r%a');
+                    if ($days <= 0) {
                         $user->assignPlan(1);
 
                         return redirect()->intended(RouteServiceProvider::HOME)->with('error', __('Your Plan is expired.'));
                     }
                 }
             }
-
         }
-
-
-
 
         // Update Last Login Time
         $user->update(
@@ -127,21 +108,16 @@ class AuthenticatedSessionController extends Controller
             ]
         );
 //        if($user->type =='employee')
-        if($user->type =='company' || $user->type =='super admin' || $user->type =='client')
-        {
+        if ($user->type == 'company' || $user->type == 'super admin' || $user->type == 'client') {
             return redirect()->intended(RouteServiceProvider::HOME);
-
-        }
-        else
-        {
+        } else {
             return redirect()->intended(RouteServiceProvider::EMPHOME);
         }
-
     }
+
     /**
      * Destroy an authenticated session.
      *
-     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -156,11 +132,9 @@ class AuthenticatedSessionController extends Controller
         return redirect('/');
     }
 
-
     public function showCustomerLoginForm($lang = '')
     {
-        if($lang == '')
-        {
+        if ($lang == '') {
             $lang = Utility::getValByName('default_language');
         }
 
@@ -171,23 +145,20 @@ class AuthenticatedSessionController extends Controller
 
     public function customerLogin(Request $request)
     {
-
         $this->validate(
             $request, [
-                        'email' => 'required|email',
-                        'password' => 'required|min:6',
-                    ]
+                'email' => 'required|email',
+                'password' => 'required|min:6',
+            ]
         );
 
-        if(\Auth::guard('customer')->attempt(
+        if (\Auth::guard('customer')->attempt(
             [
                 'email' => $request->email,
                 'password' => $request->password,
             ], $request->get('remember')
-        ))
-        {
-            if(\Auth::guard('customer')->user()->is_active == 0)
-            {
+        )) {
+            if (\Auth::guard('customer')->user()->is_active == 0) {
                 \Auth::guard('customer')->logout();
             }
             $user = \Auth::guard('customer')->user();
@@ -205,8 +176,7 @@ class AuthenticatedSessionController extends Controller
 
     public function showVenderLoginForm($lang = '')
     {
-        if($lang == '')
-        {
+        if ($lang == '') {
             $lang = Utility::getValByName('default_language');
         }
 
@@ -219,19 +189,17 @@ class AuthenticatedSessionController extends Controller
     {
         $this->validate(
             $request, [
-                        'email' => 'required|email',
-                        'password' => 'required|min:6',
-                    ]
+                'email' => 'required|email',
+                'password' => 'required|min:6',
+            ]
         );
-        if(\Auth::guard('vender')->attempt(
+        if (\Auth::guard('vender')->attempt(
             [
                 'email' => $request->email,
                 'password' => $request->password,
             ], $request->get('remember')
-        ))
-        {
-            if(\Auth::guard('vender')->user()->is_active == 0)
-            {
+        )) {
+            if (\Auth::guard('vender')->user()->is_active == 0) {
                 \Auth::guard('vender')->logout();
             }
             $user = \Auth::guard('vender')->user();
@@ -249,9 +217,7 @@ class AuthenticatedSessionController extends Controller
 
     public function showLoginForm($lang = '')
     {
-
-        if($lang == '')
-        {
+        if ($lang == '') {
             $lang = Utility::getValByName('default_language');
         }
 
@@ -259,16 +225,14 @@ class AuthenticatedSessionController extends Controller
 
         $settings = Utility::settings();
 
-        return view('auth.login', compact('lang','settings'));
+        return view('auth.login', compact('lang', 'settings'));
     }
 
     public function showLinkRequestForm($lang = '')
     {
-        if($lang == '')
-        {
+        if ($lang == '') {
             $lang = Utility::getValByName('default_language');
         }
-
 
         \App::setLocale($lang);
 
@@ -277,8 +241,7 @@ class AuthenticatedSessionController extends Controller
 
     public function showCustomerLoginLang($lang = '')
     {
-        if($lang == '')
-        {
+        if ($lang == '') {
             $lang = Utility::getValByName('default_language');
         }
 
@@ -289,8 +252,7 @@ class AuthenticatedSessionController extends Controller
 
     public function showVenderLoginLang($lang = '')
     {
-        if($lang == '')
-        {
+        if ($lang == '') {
             $lang = Utility::getValByName('default_language');
         }
 
@@ -302,8 +264,7 @@ class AuthenticatedSessionController extends Controller
     //    ---------------------------------Customer ----------------------------------_
     public function showCustomerLinkRequestForm($lang = '')
     {
-        if($lang == '')
-        {
+        if ($lang == '') {
             $lang = Utility::getValByName('default_language');
         }
 
@@ -314,7 +275,6 @@ class AuthenticatedSessionController extends Controller
 
     public function postCustomerEmail(Request $request)
     {
-
         $request->validate(
             [
                 'email' => 'required|email|exists:customers',
@@ -332,11 +292,11 @@ class AuthenticatedSessionController extends Controller
         );
 
         Mail::send(
-            'auth.customerVerify', ['token' => $token], function ($message) use ($request){
-            $message->from(env('MAIL_USERNAME'), env('MAIL_FROM_NAME'));
-            $message->to($request->email);
-            $message->subject('Reset Password Notification');
-        }
+            'auth.customerVerify', ['token' => $token], function ($message) use ($request) {
+                $message->from(env('MAIL_USERNAME'), env('MAIL_FROM_NAME'));
+                $message->to($request->email);
+                $message->subject('Reset Password Notification');
+            }
         );
 
         return back()->with('status', 'We have e-mailed your password reset link!');
@@ -344,9 +304,8 @@ class AuthenticatedSessionController extends Controller
 
     public function showResetForm(Request $request, $token = null)
     {
-
         $default_language = DB::table('settings')->select('value')->where('name', 'default_language')->first();
-        $lang             = !empty($default_language) ? $default_language->value : 'en';
+        $lang = ! empty($default_language) ? $default_language->value : 'en';
 
         \App::setLocale($lang);
 
@@ -361,7 +320,6 @@ class AuthenticatedSessionController extends Controller
 
     public function getCustomerPassword($token)
     {
-
         return view('auth.passwords.customerReset', ['token' => $token]);
     }
 
@@ -383,8 +341,7 @@ class AuthenticatedSessionController extends Controller
             ]
         )->first();
 
-        if(!$updatePassword)
-        {
+        if (! $updatePassword) {
             return back()->withInput()->with('error', 'Invalid token!');
         }
 
@@ -393,14 +350,12 @@ class AuthenticatedSessionController extends Controller
         DB::table('password_resets')->where(['email' => $request->email])->delete();
 
         return redirect('/login')->with('message', 'Your password has been changed.');
-
     }
 
     //    ----------------------------Vendor----------------------------------------------------
     public function showVendorLinkRequestForm($lang = '')
     {
-        if($lang == '')
-        {
+        if ($lang == '') {
             $lang = Utility::getValByName('default_language');
         }
 
@@ -411,7 +366,6 @@ class AuthenticatedSessionController extends Controller
 
     public function postVendorEmail(Request $request)
     {
-
         $request->validate(
             [
                 'email' => 'required|email|exists:venders',
@@ -429,11 +383,11 @@ class AuthenticatedSessionController extends Controller
         );
 
         Mail::send(
-            'auth.vendorVerify', ['token' => $token], function ($message) use ($request){
-            $message->from(env('MAIL_USERNAME'), env('MAIL_FROM_NAME'));
-            $message->to($request->email);
-            $message->subject('Reset Password Notification');
-        }
+            'auth.vendorVerify', ['token' => $token], function ($message) use ($request) {
+                $message->from(env('MAIL_USERNAME'), env('MAIL_FROM_NAME'));
+                $message->to($request->email);
+                $message->subject('Reset Password Notification');
+            }
         );
 
         return back()->with('status', 'We have e-mailed your password reset link!');
@@ -441,7 +395,6 @@ class AuthenticatedSessionController extends Controller
 
     public function getVendorPassword($token)
     {
-
         return view('auth.passwords.vendorReset', ['token' => $token]);
     }
 
@@ -463,8 +416,7 @@ class AuthenticatedSessionController extends Controller
             ]
         )->first();
 
-        if(!$updatePassword)
-        {
+        if (! $updatePassword) {
             return back()->withInput()->with('error', 'Invalid token!');
         }
 
@@ -473,7 +425,5 @@ class AuthenticatedSessionController extends Controller
         DB::table('password_resets')->where(['email' => $request->email])->delete();
 
         return redirect('/login')->with('message', 'Your password has been changed.');
-
     }
 }
-

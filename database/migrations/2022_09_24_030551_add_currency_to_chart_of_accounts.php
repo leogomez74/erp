@@ -14,7 +14,7 @@ class AddCurrencyToChartOfAccounts extends Migration
     public function up()
     {
         Schema::table('chart_of_accounts', function (Blueprint $table) {
-            $table->integer("currency")->after("description")->nullable();
+            $table->integer('currency')->after('description')->nullable();
         });
     }
 

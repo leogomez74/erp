@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class ChargeDetail extends Model
 {
     use HasFactory;
+
     protected $guarded = [];
 }

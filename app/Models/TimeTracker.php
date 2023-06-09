@@ -21,16 +21,15 @@ class TimeTracker extends Model
 
     ];
 
-    protected $appends  = array(
+    protected $appends = [
         'project_name',
         'project_task',
         'total',
-    );
+    ];
 
     public function getProjectNameAttribute($value)
     {
         $project = Project::select('id', 'project_name')->where('id', $this->project_id)->first();
-
 
         return $project ? $project->project_name : '';
     }
@@ -48,6 +47,4 @@ class TimeTracker extends Model
 
         return $total ? $total : '00:00:00';
     }
-
-
 }

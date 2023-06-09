@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Tax;
-use App\Models\ProductPurchase;
-
 use Illuminate\Database\Eloquent\Model;
 
 class ProductService extends Model
@@ -25,6 +22,7 @@ class ProductService extends Model
     {
         return $this->hasOne('App\Models\Tax', 'id', 'tax_id')->first();
     }
+
     public function products()
     {
         return $this->hasMany('App\Models\ProductPurchase', 'product_id', 'id');
@@ -44,9 +42,8 @@ class ProductService extends Model
     {
         $taxArr = explode(',', $taxes);
 
-        $taxes  = [];
-        foreach($taxArr as $tax)
-        {
+        $taxes = [];
+        foreach ($taxArr as $tax) {
             $taxes[] = Tax::find($tax);
         }
 
@@ -55,11 +52,10 @@ class ProductService extends Model
 
     public function taxRate($taxes)
     {
-        $taxArr  = explode(',', $taxes);
+        $taxArr = explode(',', $taxes);
         $taxRate = 0;
-        foreach($taxArr as $tax)
-        {
-            $tax     = Tax::find($tax);
+        foreach ($taxArr as $tax) {
+            $tax = Tax::find($tax);
             $taxRate += $tax->rate;
         }
 
@@ -71,15 +67,11 @@ class ProductService extends Model
         $taxArr = explode(',', $taxes);
 
         $taxes = [];
-        foreach($taxArr as $tax)
-        {
+        foreach ($taxArr as $tax) {
             $taxesData = Tax::find($tax);
-            $taxes[]   = !empty($taxesData) ? $taxesData->name : '';
+            $taxes[] = ! empty($taxesData) ? $taxesData->name : '';
         }
 
         return implode(',', $taxes);
     }
-
-
-
 }
