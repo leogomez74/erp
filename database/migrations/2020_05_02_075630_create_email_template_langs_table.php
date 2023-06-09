@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEmailTemplateLangsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -34,4 +34,4 @@ class CreateEmailTemplateLangsTable extends Migration
     {
         Schema::dropIfExists('email_template_langs');
     }
-}
+};

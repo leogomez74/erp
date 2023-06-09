@@ -266,7 +266,7 @@ class Utility extends Model
 
     public static function languages()
     {
-        $dir = base_path().'/resources/lang/';
+        $dir = base_path().'/lang/';
         $glob = glob($dir.'*', GLOB_ONLYDIR);
         $arrLang = array_map(
             function ($value) use ($dir) {

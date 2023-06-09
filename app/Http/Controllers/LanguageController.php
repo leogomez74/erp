@@ -26,9 +26,9 @@ class LanguageController extends Controller
         if (\Auth::user()->type == 'super admin') {
             $languages = Utility::languages();
 
-            $dir = base_path().'/resources/lang/'.$currantLang;
+            $dir = base_path().'/lang/'.$currantLang;
             if (! is_dir($dir)) {
-                $dir = base_path().'/resources/lang/en';
+                $dir = base_path().'/lang/en';
             }
             $arrLabel = json_decode(file_get_contents($dir.'.json'));
             $arrFiles = array_diff(
@@ -57,7 +57,7 @@ class LanguageController extends Controller
     {
         if (\Auth::user()->type == 'super admin') {
             $Filesystem = new Filesystem();
-            $dir = base_path().'/resources/lang/';
+            $dir = base_path().'/lang/';
             if (! is_dir($dir)) {
                 mkdir($dir);
                 chmod($dir, 0777);
@@ -113,7 +113,7 @@ class LanguageController extends Controller
         if (\Auth::user()->type == 'super admin') {
             $Filesystem = new Filesystem();
             $langCode = strtolower($request->code);
-            $langDir = base_path().'/resources/lang/';
+            $langDir = base_path().'/lang/';
             $dir = $langDir;
             if (! is_dir($dir)) {
                 mkdir($dir);
@@ -138,7 +138,7 @@ class LanguageController extends Controller
     public function destroyLang($lang)
     {
         $default_lang = env('default_language') ?? 'en';
-        $langDir = base_path().'/resources/lang/';
+        $langDir = base_path().'/lang/';
         if (is_dir($langDir)) {
             // remove directory and file
             Utility::delete_directory($langDir.$lang);

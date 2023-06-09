@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDealCallsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -38,4 +38,4 @@ class CreateDealCallsTable extends Migration
     {
         Schema::dropIfExists('deal_calls');
     }
-}
+};

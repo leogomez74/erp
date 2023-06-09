@@ -112,7 +112,6 @@ class PaypalController extends Controller
                 try {
                     $payment->create($this->_api_context);
                 } catch(\PayPal\Exception\PayPalConnectionException $ex) { //PPConnectionException
-                    
                     if (config('app.debug')) {
                         return redirect()->route('stripe', \Illuminate\Support\Facades\Crypt::encrypt($plan->id))->with('error', __('Connection timeout'));
                     } else {

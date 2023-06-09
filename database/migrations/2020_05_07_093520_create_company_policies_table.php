@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCompanyPoliciesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -35,4 +35,4 @@ class CreateCompanyPoliciesTable extends Migration
     {
         Schema::dropIfExists('company_policies');
     }
-}
+};
