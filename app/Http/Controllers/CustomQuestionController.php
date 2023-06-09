@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\CustomQuestion;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class CustomQuestionController extends Controller
 {
@@ -18,14 +20,14 @@ class CustomQuestionController extends Controller
         }
     }
 
-    public function create()
+    public function create(): View
     {
         $is_required = CustomQuestion::$is_required;
 
         return view('customQuestion.create', compact('is_required'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create custom question')) {
             $validator = \Validator::make(
@@ -56,14 +58,14 @@ class CustomQuestionController extends Controller
         //
     }
 
-    public function edit(CustomQuestion $customQuestion)
+    public function edit(CustomQuestion $customQuestion): View
     {
         $is_required = CustomQuestion::$is_required;
 
         return view('customQuestion.edit', compact('customQuestion', 'is_required'));
     }
 
-    public function update(Request $request, CustomQuestion $customQuestion)
+    public function update(Request $request, CustomQuestion $customQuestion): RedirectResponse
     {
         if (\Auth::user()->can('edit custom question')) {
             $validator = \Validator::make(
@@ -87,7 +89,7 @@ class CustomQuestionController extends Controller
         }
     }
 
-    public function destroy(CustomQuestion $customQuestion)
+    public function destroy(CustomQuestion $customQuestion): RedirectResponse
     {
         if (\Auth::user()->can('delete custom question')) {
             $customQuestion->delete();

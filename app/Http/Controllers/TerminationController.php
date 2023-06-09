@@ -6,8 +6,10 @@ use App\Models\Employee;
 use App\Models\Termination;
 use App\Models\TerminationType;
 use App\Models\Utility;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class TerminationController extends Controller
 {
@@ -39,7 +41,7 @@ class TerminationController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create termination')) {
             $validator = \Validator::make(
@@ -92,7 +94,7 @@ class TerminationController extends Controller
         }
     }
 
-    public function show(Termination $termination)
+    public function show(Termination $termination): RedirectResponse
     {
         return redirect()->route('termination.index');
     }
@@ -112,7 +114,7 @@ class TerminationController extends Controller
         }
     }
 
-    public function update(Request $request, Termination $termination)
+    public function update(Request $request, Termination $termination): RedirectResponse
     {
         if (\Auth::user()->can('edit termination')) {
             if ($termination->created_by == \Auth::user()->creatorId()) {
@@ -147,7 +149,7 @@ class TerminationController extends Controller
         }
     }
 
-    public function destroy(Termination $termination)
+    public function destroy(Termination $termination): RedirectResponse
     {
         if (\Auth::user()->can('delete termination')) {
             if ($termination->created_by == \Auth::user()->creatorId()) {
@@ -162,7 +164,7 @@ class TerminationController extends Controller
         }
     }
 
-    public function description($id)
+    public function description($id): View
     {
         $termination = Termination::find($id);
 

@@ -11,6 +11,7 @@ use App\Models\Plan;
 use App\Models\User;
 use App\Models\Utility;
 use CoinGate\CoinGate;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -43,7 +44,7 @@ class CoingatePaymentController extends Controller
         return $this;
     }
 
-    public function planPayWithCoingate(Request $request)
+    public function planPayWithCoingate(Request $request): RedirectResponse
     {
         $payment = $this->paymentConfig();
         $planID = \Illuminate\Support\Facades\Crypt::decrypt($request->plan_id);
@@ -146,7 +147,7 @@ class CoingatePaymentController extends Controller
         }
     }
 
-    public function coingatePlanGetPayment(Request $request)
+    public function coingatePlanGetPayment(Request $request): RedirectResponse
     {
         $user = Auth::user();
         $plan_id = $request->plan_id;
@@ -260,7 +261,7 @@ class CoingatePaymentController extends Controller
         }
     }
 
-    public function getInvoicePaymentStatus(Request $request, $invoice_id, $amount)
+    public function getInvoicePaymentStatus(Request $request, $invoice_id, $amount): RedirectResponse
     {
         $invoiceID = \Illuminate\Support\Facades\Crypt::decrypt($invoice_id);
         $invoice = Invoice::find($invoiceID);

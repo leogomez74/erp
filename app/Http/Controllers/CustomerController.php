@@ -14,13 +14,15 @@ use App\Models\User;
 use App\Models\Utility;
 use Auth;
 use File;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 
 class CustomerController extends Controller
 {
-    public function dashboard()
+    public function dashboard(): View
     {
         $data['invoiceChartData'] = \Auth::user()->invoiceChartData();
 
@@ -51,7 +53,7 @@ class CustomerController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create customer')) {
             $rules = [
@@ -121,7 +123,7 @@ class CustomerController extends Controller
         }
     }
 
-    public function show($ids)
+    public function show($ids): View
     {
         $id = \Crypt::decrypt($ids);
         $customer = Customer::with('clienttype', 'paytype')->find($id);
@@ -146,7 +148,7 @@ class CustomerController extends Controller
         }
     }
 
-    public function update(Request $request, Customer $customer)
+    public function update(Request $request, Customer $customer): RedirectResponse
     {
         if (\Auth::user()->can('edit customer')) {
             $rules = [
@@ -192,7 +194,7 @@ class CustomerController extends Controller
         }
     }
 
-    public function destroy(Customer $customer)
+    public function destroy(Customer $customer): RedirectResponse
     {
         if (\Auth::user()->can('delete customer')) {
             if ($customer->created_by == \Auth::user()->creatorId()) {
@@ -217,7 +219,7 @@ class CustomerController extends Controller
         return $latest->customer_id + 1;
     }
 
-    public function customerLogout(Request $request)
+    public function customerLogout(Request $request): RedirectResponse
     {
         \Auth::guard('customer')->logout();
 
@@ -279,7 +281,7 @@ class CustomerController extends Controller
         }
     }
 
-    public function profile()
+    public function profile(): View
     {
         $userDetail = \Auth::user();
         $userDetail->customField = CustomField::getData($userDetail, 'customer');
@@ -288,7 +290,7 @@ class CustomerController extends Controller
         return view('customer.profile', compact('userDetail', 'customFields'));
     }
 
-    public function editprofile(Request $request)
+    public function editprofile(Request $request): RedirectResponse
     {
         $userDetail = \Auth::user();
         $user = Customer::findOrFail($userDetail['id']);
@@ -335,7 +337,7 @@ class CustomerController extends Controller
         );
     }
 
-    public function editBilling(Request $request)
+    public function editBilling(Request $request): RedirectResponse
     {
         $userDetail = \Auth::user();
         $user = Customer::findOrFail($userDetail['id']);
@@ -358,7 +360,7 @@ class CustomerController extends Controller
         );
     }
 
-    public function editShipping(Request $request)
+    public function editShipping(Request $request): RedirectResponse
     {
         $userDetail = \Auth::user();
         $user = Customer::findOrFail($userDetail['id']);
@@ -381,7 +383,7 @@ class CustomerController extends Controller
         );
     }
 
-    public function changeLanquage($lang)
+    public function changeLanquage($lang): RedirectResponse
     {
         $user = Auth::user();
         $user->lang = $lang;
@@ -399,12 +401,12 @@ class CustomerController extends Controller
         return $data;
     }
 
-    public function importFile()
+    public function importFile(): View
     {
         return view('customer.import');
     }
 
-    public function import(Request $request)
+    public function import(Request $request): RedirectResponse
     {
         $rules = [
             'file' => 'required|mimes:csv,txt',

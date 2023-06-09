@@ -11,9 +11,11 @@ use App\Models\Overtime;
 use App\Models\PaySlip;
 use App\Models\SaturationDeduction;
 use App\Models\Utility;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\View\View;
 
 class PaySlipController extends Controller
 {
@@ -66,7 +68,7 @@ class PaySlipController extends Controller
         //
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $validator = \Validator::make(
             $request->all(), [
@@ -142,7 +144,7 @@ class PaySlipController extends Controller
         return true;
     }
 
-    public function showemployee($paySlip)
+    public function showemployee($paySlip): View
     {
         $payslip = PaySlip::find($paySlip);
 
@@ -223,7 +225,7 @@ class PaySlipController extends Controller
         }
     }
 
-    public function paysalary($id, $date)
+    public function paysalary($id, $date): RedirectResponse
     {
         $employeePayslip = PaySlip::where('employee_id', '=', $id)->where('created_by', \Auth::user()->creatorId())->where('salary_month', '=', $date)->first();
         if (! empty($employeePayslip)) {
@@ -236,7 +238,7 @@ class PaySlipController extends Controller
         }
     }
 
-    public function bulk_pay_create($date)
+    public function bulk_pay_create($date): View
     {
         $Employees = PaySlip::where('salary_month', $date)->where('created_by', \Auth::user()->creatorId())->get();
         $unpaidEmployees = PaySlip::where('salary_month', $date)->where('created_by', \Auth::user()->creatorId())->where('status', '=', 0)->get();
@@ -244,7 +246,7 @@ class PaySlipController extends Controller
         return view('payslip.bulkcreate', compact('Employees', 'unpaidEmployees', 'date'));
     }
 
-    public function bulkpayment(Request $request, $date)
+    public function bulkpayment(Request $request, $date): RedirectResponse
     {
         $unpaidEmployees = PaySlip::where('salary_month', $date)->where('created_by', \Auth::user()->creatorId())->where('status', '=', 0)->get();
 
@@ -256,7 +258,7 @@ class PaySlipController extends Controller
         return redirect()->route('payslip.index')->with('success', __('Payslip Bulk Payment successfully.'));
     }
 
-    public function employeepayslip()
+    public function employeepayslip(): View
     {
         $employees = Employee::where(
             [
@@ -269,7 +271,7 @@ class PaySlipController extends Controller
         return view('payslip.employeepayslip', compact('payslip'));
     }
 
-    public function pdf($id, $month)
+    public function pdf($id, $month): View
     {
         $payslip = PaySlip::where('employee_id', $id)->where('salary_month', $month)->where('created_by', \Auth::user()->creatorId())->first();
         $employee = Employee::find($payslip->employee_id);
@@ -281,7 +283,7 @@ class PaySlipController extends Controller
         return view('payslip.pdf', compact('payslip', 'employee', 'payslipDetail'));
     }
 
-    public function send($id, $month)
+    public function send($id, $month): RedirectResponse
     {
         $setings = Utility::settings();
 //        dd($setings);
@@ -313,7 +315,7 @@ class PaySlipController extends Controller
         return redirect()->back()->with('success', __('Payslip successfully sent.'));
     }
 
-    public function payslipPdf($id)
+    public function payslipPdf($id): View
     {
         $payslipId = Crypt::decrypt($id);
 
@@ -325,14 +327,14 @@ class PaySlipController extends Controller
         return view('payslip.payslipPdf', compact('payslip', 'employee', 'payslipDetail'));
     }
 
-    public function editEmployee($paySlip)
+    public function editEmployee($paySlip): View
     {
         $payslip = PaySlip::find($paySlip);
 
         return view('payslip.salaryEdit', compact('payslip'));
     }
 
-    public function updateEmployee(Request $request, $id)
+    public function updateEmployee(Request $request, $id): RedirectResponse
     {
         if (isset($request->allowance) && ! empty($request->allowance)) {
             $allowances = $request->allowance;

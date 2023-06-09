@@ -6,6 +6,7 @@ use App\Models\ChartOfAccount;
 use App\Models\JournalEntry;
 use App\Models\JournalItem;
 use App\Models\Utility;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class JournalEntryController extends Controller
@@ -35,7 +36,7 @@ class JournalEntryController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create invoice')) {
             $validator = \Validator::make(
@@ -117,7 +118,7 @@ class JournalEntryController extends Controller
         }
     }
 
-    public function update(Request $request, JournalEntry $journalEntry)
+    public function update(Request $request, JournalEntry $journalEntry): RedirectResponse
     {
         if (\Auth::user()->can('edit journal entry')) {
             if ($journalEntry->created_by == \Auth::user()->creatorId()) {
@@ -181,7 +182,7 @@ class JournalEntryController extends Controller
         }
     }
 
-    public function destroy(JournalEntry $journalEntry)
+    public function destroy(JournalEntry $journalEntry): RedirectResponse
     {
         if (\Auth::user()->can('delete journal entry')) {
             if ($journalEntry->created_by == \Auth::user()->creatorId()) {
@@ -208,7 +209,7 @@ class JournalEntryController extends Controller
         return $latest->journal_id + 1;
     }
 
-    public function accountDestroy(Request $request)
+    public function accountDestroy(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('delete journal entry')) {
             JournalItem::where('id', '=', $request->id)->delete();

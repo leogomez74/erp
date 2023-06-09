@@ -6,6 +6,7 @@ use App\Models\BillProduct;
 use App\Models\InvoiceProduct;
 use App\Models\ProposalProduct;
 use App\Models\Tax;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class TaxController extends Controller
@@ -30,7 +31,7 @@ class TaxController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create constant tax')) {
             $validator = \Validator::make(
@@ -57,7 +58,7 @@ class TaxController extends Controller
         }
     }
 
-    public function show(Tax $tax)
+    public function show(Tax $tax): RedirectResponse
     {
         return redirect()->route('taxes.index');
     }
@@ -75,7 +76,7 @@ class TaxController extends Controller
         }
     }
 
-    public function update(Request $request, Tax $tax)
+    public function update(Request $request, Tax $tax): RedirectResponse
     {
         if (\Auth::user()->can('edit constant tax')) {
             if ($tax->created_by == \Auth::user()->creatorId()) {
@@ -104,7 +105,7 @@ class TaxController extends Controller
         }
     }
 
-    public function destroy(Tax $tax)
+    public function destroy(Tax $tax): RedirectResponse
     {
         if (\Auth::user()->can('delete constant tax')) {
             if ($tax->created_by == \Auth::user()->creatorId()) {

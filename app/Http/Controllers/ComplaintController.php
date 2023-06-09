@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Complaint;
 use App\Models\Employee;
 use App\Models\Utility;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -45,7 +46,7 @@ class ComplaintController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create complaint')) {
             if (\Auth::user()->type != 'employee') {
@@ -108,7 +109,7 @@ class ComplaintController extends Controller
         }
     }
 
-    public function show(Complaint $complaint)
+    public function show(Complaint $complaint): RedirectResponse
     {
         return redirect()->route('complaint.index');
     }
@@ -136,7 +137,7 @@ class ComplaintController extends Controller
         }
     }
 
-    public function update(Request $request, Complaint $complaint)
+    public function update(Request $request, Complaint $complaint): RedirectResponse
     {
         if (\Auth::user()->can('edit complaint')) {
             if ($complaint->created_by == \Auth::user()->creatorId()) {
@@ -184,7 +185,7 @@ class ComplaintController extends Controller
         }
     }
 
-    public function destroy(Complaint $complaint)
+    public function destroy(Complaint $complaint): RedirectResponse
     {
         if (\Auth::user()->can('delete complaint')) {
             if ($complaint->created_by == \Auth::user()->creatorId()) {

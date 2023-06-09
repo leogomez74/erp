@@ -33,9 +33,12 @@ use App\Models\Trainer;
 use App\Models\Training;
 use App\Models\User;
 use App\Models\Utility;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
@@ -50,10 +53,8 @@ class DashboardController extends Controller
 
     /**
      * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function account_dashboard_index()
+    public function account_dashboard_index(): Renderable
     {
         if (Auth::check()) {
             if (Auth::user()->type == 'super admin') {
@@ -161,7 +162,7 @@ class DashboardController extends Controller
         }
     }
 
-    public function project_dashboard_index()
+    public function project_dashboard_index(): View
     {
         $user = Auth::user();
         if (\Auth::user()->can('show project dashboard')) {
@@ -408,7 +409,7 @@ class DashboardController extends Controller
     }
 
     // Load Dashboard user's using ajax
-    public function filterView(Request $request)
+    public function filterView(Request $request): JsonResponse
     {
         $usr = Auth::user();
         $users = User::where('id', '!=', $usr->id);
@@ -428,7 +429,7 @@ class DashboardController extends Controller
         }
     }
 
-    public function clientView()
+    public function clientView(): View
     {
         if (Auth::check()) {
             if (Auth::user()->type == 'super admin') {

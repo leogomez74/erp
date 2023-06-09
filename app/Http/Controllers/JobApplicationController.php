@@ -19,10 +19,13 @@ use App\Models\Mail\UserCreate;
 use App\Models\Plan;
 use App\Models\User;
 use App\Models\Utility;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\View\View;
 
 class JobApplicationController extends Controller
 {
@@ -58,7 +61,7 @@ class JobApplicationController extends Controller
         }
     }
 
-    public function create()
+    public function create(): View
     {
         $jobs = Job::where('created_by', \Auth::user()->creatorId())->get()->pluck('title', 'id');
         $jobs->prepend('--', '');
@@ -68,7 +71,7 @@ class JobApplicationController extends Controller
         return view('jobApplication.create', compact('jobs', 'questions'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create job application')) {
             $validator = \Validator::make(
@@ -165,7 +168,7 @@ class JobApplicationController extends Controller
         }
     }
 
-    public function destroy(JobApplication $jobApplication)
+    public function destroy(JobApplication $jobApplication): RedirectResponse
     {
         if (\Auth::user()->can('delete job application')) {
             $jobApplication->delete();
@@ -176,7 +179,7 @@ class JobApplicationController extends Controller
         }
     }
 
-    public function order(Request $request)
+    public function order(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('move job application')) {
             $post = $request->all();
@@ -191,7 +194,7 @@ class JobApplicationController extends Controller
         }
     }
 
-    public function addSkill(Request $request, $id)
+    public function addSkill(Request $request, $id): RedirectResponse
     {
         if (\Auth::user()->can('add job application skill')) {
             $validator = \Validator::make(
@@ -216,7 +219,7 @@ class JobApplicationController extends Controller
         }
     }
 
-    public function addNote(Request $request, $id)
+    public function addNote(Request $request, $id): RedirectResponse
     {
         if (\Auth::user()->can('add job application note')) {
             $validator = \Validator::make(
@@ -244,7 +247,7 @@ class JobApplicationController extends Controller
         }
     }
 
-    public function destroyNote($id)
+    public function destroyNote($id): RedirectResponse
     {
         if (\Auth::user()->can('delete job application note')) {
             $note = JobApplicationNote::find($id);
@@ -263,7 +266,7 @@ class JobApplicationController extends Controller
         $jobApplication->save();
     }
 
-    public function archive($id)
+    public function archive($id): RedirectResponse
     {
         $jobApplication = JobApplication::find($id);
         if ($jobApplication->is_archive == 0) {
@@ -292,7 +295,7 @@ class JobApplicationController extends Controller
 
     //    -----------------------Job OnBoard-----------------------------_
 
-    public function jobBoardCreate($id)
+    public function jobBoardCreate($id): View
     {
         $status = JobOnBoard::$status;
         $applications = InterviewSchedule::select('interview_schedules.*', 'job_applications.name')->join('job_applications', 'interview_schedules.candidate', '=', 'job_applications.id')->where('interview_schedules.created_by', \Auth::user()->creatorId())->get()->pluck('name', 'candidate');
@@ -312,7 +315,7 @@ class JobApplicationController extends Controller
         }
     }
 
-    public function jobBoardStore(Request $request, $id)
+    public function jobBoardStore(Request $request, $id): RedirectResponse
     {
         $validator = \Validator::make(
             $request->all(), [
@@ -344,7 +347,7 @@ class JobApplicationController extends Controller
         return redirect()->route('job.on.board')->with('success', __('Candidate succefully added in job board.'));
     }
 
-    public function jobBoardUpdate(Request $request, $id)
+    public function jobBoardUpdate(Request $request, $id): RedirectResponse
     {
         $validator = \Validator::make(
             $request->all(), [
@@ -367,7 +370,7 @@ class JobApplicationController extends Controller
         return redirect()->route('job.on.board')->with('success', __('Job board Candidate succefully updated.'));
     }
 
-    public function jobBoardEdit($id)
+    public function jobBoardEdit($id): View
     {
         $jobOnBoard = JobOnBoard::find($id);
         $status = JobOnBoard::$status;
@@ -375,7 +378,7 @@ class JobApplicationController extends Controller
         return view('jobApplication.onboardEdit', compact('jobOnBoard', 'status'));
     }
 
-    public function jobBoardDelete($id)
+    public function jobBoardDelete($id): RedirectResponse
     {
         $jobBoard = JobOnBoard::find($id);
         $jobBoard->delete();
@@ -383,7 +386,7 @@ class JobApplicationController extends Controller
         return redirect()->route('job.on.board')->with('success', __('Job onBoard successfully deleted.'));
     }
 
-    public function jobBoardConvert($id)
+    public function jobBoardConvert($id): View
     {
         $jobOnBoard = JobOnBoard::find($id);
         $company_settings = Utility::settings();
@@ -397,7 +400,7 @@ class JobApplicationController extends Controller
         return view('jobApplication.convert', compact('jobOnBoard', 'employees', 'employeesId', 'departments', 'designations', 'documents', 'branches', 'company_settings'));
     }
 
-    public function jobBoardConvertData(Request $request, $id)
+    public function jobBoardConvertData(Request $request, $id): RedirectResponse
     {
         $validator = \Validator::make(
             $request->all(), [
@@ -543,7 +546,7 @@ class JobApplicationController extends Controller
         return json_encode($job);
     }
 
-    public function stageChange(Request $request)
+    public function stageChange(Request $request): JsonResponse
     {
         $application = JobApplication::where('id', '=', $request->schedule_id)->first();
         $application->stage = $request->stage;

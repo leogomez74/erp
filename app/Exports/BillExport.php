@@ -4,15 +4,13 @@ namespace App\Exports;
 
 use App\Models\Bill;
 use App\Models\ProductServiceCategory;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class BillExport implements FromCollection, WithHeadings
 {
-    /**
-     * @return \Illuminate\Support\Collection
-     */
-    public function collection()
+    public function collection(): Collection
     {
         $data = Bill::get();
 

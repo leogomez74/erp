@@ -40,7 +40,6 @@ class ProposalProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\ProposalProduct  $proposalProduct
      * @return \Illuminate\Http\Response
      */
     public function show(ProposalProduct $proposalProduct)
@@ -51,7 +50,6 @@ class ProposalProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\ProposalProduct  $proposalProduct
      * @return \Illuminate\Http\Response
      */
     public function edit(ProposalProduct $proposalProduct)
@@ -62,7 +60,6 @@ class ProposalProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\ProposalProduct  $proposalProduct
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, ProposalProduct $proposalProduct)
@@ -73,7 +70,6 @@ class ProposalProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\ProposalProduct  $proposalProduct
      * @return \Illuminate\Http\Response
      */
     public function destroy(ProposalProduct $proposalProduct)

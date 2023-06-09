@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use App\Models\Travel;
 use App\Models\Utility;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -37,7 +38,7 @@ class TravelController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create travel')) {
             $validator = \Validator::make(
@@ -89,7 +90,7 @@ class TravelController extends Controller
         }
     }
 
-    public function show(Travel $travel)
+    public function show(Travel $travel): RedirectResponse
     {
         return redirect()->route('travel.index');
     }
@@ -108,7 +109,7 @@ class TravelController extends Controller
         }
     }
 
-    public function update(Request $request, Travel $travel)
+    public function update(Request $request, Travel $travel): RedirectResponse
     {
         if (\Auth::user()->can('edit travel')) {
             if ($travel->created_by == \Auth::user()->creatorId()) {
@@ -144,7 +145,7 @@ class TravelController extends Controller
         }
     }
 
-    public function destroy(Travel $travel)
+    public function destroy(Travel $travel): RedirectResponse
     {
         if (\Auth::user()->can('delete travel')) {
             if ($travel->created_by == \Auth::user()->creatorId()) {

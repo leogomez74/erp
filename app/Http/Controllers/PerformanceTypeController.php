@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\PerformanceType;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class PerformanceTypeController extends Controller
 {
@@ -20,12 +22,12 @@ class PerformanceTypeController extends Controller
         }
     }
 
-    public function create()
+    public function create(): View
     {
         return view('performanceType.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create performance type')) {
             if (\Auth::user()->type == 'company') {
@@ -57,12 +59,12 @@ class PerformanceTypeController extends Controller
         //
     }
 
-    public function edit(PerformanceType $performanceType)
+    public function edit(PerformanceType $performanceType): View
     {
         return view('performanceType.edit', compact('performanceType'));
     }
 
-    public function update(Request $request, PerformanceType $performanceType)
+    public function update(Request $request, PerformanceType $performanceType): RedirectResponse
     {
         if (\Auth::user()->can('edit performance type')) {
             if (\Auth::user()->type == 'company') {
@@ -88,7 +90,7 @@ class PerformanceTypeController extends Controller
         }
     }
 
-    public function destroy(PerformanceType $performanceType)
+    public function destroy(PerformanceType $performanceType): RedirectResponse
     {
         if (\Auth::user()->can('delete performance type')) {
             if (\Auth::user()->type == 'company') {

@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\Plan;
 use App\Models\PlanRequest;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -50,7 +51,7 @@ class PlanRequestController extends Controller
      * @plan_id = Plan ID encoded
      * @duration = what duration is selected by user while request
     */
-    public function userRequest($plan_id)
+    public function userRequest($plan_id): RedirectResponse
     {
         $objUser = Auth::user();
 
@@ -83,7 +84,7 @@ class PlanRequestController extends Controller
      * @id = Project ID
      * @response = 1(accept) or 0(reject)
     */
-    public function acceptRequest($id, $response)
+    public function acceptRequest($id, $response): RedirectResponse
     {
         if (Auth::user()->type == 'super admin') {
             $plan_request = PlanRequest::find($id);
@@ -154,7 +155,7 @@ class PlanRequestController extends Controller
     /*
      * @id = User ID
     */
-    public function cancelRequest($id)
+    public function cancelRequest($id): RedirectResponse
     {
         $user = User::find($id);
         $user->update(['requested_plan' => '0']);

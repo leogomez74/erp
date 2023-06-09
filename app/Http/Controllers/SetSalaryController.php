@@ -13,7 +13,9 @@ use App\Models\OtherPayment;
 use App\Models\Overtime;
 use App\Models\PayslipType;
 use App\Models\SaturationDeduction;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class SetSalaryController extends Controller
 {
@@ -66,7 +68,7 @@ class SetSalaryController extends Controller
         }
     }
 
-    public function show($id)
+    public function show($id): View
     {
         $payslip_type = PayslipType::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
         $allowance_options = AllowanceOption::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
@@ -177,7 +179,7 @@ class SetSalaryController extends Controller
         }
     }
 
-    public function employeeUpdateSalary(Request $request, $id)
+    public function employeeUpdateSalary(Request $request, $id): RedirectResponse
     {
         $validator = \Validator::make(
             $request->all(), [
@@ -197,7 +199,7 @@ class SetSalaryController extends Controller
         return redirect()->back()->with('success', 'Employee Salary Updated.');
     }
 
-    public function employeeSalary()
+    public function employeeSalary(): View
     {
         if (\Auth::user()->type == 'employee') {
             $employees = Employee::where('user_id', \Auth::user()->id)->get();
@@ -206,7 +208,7 @@ class SetSalaryController extends Controller
         }
     }
 
-    public function employeeBasicSalary($id)
+    public function employeeBasicSalary($id): View
     {
         $payslip_type = PayslipType::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
         $employee = Employee::find($id);

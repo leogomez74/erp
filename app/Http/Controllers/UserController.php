@@ -12,9 +12,11 @@ use App\Models\UserToDo;
 use App\Models\Utility;
 use Auth;
 use File;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\View\View;
 use Session;
 use Spatie\Permission\Models\Role;
 
@@ -50,7 +52,7 @@ class UserController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         // dd($request->session()->get('conexion'));
 
@@ -202,7 +204,7 @@ class UserController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         if (\Auth::user()->can('edit user')) {
             if (\Auth::user()->type == 'super admin') {
@@ -298,7 +300,7 @@ class UserController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         if (\Auth::user()->can('delete user')) {
             $user = User::find($id);
@@ -334,7 +336,7 @@ class UserController extends Controller
         }
     }
 
-    public function profile()
+    public function profile(): View
     {
         $userDetail = \Auth::user();
         $userDetail->customField = CustomField::getData($userDetail, 'user');
@@ -343,7 +345,7 @@ class UserController extends Controller
         return view('user.profile', compact('userDetail', 'customFields'));
     }
 
-    public function editprofile(Request $request)
+    public function editprofile(Request $request): RedirectResponse
     {
         $userDetail = \Auth::user();
         $user = User::findOrFail($userDetail['id']);
@@ -384,7 +386,7 @@ class UserController extends Controller
         );
     }
 
-    public function updatePassword(Request $request)
+    public function updatePassword(Request $request): RedirectResponse
     {
         if (Auth::Check()) {
             $request->validate(
@@ -459,7 +461,7 @@ class UserController extends Controller
   }
 
   // change mode 'dark or light'
-  public function changeMode()
+  public function changeMode(): RedirectResponse
   {
       $usr = \Auth::user();
       if ($usr->mode == 'light') {
@@ -474,7 +476,7 @@ class UserController extends Controller
       return redirect()->back();
   }
 
-  public function upgradePlan($user_id)
+  public function upgradePlan($user_id): View
   {
       $user = User::find($user_id);
       $plans = Plan::get();
@@ -482,7 +484,7 @@ class UserController extends Controller
       return view('user.plan', compact('user', 'plans'));
   }
 
-    public function activePlan($user_id, $plan_id)
+    public function activePlan($user_id, $plan_id): RedirectResponse
     {
         $user = User::find($user_id);
         $assignPlan = $user->assignPlan($plan_id);
@@ -513,7 +515,7 @@ class UserController extends Controller
         }
     }
 
-    public function userPassword($id)
+    public function userPassword($id): View
     {
         $eId = \Crypt::decrypt($id);
         $user = User::find($eId);
@@ -521,7 +523,7 @@ class UserController extends Controller
         return view('user.reset', compact('user'));
     }
 
-    public function userPasswordReset(Request $request, $id)
+    public function userPasswordReset(Request $request, $id): RedirectResponse
     {
         $validator = \Validator::make(
             $request->all(), [

@@ -11,6 +11,7 @@ use App\Models\Plan;
 use App\Models\User;
 use App\Models\UserCoupon;
 use App\Models\Utility;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
@@ -45,7 +46,7 @@ class MercadoPaymentController extends Controller
         return $this;
     }
 
-    public function planPayWithMercado(Request $request)
+    public function planPayWithMercado(Request $request): RedirectResponse
     {
         $payment = $this->paymentConfig();
 
@@ -183,7 +184,7 @@ class MercadoPaymentController extends Controller
         }
     }
 
-    public function getPaymentStatus(Request $request, $plan, $price)
+    public function getPaymentStatus(Request $request, $plan, $price): RedirectResponse
     {
         $planID = \Illuminate\Support\Facades\Crypt::decrypt($plan);
         $plan = Plan::find($planID);
@@ -246,7 +247,7 @@ class MercadoPaymentController extends Controller
         }
     }
 
-    public function customerPayWithMercado(Request $request)
+    public function customerPayWithMercado(Request $request): RedirectResponse
     {
         $invoiceID = \Illuminate\Support\Facades\Crypt::decrypt($request->invoice_id);
         $invoice = Invoice::find($invoiceID);
@@ -332,7 +333,7 @@ class MercadoPaymentController extends Controller
         }
     }
 
-    public function getInvoicePaymentStatus(Request $request, $invoice_id)
+    public function getInvoicePaymentStatus(Request $request, $invoice_id): RedirectResponse
     {
         if (! empty($invoice_id)) {
             $invoice_id = decrypt($invoice_id);

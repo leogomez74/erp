@@ -25,8 +25,11 @@ use App\Models\User;
 use App\Models\UserDeal;
 use App\Models\UserLead;
 use App\Models\Utility;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\View\View;
 use Spatie\Permission\Models\Role;
 
 class LeadController extends Controller
@@ -98,11 +101,8 @@ class LeadController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $usr = \Auth::user();
         if ($usr->can('create lead')) {
@@ -233,7 +233,6 @@ class LeadController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Lead  $lead
      * @return \Illuminate\Http\Response
      */
     public function show(Lead $lead)
@@ -260,7 +259,6 @@ class LeadController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Lead  $lead
      * @return \Illuminate\Http\Response
      */
     public function edit(Lead $lead)
@@ -286,11 +284,8 @@ class LeadController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \App\Lead  $lead
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Lead $lead)
+    public function update(Request $request, Lead $lead): RedirectResponse
     {
         if (\Auth::user()->can('edit lead')) {
             if ($lead->created_by == \Auth::user()->creatorId()) {
@@ -336,11 +331,8 @@ class LeadController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Lead  $lead
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(Lead $lead)
+    public function destroy(Lead $lead): RedirectResponse
     {
         if (\Auth::user()->can('delete lead')) {
             if ($lead->created_by == \Auth::user()->creatorId()) {
@@ -359,7 +351,7 @@ class LeadController extends Controller
         }
     }
 
-    public function json(Request $request)
+    public function json(Request $request): JsonResponse
     {
         $lead_stages = new LeadStage();
         if ($request->pipeline_id && ! empty($request->pipeline_id)) {
@@ -372,7 +364,7 @@ class LeadController extends Controller
         return response()->json($lead_stages);
     }
 
-    public function fileUpload($id, Request $request)
+    public function fileUpload($id, Request $request): JsonResponse
     {
         if (\Auth::user()->can('edit lead')) {
             $lead = Lead::find($id);
@@ -456,7 +448,7 @@ class LeadController extends Controller
         }
     }
 
-    public function fileDelete($id, $file_id)
+    public function fileDelete($id, $file_id): JsonResponse
     {
         if (\Auth::user()->can('edit lead')) {
             $lead = Lead::find($id);
@@ -496,7 +488,7 @@ class LeadController extends Controller
         }
     }
 
-    public function noteStore($id, Request $request)
+    public function noteStore($id, Request $request): JsonResponse
     {
         if (\Auth::user()->can('edit lead')) {
             $lead = Lead::find($id);
@@ -550,7 +542,7 @@ class LeadController extends Controller
         }
     }
 
-    public function labelStore($id, Request $request)
+    public function labelStore($id, Request $request): RedirectResponse
     {
         if (\Auth::user()->can('edit lead')) {
             $leads = Lead::find($id);
@@ -594,7 +586,7 @@ class LeadController extends Controller
         }
     }
 
-    public function userUpdate($id, Request $request)
+    public function userUpdate($id, Request $request): RedirectResponse
     {
         if (\Auth::user()->can('edit lead')) {
             $usr = \Auth::user();
@@ -632,7 +624,7 @@ class LeadController extends Controller
         }
     }
 
-    public function userDestroy($id, $user_id)
+    public function userDestroy($id, $user_id): RedirectResponse
     {
         if (\Auth::user()->can('edit lead')) {
             $lead = Lead::find($id);
@@ -664,7 +656,7 @@ class LeadController extends Controller
         }
     }
 
-    public function productUpdate($id, Request $request)
+    public function productUpdate($id, Request $request): RedirectResponse
     {
         if (\Auth::user()->can('edit lead')) {
             $usr = \Auth::user();
@@ -709,7 +701,7 @@ class LeadController extends Controller
         }
     }
 
-    public function productDestroy($id, $product_id)
+    public function productDestroy($id, $product_id): RedirectResponse
     {
         if (\Auth::user()->can('edit lead')) {
             $lead = Lead::find($id);
@@ -753,7 +745,7 @@ class LeadController extends Controller
         }
     }
 
-    public function sourceUpdate($id, Request $request)
+    public function sourceUpdate($id, Request $request): RedirectResponse
     {
         if (\Auth::user()->can('edit lead')) {
             $usr = \Auth::user();
@@ -793,7 +785,7 @@ class LeadController extends Controller
         }
     }
 
-    public function sourceDestroy($id, $source_id)
+    public function sourceDestroy($id, $source_id): RedirectResponse
     {
         if (\Auth::user()->can('edit lead')) {
             $lead = Lead::find($id);
@@ -826,7 +818,7 @@ class LeadController extends Controller
         }
     }
 
-    public function discussionStore($id, Request $request)
+    public function discussionStore($id, Request $request): RedirectResponse
     {
         $usr = \Auth::user();
         $lead = Lead::find($id);
@@ -851,7 +843,7 @@ class LeadController extends Controller
         }
     }
 
-    public function order(Request $request)
+    public function order(Request $request): JsonResponse
     {
         if (\Auth::user()->can('move lead')) {
             $usr = \Auth::user();
@@ -909,7 +901,7 @@ class LeadController extends Controller
         }
     }
 
-    public function showConvertToDeal($id)
+    public function showConvertToDeal($id): View
     {
         $lead = Lead::findOrFail($id);
         $exist_client = User::where('type', '=', 'client')->where('email', '=', $lead->email)->where('created_by', '=', \Auth::user()->creatorId())->first();
@@ -918,7 +910,7 @@ class LeadController extends Controller
         return view('leads.convert', compact('lead', 'exist_client', 'clients'));
     }
 
-    public function convertToDeal($id, Request $request)
+    public function convertToDeal($id, Request $request): RedirectResponse
     {
         $lead = Lead::findOrFail($id);
         $usr = \Auth::user();
@@ -1165,7 +1157,7 @@ class LeadController extends Controller
         }
     }
 
-    public function callStore($id, Request $request)
+    public function callStore($id, Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create lead call')) {
             $usr = \Auth::user();
@@ -1248,7 +1240,7 @@ class LeadController extends Controller
         }
     }
 
-    public function callUpdate($id, $call_id, Request $request)
+    public function callUpdate($id, $call_id, Request $request): RedirectResponse
     {
         if (\Auth::user()->can('edit lead call')) {
             $lead = Lead::find($id);
@@ -1289,7 +1281,7 @@ class LeadController extends Controller
         }
     }
 
-    public function callDestroy($id, $call_id)
+    public function callDestroy($id, $call_id): RedirectResponse
     {
         if (\Auth::user()->can('delete lead call')) {
             $lead = Lead::find($id);
@@ -1331,7 +1323,7 @@ class LeadController extends Controller
         }
     }
 
-    public function emailStore($id, Request $request)
+    public function emailStore($id, Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create lead email')) {
             $lead = Lead::find($id);

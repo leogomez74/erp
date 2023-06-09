@@ -12,7 +12,7 @@ return new class extends Migration
      * @return void
      * Created by ahixel rojas at 20:02 to changue description as nullable
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('payments', function (Blueprint $table) {
             $table->text('description')->nullable()->change();
@@ -21,10 +21,8 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         //
     }

@@ -7,7 +7,9 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Indicator;
 use App\Models\PerformanceType;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class IndicatorController extends Controller
 {
@@ -28,7 +30,7 @@ class IndicatorController extends Controller
         }
     }
 
-    public function create()
+    public function create(): View
     {
         $brances = Branch::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
         $performance = PerformanceType::where('created_by', '=', \Auth::user()->creatorId())->get();
@@ -38,7 +40,7 @@ class IndicatorController extends Controller
         return view('indicator.create', compact('brances', 'departments', 'performance'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create indicator')) {
             $validator = \Validator::make(
@@ -76,7 +78,7 @@ class IndicatorController extends Controller
         }
     }
 
-    public function show(Indicator $indicator)
+    public function show(Indicator $indicator): View
     {
         $ratings = json_decode($indicator->rating, true);
         $performance = PerformanceType::where('created_by', '=', \Auth::user()->creatorId())->get();
@@ -100,7 +102,7 @@ class IndicatorController extends Controller
         }
     }
 
-    public function update(Request $request, Indicator $indicator)
+    public function update(Request $request, Indicator $indicator): RedirectResponse
     {
         if (\Auth::user()->can('edit indicator')) {
             $validator = \Validator::make(
@@ -127,7 +129,7 @@ class IndicatorController extends Controller
         }
     }
 
-    public function destroy(Indicator $indicator)
+    public function destroy(Indicator $indicator): RedirectResponse
     {
         if (\Auth::user()->can('delete indicator')) {
             if ($indicator->created_by == \Auth::user()->creatorId()) {

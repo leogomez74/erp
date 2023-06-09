@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TerminationType;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class TerminationTypeController extends Controller
@@ -27,7 +28,7 @@ class TerminationTypeController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create termination type')) {
             $validator = \Validator::make(
@@ -52,7 +53,7 @@ class TerminationTypeController extends Controller
         }
     }
 
-    public function show(TerminationType $terminationtype)
+    public function show(TerminationType $terminationtype): RedirectResponse
     {
         return redirect()->route('terminationtype.index');
     }
@@ -70,7 +71,7 @@ class TerminationTypeController extends Controller
         }
     }
 
-    public function update(Request $request, TerminationType $terminationtype)
+    public function update(Request $request, TerminationType $terminationtype): RedirectResponse
     {
         if (\Auth::user()->can('edit termination type')) {
             if ($terminationtype->created_by == \Auth::user()->creatorId()) {
@@ -93,7 +94,7 @@ class TerminationTypeController extends Controller
         }
     }
 
-    public function destroy(TerminationType $terminationtype)
+    public function destroy(TerminationType $terminationtype): RedirectResponse
     {
         if (\Auth::user()->can('delete termination type')) {
             if ($terminationtype->created_by == \Auth::user()->creatorId()) {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DucumentUpload;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
@@ -41,7 +42,7 @@ class DucumentUploadController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create document')) {
             $validator = \Validator::make(
@@ -102,7 +103,7 @@ class DucumentUploadController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         if (\Auth::user()->can('edit document')) {
             $validator = \Validator::make(
@@ -150,7 +151,7 @@ class DucumentUploadController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         if (\Auth::user()->can('delete document')) {
             $document = DucumentUpload::find($id);

@@ -7,8 +7,10 @@ use App\Models\Employee;
 use App\Models\Trainer;
 use App\Models\Training;
 use App\Models\TrainingType;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\View\View;
 
 class TrainingController extends Controller
 {
@@ -39,7 +41,7 @@ class TrainingController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create training')) {
             $validator = \Validator::make(
@@ -77,7 +79,7 @@ class TrainingController extends Controller
         }
     }
 
-    public function show($id)
+    public function show($id): View
     {
         $traId = Crypt::decrypt($id);
         $training = Training::find($traId);
@@ -102,7 +104,7 @@ class TrainingController extends Controller
         }
     }
 
-    public function update(Request $request, Training $training)
+    public function update(Request $request, Training $training): RedirectResponse
     {
         if (\Auth::user()->can('edit training')) {
             $validator = \Validator::make(
@@ -138,7 +140,7 @@ class TrainingController extends Controller
         }
     }
 
-    public function destroy(Training $training)
+    public function destroy(Training $training): RedirectResponse
     {
         if (\Auth::user()->can('delete training')) {
             if ($training->created_by == \Auth::user()->creatorId()) {
@@ -153,7 +155,7 @@ class TrainingController extends Controller
         }
     }
 
-    public function updateStatus(Request $request)
+    public function updateStatus(Request $request): RedirectResponse
     {
         $training = Training::find($request->id);
         $training->performance = $request->performance;

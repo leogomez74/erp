@@ -7,7 +7,9 @@ use App\Models\ProjectUser;
 use App\Models\User;
 use App\Models\ZoomMeeting;
 use App\Traits\ZoomMeetingTrait;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ZoomMeetingController extends Controller
 {
@@ -28,7 +30,7 @@ class ZoomMeetingController extends Controller
 
     const MEETING_URL = 'https://api.zoom.us/v2/';
 
-    public function index()
+    public function index(): View
     {
         if (\Auth::user()->isClient()) {
             $meetings = ZoomMeeting::where('client_id', \Auth::user()->id)->get();
@@ -42,10 +44,8 @@ class ZoomMeetingController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         $projects = Project::where('created_by', \Auth::user()->creatorId())->get()->pluck('project_name', 'id');
         $users = User::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
@@ -55,11 +55,8 @@ class ZoomMeetingController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         // dd($request->all());
         if (\Auth::user()->type == 'company') {
@@ -152,11 +149,8 @@ class ZoomMeetingController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(ZoomMeeting $zoomMeeting)
+    public function destroy(ZoomMeeting $zoomMeeting): RedirectResponse
     {
         if ($zoomMeeting->created_by == \Auth::user()->creatorId()) {
             $zoomMeeting->delete();
@@ -196,7 +190,7 @@ class ZoomMeetingController extends Controller
         }
     }
 
-    public function calender(Request $request)
+    public function calender(Request $request): View
     {
         $user = \Auth::user();
         $transdate = date('Y-m-d', time());

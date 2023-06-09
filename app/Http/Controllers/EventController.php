@@ -8,6 +8,8 @@ use App\Models\Employee;
 use App\Models\Event;
 use App\Models\EventEmployee;
 use App\Models\Utility;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -54,7 +56,7 @@ class EventController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create event')) {
             $validator = \Validator::make($request->all(), [
@@ -120,7 +122,7 @@ class EventController extends Controller
         }
     }
 
-    public function show(Event $event)
+    public function show(Event $event): RedirectResponse
     {
         return redirect()->route('event.index');
     }
@@ -141,7 +143,7 @@ class EventController extends Controller
         }
     }
 
-    public function update(Request $request, Event $event)
+    public function update(Request $request, Event $event): RedirectResponse
     {
         if (\Auth::user()->can('edit event')) {
             if ($event->created_by == \Auth::user()->creatorId()) {
@@ -173,7 +175,7 @@ class EventController extends Controller
         }
     }
 
-    public function destroy(Event $event)
+    public function destroy(Event $event): RedirectResponse
     {
         if (\Auth::user()->can('delete event')) {
             if ($event->created_by == \Auth::user()->creatorId()) {
@@ -188,7 +190,7 @@ class EventController extends Controller
         }
     }
 
-    public function getdepartment(Request $request)
+    public function getdepartment(Request $request): JsonResponse
     {
         if ($request->branch_id == 0) {
             $departments = Department::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id')->toArray();
@@ -199,7 +201,7 @@ class EventController extends Controller
         return response()->json($departments);
     }
 
-    public function getemployee(Request $request)
+    public function getemployee(Request $request): JsonResponse
     {
         if (in_array('0', [$request->department_id])) {
             $employees = Employee::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id')->toArray();

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TaskStage;
 use App\Models\Utility;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -27,10 +28,8 @@ class TaskStageController extends Controller
 
      /**
       * Show the form for creating a new resource.
-      *
-      * @return \Illuminate\Http\Response
       */
-     public function storingValue(Request $request)
+     public function storingValue(Request $request): RedirectResponse
      {
          if (\Auth::user()->can('create project task stage')) {
              $validator = \Validator::make(
@@ -68,10 +67,8 @@ class TaskStageController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create project task stage')) {
             $rules = [
@@ -122,7 +119,6 @@ class TaskStageController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\TaskStage  $taskStage
      * @return \Illuminate\Http\Response
      */
     public function show(TaskStage $taskStage)
@@ -133,7 +129,6 @@ class TaskStageController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\TaskStage  $taskStage
      * @return \Illuminate\Http\Response
      */
     public function edit(TaskStage $taskStage, $id)
@@ -148,11 +143,8 @@ class TaskStageController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \App\TaskStage  $taskStage
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TaskStage $taskStage, $id)
+    public function update(Request $request, TaskStage $taskStage, $id): RedirectResponse
     {
         $taskStage = TaskStage::findOrfail($id);
         if ($taskStage->created_by == \Auth::user()->creatorId()) {
@@ -179,11 +171,8 @@ class TaskStageController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\TaskStage  $taskStage
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(TaskStage $taskStage, $id)
+    public function destroy(TaskStage $taskStage, $id): RedirectResponse
     {
         if (\Auth::user()->can('delete project task stage')) {
             $taskstage = TaskStage::find($id);

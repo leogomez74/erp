@@ -6,11 +6,13 @@ use App\Models\InterviewSchedule;
 use App\Models\JobApplication;
 use App\Models\JobStage;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class InterviewScheduleController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $transdate = date('Y-m-d', time());
 
@@ -30,7 +32,7 @@ class InterviewScheduleController extends Controller
         return view('interviewSchedule.index', compact('arrSchedule', 'schedules', 'transdate'));
     }
 
-    public function create($candidate = 0)
+    public function create($candidate = 0): View
     {
         $employees = User::where('created_by', \Auth::user()->creatorId())->where('type', 'employee')->orWhere('id', \Auth::user()->creatorId())->get()->pluck('name', 'id');
         $employees->prepend('--', '');
@@ -41,7 +43,7 @@ class InterviewScheduleController extends Controller
         return view('interviewSchedule.create', compact('employees', 'candidates', 'candidate'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create interview schedule')) {
             $validator = \Validator::make(
@@ -74,14 +76,14 @@ class InterviewScheduleController extends Controller
         }
     }
 
-    public function show(InterviewSchedule $interviewSchedule)
+    public function show(InterviewSchedule $interviewSchedule): View
     {
         $stages = JobStage::where('created_by', \Auth::user()->creatorId())->get();
 
         return view('interviewSchedule.show', compact('interviewSchedule', 'stages'));
     }
 
-    public function edit(InterviewSchedule $interviewSchedule)
+    public function edit(InterviewSchedule $interviewSchedule): View
     {
         $employees = User::where('created_by', \Auth::user()->creatorId())->where('type', 'employee')->orWhere('id', \Auth::user()->creatorId())->get()->pluck('name', 'id');
         $employees->prepend('--', '');
@@ -92,7 +94,7 @@ class InterviewScheduleController extends Controller
         return view('interviewSchedule.edit', compact('employees', 'candidates', 'interviewSchedule'));
     }
 
-    public function update(Request $request, InterviewSchedule $interviewSchedule)
+    public function update(Request $request, InterviewSchedule $interviewSchedule): RedirectResponse
     {
         if (\Auth::user()->can('edit interview schedule')) {
             $validator = \Validator::make(
@@ -123,7 +125,7 @@ class InterviewScheduleController extends Controller
         }
     }
 
-    public function destroy(InterviewSchedule $interviewSchedule)
+    public function destroy(InterviewSchedule $interviewSchedule): RedirectResponse
     {
         $interviewSchedule->delete();
 

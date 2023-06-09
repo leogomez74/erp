@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Source;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class SourceController extends Controller
@@ -49,11 +50,8 @@ class SourceController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create source')) {
             $validator = \Validator::make(
@@ -81,11 +79,8 @@ class SourceController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Source  $source
-     * @return \Illuminate\Http\Response
      */
-    public function show(Source $source)
+    public function show(Source $source): RedirectResponse
     {
         return redirect()->route('sources.index');
     }
@@ -93,7 +88,6 @@ class SourceController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Source  $source
      * @return \Illuminate\Http\Response
      */
     public function edit(Source $source)
@@ -111,11 +105,8 @@ class SourceController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \App\Source  $source
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Source $source)
+    public function update(Request $request, Source $source): RedirectResponse
     {
         if (\Auth::user()->can('edit source')) {
             if ($source->created_by == \Auth::user()->ownerId()) {
@@ -145,11 +136,8 @@ class SourceController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Source  $source
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(Source $source)
+    public function destroy(Source $source): RedirectResponse
     {
         if (\Auth::user()->can('delete source')) {
             if ($source->created_by == \Auth::user()->ownerId()) {

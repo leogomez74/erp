@@ -6,6 +6,8 @@ use App\Models\EmailTemplate;
 use App\Models\EmailTemplateLang;
 use App\Models\UserEmailTemplate;
 use App\Models\Utility;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class EmailTemplateController extends Controller
@@ -46,11 +48,8 @@ class EmailTemplateController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
 //        return redirect()->back()->with('error', 'Permission denied.');
 
@@ -87,20 +86,16 @@ class EmailTemplateController extends Controller
      * Display the specified resource.
      *
      * @param  \App\EmailTemplate  $emailTemplate
-     * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show(): RedirectResponse
     {
         return redirect()->back()->with('error', 'Permission denied.');
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  \App\EmailTemplate  $emailTemplate
-     * @return \Illuminate\Http\Response
      */
-    public function edit(EmailTemplate $emailTemplate)
+    public function edit(EmailTemplate $emailTemplate): RedirectResponse
     {
         return redirect()->back()->with('error', 'Permission denied.');
     }
@@ -109,9 +104,8 @@ class EmailTemplateController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\EmailTemplate  $emailTemplate
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
 //        if(\Auth::user()->can('Edit Email Template'))
 //        {
@@ -166,11 +160,8 @@ class EmailTemplateController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\EmailTemplate  $emailTemplate
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(EmailTemplate $emailTemplate)
+    public function destroy(EmailTemplate $emailTemplate): RedirectResponse
     {
         return redirect()->back()->with('error', 'Permission denied.');
     }
@@ -206,7 +197,7 @@ class EmailTemplateController extends Controller
     }
 
     // Used For Store Email Template Language Wise
-    public function storeEmailLang(Request $request, $id)
+    public function storeEmailLang(Request $request, $id): RedirectResponse
     {
 //        dd($request,$id);
 
@@ -255,7 +246,7 @@ class EmailTemplateController extends Controller
     }
 
     // Used For Update Status Company Wise.
-    public function updateStatus(Request $request, $id)
+    public function updateStatus(Request $request, $id): JsonResponse
     {
         $usr = \Auth::user();
 

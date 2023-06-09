@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use App\Models\Utility;
 use Closure;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class XSS
 {
@@ -11,11 +13,8 @@ class XSS
 
     /**
      * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
         if (\Auth::check()) {
             \App::setLocale(\Auth::user()->lang);

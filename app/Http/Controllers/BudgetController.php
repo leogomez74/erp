@@ -11,6 +11,7 @@ use App\Models\Payment;
 use App\Models\ProductServiceCategory;
 use App\Models\Revenue;
 use App\Models\Utility;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
@@ -93,11 +94,8 @@ class BudgetController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create budget plan')) {
             $validator = \Validator::make($request->all(), [
@@ -562,11 +560,8 @@ class BudgetController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(Budget $budget)
+    public function destroy(Budget $budget): RedirectResponse
     {
         if (\Auth::user()->can('delete budget plan')) {
             if ($budget->created_by == \Auth::user()->creatorId()) {

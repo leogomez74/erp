@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use App\Models\Loan;
 use App\Models\LoanOption;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class LoanController extends Controller
 {
-    public function loanCreate($id)
+    public function loanCreate($id): View
     {
         $employee = Employee::find($id);
         $loan_options = LoanOption::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
@@ -18,7 +20,7 @@ class LoanController extends Controller
         return view('loan.create', compact('employee', 'loan_options', 'loan'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create loan')) {
             $validator = \Validator::make(
@@ -56,7 +58,7 @@ class LoanController extends Controller
         }
     }
 
-    public function show(Loan $loan)
+    public function show(Loan $loan): RedirectResponse
     {
         return redirect()->route('commision.index');
     }
@@ -78,7 +80,7 @@ class LoanController extends Controller
         }
     }
 
-    public function update(Request $request, Loan $loan)
+    public function update(Request $request, Loan $loan): RedirectResponse
     {
         if (\Auth::user()->can('edit loan')) {
             if ($loan->created_by == \Auth::user()->creatorId()) {
@@ -116,7 +118,7 @@ class LoanController extends Controller
         }
     }
 
-    public function destroy(Loan $loan)
+    public function destroy(Loan $loan): RedirectResponse
     {
         if (\Auth::user()->can('delete loan')) {
             if ($loan->created_by == \Auth::user()->creatorId()) {

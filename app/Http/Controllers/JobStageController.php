@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\JobStage;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class JobStageController extends Controller
 {
@@ -18,12 +20,12 @@ class JobStageController extends Controller
         }
     }
 
-    public function create()
+    public function create(): View
     {
         return view('jobStage.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create job stage')) {
             $validator = \Validator::make(
@@ -54,12 +56,12 @@ class JobStageController extends Controller
         //
     }
 
-    public function edit(JobStage $jobStage)
+    public function edit(JobStage $jobStage): View
     {
         return view('jobStage.edit', compact('jobStage'));
     }
 
-    public function update(Request $request, JobStage $jobStage)
+    public function update(Request $request, JobStage $jobStage): RedirectResponse
     {
         if (\Auth::user()->can('edit job stage')) {
             $validator = \Validator::make(
@@ -84,7 +86,7 @@ class JobStageController extends Controller
         }
     }
 
-    public function destroy(JobStage $jobStage)
+    public function destroy(JobStage $jobStage): RedirectResponse
     {
         if (\Auth::user()->can('delete job stage')) {
             if ($jobStage->created_by == \Auth::user()->creatorId()) {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AwardType;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class AwardTypeController extends Controller
@@ -27,7 +28,7 @@ class AwardTypeController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create award type')) {
             $validator = \Validator::make(
@@ -53,7 +54,7 @@ class AwardTypeController extends Controller
         }
     }
 
-    public function show(AwardType $awardtype)
+    public function show(AwardType $awardtype): RedirectResponse
     {
         return redirect()->route('awardtype.index');
     }
@@ -71,7 +72,7 @@ class AwardTypeController extends Controller
         }
     }
 
-    public function update(Request $request, AwardType $awardtype)
+    public function update(Request $request, AwardType $awardtype): RedirectResponse
     {
         if (\Auth::user()->can('edit award type')) {
             if ($awardtype->created_by == \Auth::user()->creatorId()) {
@@ -99,7 +100,7 @@ class AwardTypeController extends Controller
         }
     }
 
-    public function destroy(AwardType $awardtype)
+    public function destroy(AwardType $awardtype): RedirectResponse
     {
         if (\Auth::user()->can('delete award type')) {
             if ($awardtype->created_by == \Auth::user()->creatorId()) {

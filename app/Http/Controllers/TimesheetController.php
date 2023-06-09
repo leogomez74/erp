@@ -7,8 +7,11 @@ use App\Models\ProjectTask;
 use App\Models\Timesheet;
 use App\Models\Utility;
 use Carbon\CarbonPeriod;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class TimesheetController extends Controller
 {
@@ -28,7 +31,7 @@ class TimesheetController extends Controller
         }
     }
 
-    public function appendTimesheetTaskHTML(Request $request)
+    public function appendTimesheetTaskHTML(Request $request): JsonResponse
     {
         $project_id = $request->has('project_id') ? $request->project_id : null;
 
@@ -68,7 +71,7 @@ class TimesheetController extends Controller
         );
     }
 
-    public function filterTimesheetTableView(Request $request)
+    public function filterTimesheetTableView(Request $request): JsonResponse
     {
 //        dd($request);
 
@@ -206,7 +209,7 @@ class TimesheetController extends Controller
         }
     }
 
-    public function timesheetStore(Request $request)
+    public function timesheetStore(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create timesheet')) {
             $authuser = Auth::user();
@@ -308,7 +311,7 @@ class TimesheetController extends Controller
         }
     }
 
-    public function timesheetUpdate(Request $request, $timesheet_id)
+    public function timesheetUpdate(Request $request, $timesheet_id): RedirectResponse
     {
         if (\Auth::user()->can('edit timesheet')) {
             $project = Project::find($request->project_id);
@@ -342,7 +345,7 @@ class TimesheetController extends Controller
         }
     }
 
-    public function timesheetDestroy($timesheet_id)
+    public function timesheetDestroy($timesheet_id): RedirectResponse
     {
         if (\Auth::user()->can('delete timesheet')) {
             $timesheet = Timesheet::find($timesheet_id);
@@ -357,12 +360,12 @@ class TimesheetController extends Controller
         }
     }
 
-    public function timesheetList()
+    public function timesheetList(): View
     {
         return view('projects.timesheet_list');
     }
 
-    public function timesheetListGet(Request $request)
+    public function timesheetListGet(Request $request): JsonResponse
     {
         $authuser = Auth::user();
         $week = $request->week;

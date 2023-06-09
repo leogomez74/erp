@@ -10,6 +10,7 @@ use App\Models\DealFile;
 use App\Models\DealTask;
 use App\Models\Pipeline;
 use App\Models\UserDeal;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class PipelineController extends Controller
@@ -56,11 +57,8 @@ class PipelineController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create pipeline')) {
             $validator = \Validator::make(
@@ -88,11 +86,8 @@ class PipelineController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Pipeline  $pipeline
-     * @return \Illuminate\Http\Response
      */
-    public function show(Pipeline $pipeline)
+    public function show(Pipeline $pipeline): RedirectResponse
     {
         return redirect()->route('pipelines.index');
     }
@@ -100,7 +95,6 @@ class PipelineController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Pipeline  $pipeline
      * @return \Illuminate\Http\Response
      */
     public function edit(Pipeline $pipeline)
@@ -118,11 +112,8 @@ class PipelineController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \App\Pipeline  $pipeline
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pipeline $pipeline)
+    public function update(Request $request, Pipeline $pipeline): RedirectResponse
     {
         if (\Auth::user()->can('edit pipeline')) {
             if ($pipeline->created_by == \Auth::user()->creatorId()) {
@@ -152,11 +143,8 @@ class PipelineController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Pipeline  $pipeline
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(Pipeline $pipeline)
+    public function destroy(Pipeline $pipeline): RedirectResponse
     {
         if (\Auth::user()->can('delete pipeline')) {
             if ($pipeline->created_by == \Auth::user()->creatorId()) {

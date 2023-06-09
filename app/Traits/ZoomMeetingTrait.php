@@ -122,10 +122,9 @@ trait ZoomMeetingTrait
     }
 
     /**
-     * @param  string  $id
      * @return bool[]
      */
-    public function delete($id)
+    public function delete(string $id): array
     {
         $path = 'meetings/'.$id;
         $url = $this->retrieveZoomUrl();

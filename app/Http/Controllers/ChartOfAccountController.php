@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\ChartOfAccount;
 use App\Models\ChartOfAccountSubType;
 use App\Models\ChartOfAccountType;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ChartOfAccountController extends Controller
 {
@@ -26,7 +29,7 @@ class ChartOfAccountController extends Controller
         }
     }
 
-    public function create()
+    public function create(): View
     {
         $types = ChartOfAccountType::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
         $types->prepend('--', 0);
@@ -36,7 +39,7 @@ class ChartOfAccountController extends Controller
         return view('chartOfAccount.create', compact('types', 'currencies'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create chart of account')) {
             $validator = \Validator::make(
@@ -74,7 +77,7 @@ class ChartOfAccountController extends Controller
         //
     }
 
-    public function edit(ChartOfAccount $chartOfAccount)
+    public function edit(ChartOfAccount $chartOfAccount): View
     {
         $types = ChartOfAccountType::get()->pluck('name', 'id');
         $types->prepend('--', 0);
@@ -112,7 +115,7 @@ class ChartOfAccountController extends Controller
         }
     }
 
-    public function destroy(ChartOfAccount $chartOfAccount)
+    public function destroy(ChartOfAccount $chartOfAccount): RedirectResponse
     {
         if (\Auth::user()->can('delete chart of account')) {
             $chartOfAccount->delete();
@@ -123,7 +126,7 @@ class ChartOfAccountController extends Controller
         }
     }
 
-    public function getSubType(Request $request)
+    public function getSubType(Request $request): JsonResponse
     {
         $types = ChartOfAccountSubType::where('type', $request->type)->get()->pluck('name', 'id')->toArray();
 

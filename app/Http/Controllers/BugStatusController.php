@@ -3,23 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\BugStatus;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class BugStatusController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $bugStatus = BugStatus::where('created_by', '=', \Auth::user()->creatorId())->orderBy('order')->get();
 
         return view('bugstatus.index', compact('bugStatus'));
     }
 
-    public function create()
+    public function create(): View
     {
         return view('bugstatus.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $validator = \Validator::make(
             $request->all(), [
@@ -51,7 +53,7 @@ class BugStatusController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         $bugstatus = BugStatus::findOrfail($id);
         if ($bugstatus->created_by == \Auth::user()->creatorId()) {
@@ -75,7 +77,7 @@ class BugStatusController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $bugstatus = BugStatus::findOrfail($id);
         if ($bugstatus->created_by == \Auth::user()->creatorId()) {

@@ -14,10 +14,12 @@ use App\Models\ProposalProduct;
 use App\Models\StockReport;
 use App\Models\User;
 use App\Models\Utility;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ProposalController extends Controller
@@ -73,7 +75,7 @@ class ProposalController extends Controller
         }
     }
 
-    public function customer(Request $request)
+    public function customer(Request $request): View
     {
         $customer = Customer::where('id', '=', $request->id)->first();
 
@@ -97,7 +99,7 @@ class ProposalController extends Controller
         return json_encode($data);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create proposal')) {
             $validator = \Validator::make(
@@ -180,7 +182,7 @@ class ProposalController extends Controller
         }
     }
 
-    public function update(Request $request, Proposal $proposal)
+    public function update(Request $request, Proposal $proposal): RedirectResponse
     {
         if (\Auth::user()->can('edit proposal')) {
             if ($proposal->created_by == \Auth::user()->creatorId()) {
@@ -266,7 +268,7 @@ class ProposalController extends Controller
         }
     }
 
-    public function destroy(Proposal $proposal)
+    public function destroy(Proposal $proposal): RedirectResponse
     {
         if (\Auth::user()->can('delete proposal')) {
             if ($proposal->created_by == \Auth::user()->creatorId()) {
@@ -282,7 +284,7 @@ class ProposalController extends Controller
         }
     }
 
-    public function productDestroy(Request $request)
+    public function productDestroy(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('delete proposal product')) {
             ProposalProduct::where('id', '=', $request->id)->delete();
@@ -334,7 +336,7 @@ class ProposalController extends Controller
         }
     }
 
-    public function sent($id)
+    public function sent($id): RedirectResponse
     {
         if (\Auth::user()->can('send proposal')) {
             $proposal = Proposal::where('id', $id)->first();
@@ -377,7 +379,7 @@ class ProposalController extends Controller
         }
     }
 
-    public function resent($id)
+    public function resent($id): RedirectResponse
     {
         if (\Auth::user()->can('send proposal')) {
             $proposal = Proposal::where('id', $id)->first();
@@ -417,7 +419,7 @@ class ProposalController extends Controller
         }
     }
 
-    public function shippingDisplay(Request $request, $id)
+    public function shippingDisplay(Request $request, $id): RedirectResponse
     {
         $proposal = Proposal::find($id);
 
@@ -431,7 +433,7 @@ class ProposalController extends Controller
         return redirect()->back()->with('success', __('Shipping address status successfully changed.'));
     }
 
-    public function duplicate($proposal_id)
+    public function duplicate($proposal_id): RedirectResponse
     {
         if (\Auth::user()->can('duplicate proposal')) {
             $proposal = Proposal::where('id', $proposal_id)->first();
@@ -465,7 +467,7 @@ class ProposalController extends Controller
         }
     }
 
-    public function convert($proposal_id)
+    public function convert($proposal_id): RedirectResponse
     {
         if (\Auth::user()->can('convert invoice')) {
             $proposal = Proposal::where('id', $proposal_id)->first();
@@ -517,7 +519,7 @@ class ProposalController extends Controller
         }
     }
 
-    public function statusChange(Request $request, $id)
+    public function statusChange(Request $request, $id): RedirectResponse
     {
         $status = $request->status;
         $proposal = Proposal::find($id);
@@ -527,7 +529,7 @@ class ProposalController extends Controller
         return redirect()->back()->with('success', __('Proposal status changed successfully.'));
     }
 
-    public function previewProposal($template, $color)
+    public function previewProposal($template, $color): View
     {
         $objUser = \Auth::user();
         $settings = Utility::settings();
@@ -720,7 +722,7 @@ class ProposalController extends Controller
         }
     }
 
-    public function saveProposalTemplateSettings(Request $request)
+    public function saveProposalTemplateSettings(Request $request): RedirectResponse
     {
 //        dd($request);
         $post = $request->all();
@@ -774,7 +776,7 @@ class ProposalController extends Controller
         return json_encode($items);
     }
 
-    public function invoiceLink($proposalID)
+    public function invoiceLink($proposalID): View
     {
         $id = Crypt::decrypt($proposalID);
         $proposal = Proposal::find($id);

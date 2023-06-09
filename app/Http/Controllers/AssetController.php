@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asset;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class AssetController extends Controller
@@ -27,7 +28,7 @@ class AssetController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create assets')) {
             $validator = \Validator::make(
@@ -75,7 +76,7 @@ class AssetController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         if (\Auth::user()->can('edit assets')) {
             $asset = Asset::find($id);
@@ -110,7 +111,7 @@ class AssetController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         if (\Auth::user()->can('delete assets')) {
             $asset = Asset::find($id);

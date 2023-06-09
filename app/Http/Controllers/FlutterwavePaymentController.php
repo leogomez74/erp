@@ -11,6 +11,7 @@ use App\Models\Plan;
 use App\Models\User;
 use App\Models\UserCoupon;
 use App\Models\Utility;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -115,7 +116,7 @@ class FlutterwavePaymentController extends Controller
         }
     }
 
-    public function getPaymentStatus(Request $request, $pay_id, $plan)
+    public function getPaymentStatus(Request $request, $pay_id, $plan): RedirectResponse
     {
         $payment = $this->paymentConfig();
         $planID = \Illuminate\Support\Facades\Crypt::decrypt($plan);
@@ -219,7 +220,7 @@ class FlutterwavePaymentController extends Controller
         }
     }
 
-    public function getInvoicePaymentStatus(Request $request, $pay_id, $invoice_id)
+    public function getInvoicePaymentStatus(Request $request, $pay_id, $invoice_id): RedirectResponse
     {
         $invoiceID = \Illuminate\Support\Facades\Crypt::decrypt($invoice_id);
         $invoice = Invoice::find($invoiceID);

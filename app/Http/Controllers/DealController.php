@@ -21,6 +21,8 @@ use App\Models\Stage;
 use App\Models\User;
 use App\Models\UserDeal;
 use App\Models\Utility;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -146,11 +148,8 @@ class DealController extends Controller
 
     /**
      * Store a newly created redeal in storage.
-     *
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $usr = \Auth::user();
         if ($usr->can('create deal')) {
@@ -280,7 +279,6 @@ class DealController extends Controller
     /**
      * Display the specified redeal.
      *
-     * @param  \App\Deal  $deal
      * @return \Illuminate\Http\Response
      */
     public function show(Deal $deal)
@@ -315,7 +313,6 @@ class DealController extends Controller
     /**
      * Show the form for editing the specified redeal.
      *
-     * @param  \App\Deal  $deal
      * @return \Illuminate\Http\Response
      */
     public function edit(Deal $deal)
@@ -342,11 +339,8 @@ class DealController extends Controller
 
     /**
      * Update the specified redeal in storage.
-     *
-     * @param  \App\Deal  $deal
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Deal $deal)
+    public function update(Request $request, Deal $deal): RedirectResponse
     {
         if (\Auth::user()->can('edit deal')) {
             if ($deal->created_by == \Auth::user()->ownerId()) {
@@ -390,11 +384,8 @@ class DealController extends Controller
 
     /**
      * Remove the specified redeal from storage.
-     *
-     * @param  \App\Deal  $deal
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(Deal $deal)
+    public function destroy(Deal $deal): RedirectResponse
     {
         if (\Auth::user()->can('delete deal')) {
             if ($deal->created_by == \Auth::user()->ownerId()) {
@@ -417,7 +408,7 @@ class DealController extends Controller
         }
     }
 
-    public function order(Request $request)
+    public function order(Request $request): JsonResponse
     {
         $usr = \Auth::user();
 
@@ -500,7 +491,7 @@ class DealController extends Controller
         }
     }
 
-    public function labelStore($id, Request $request)
+    public function labelStore($id, Request $request): RedirectResponse
     {
         if (\Auth::user()->can('edit deal')) {
             $deal = Deal::find($id);
@@ -550,7 +541,7 @@ class DealController extends Controller
         }
     }
 
-    public function userUpdate($id, Request $request)
+    public function userUpdate($id, Request $request): RedirectResponse
     {
         $usr = \Auth::user();
         if ($usr->can('edit deal')) {
@@ -601,7 +592,7 @@ class DealController extends Controller
         }
     }
 
-    public function userDestroy($id, $user_id)
+    public function userDestroy($id, $user_id): RedirectResponse
     {
         if (\Auth::user()->can('edit deal')) {
             $deal = Deal::find($id);
@@ -637,7 +628,7 @@ class DealController extends Controller
         }
     }
 
-    public function clientUpdate($id, Request $request)
+    public function clientUpdate($id, Request $request): RedirectResponse
     {
         if (\Auth::user()->can('edit deal')) {
             $deal = Deal::find($id);
@@ -667,7 +658,7 @@ class DealController extends Controller
         }
     }
 
-    public function clientDestroy($id, $client_id)
+    public function clientDestroy($id, $client_id): RedirectResponse
     {
         if (\Auth::user()->can('edit deal')) {
             $deal = Deal::find($id);
@@ -699,7 +690,7 @@ class DealController extends Controller
         }
     }
 
-    public function productUpdate($id, Request $request)
+    public function productUpdate($id, Request $request): RedirectResponse
     {
         $usr = \Auth::user();
         if ($usr->can('edit deal')) {
@@ -744,7 +735,7 @@ class DealController extends Controller
         }
     }
 
-    public function productDestroy($id, $product_id)
+    public function productDestroy($id, $product_id): RedirectResponse
     {
         if (\Auth::user()->can('edit deal')) {
             $deal = Deal::find($id);
@@ -767,7 +758,7 @@ class DealController extends Controller
         }
     }
 
-    public function fileUpload($id, Request $request)
+    public function fileUpload($id, Request $request): JsonResponse
     {
         if (\Auth::user()->can('edit deal')) {
             $deal = Deal::find($id);
@@ -853,7 +844,7 @@ class DealController extends Controller
         }
     }
 
-    public function fileDelete($id, $file_id)
+    public function fileDelete($id, $file_id): JsonResponse
     {
         if (\Auth::user()->can('edit deal')) {
             $deal = Deal::find($id);
@@ -893,7 +884,7 @@ class DealController extends Controller
         }
     }
 
-    public function noteStore($id, Request $request)
+    public function noteStore($id, Request $request): JsonResponse
     {
         if (\Auth::user()->can('edit deal')) {
             $deal = Deal::find($id);
@@ -952,7 +943,7 @@ class DealController extends Controller
         }
     }
 
-    public function taskStore($id, Request $request)
+    public function taskStore($id, Request $request): RedirectResponse
     {
         $usr = \Auth::user();
         if ($usr->can('create task')) {
@@ -1080,7 +1071,7 @@ class DealController extends Controller
         }
     }
 
-    public function taskUpdate($id, $task_id, Request $request)
+    public function taskUpdate($id, $task_id, Request $request): RedirectResponse
     {
         if (\Auth::user()->can('edit task')) {
             $deal = Deal::find($id);
@@ -1122,7 +1113,7 @@ class DealController extends Controller
         }
     }
 
-    public function taskUpdateStatus($id, $task_id, Request $request)
+    public function taskUpdateStatus($id, $task_id, Request $request): JsonResponse
     {
         if (\Auth::user()->can('edit task')) {
             $deal = Deal::find($id);
@@ -1178,7 +1169,7 @@ class DealController extends Controller
         }
     }
 
-    public function taskDestroy($id, $task_id)
+    public function taskDestroy($id, $task_id): RedirectResponse
     {
         if (\Auth::user()->can('delete task')) {
             $deal = Deal::find($id);
@@ -1216,7 +1207,7 @@ class DealController extends Controller
         }
     }
 
-    public function sourceUpdate($id, Request $request)
+    public function sourceUpdate($id, Request $request): RedirectResponse
     {
         $usr = \Auth::user();
 
@@ -1257,7 +1248,7 @@ class DealController extends Controller
         }
     }
 
-    public function sourceDestroy($id, $source_id)
+    public function sourceDestroy($id, $source_id): RedirectResponse
     {
         if (\Auth::user()->can('edit deal')) {
             $deal = Deal::find($id);
@@ -1299,7 +1290,7 @@ class DealController extends Controller
         }
     }
 
-    public function permissionStore($id, $clientId, Request $request)
+    public function permissionStore($id, $clientId, Request $request): RedirectResponse
     {
         if (\Auth::user()->can('edit deal')) {
             $deal = Deal::find($id);
@@ -1336,7 +1327,7 @@ class DealController extends Controller
         }
     }
 
-    public function jsonUser(Request $request)
+    public function jsonUser(Request $request): JsonResponse
     {
         $users = [];
         if (! empty($request->deal_id)) {
@@ -1347,7 +1338,7 @@ class DealController extends Controller
         return response()->json($users, 200);
     }
 
-    public function changePipeline(Request $request)
+    public function changePipeline(Request $request): RedirectResponse
     {
         $user = \Auth::user();
         $user->default_pipeline = $request->default_pipeline_id;
@@ -1366,7 +1357,7 @@ class DealController extends Controller
         }
     }
 
-    public function discussionStore($id, Request $request)
+    public function discussionStore($id, Request $request): RedirectResponse
     {
         $usr = \Auth::user();
         $deal = Deal::find($id);
@@ -1392,7 +1383,7 @@ class DealController extends Controller
         }
     }
 
-    public function changeStatus(Request $request, $id)
+    public function changeStatus(Request $request, $id): RedirectResponse
     {
         $deal = Deal::where('id', '=', $id)->first();
         $deal->status = $request->deal_status;
@@ -1428,7 +1419,7 @@ class DealController extends Controller
         }
     }
 
-    public function callStore($id, Request $request)
+    public function callStore($id, Request $request): RedirectResponse
     {
         $usr = \Auth::user();
 
@@ -1512,7 +1503,7 @@ class DealController extends Controller
         }
     }
 
-    public function callUpdate($id, $call_id, Request $request)
+    public function callUpdate($id, $call_id, Request $request): RedirectResponse
     {
         if (\Auth::user()->can('edit deal call')) {
             $deal = Deal::find($id);
@@ -1553,7 +1544,7 @@ class DealController extends Controller
         }
     }
 
-    public function callDestroy($id, $call_id)
+    public function callDestroy($id, $call_id): RedirectResponse
     {
         if (\Auth::user()->can('delete deal call')) {
             $deal = Deal::find($id);
@@ -1595,7 +1586,7 @@ class DealController extends Controller
         }
     }
 
-    public function emailStore($id, Request $request)
+    public function emailStore($id, Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create deal email')) {
             $deal = Deal::find($id);

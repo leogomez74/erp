@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TrainingType;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class TrainingTypeController extends Controller
@@ -27,7 +28,7 @@ class TrainingTypeController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create training type')) {
             $validator = \Validator::make(
@@ -71,7 +72,7 @@ class TrainingTypeController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         if (\Auth::user()->can('edit training type')) {
             $trainingType = TrainingType::find($id);
@@ -95,7 +96,7 @@ class TrainingTypeController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         if (\Auth::user()->can('delete training type')) {
             $trainingType = TrainingType::find($id);

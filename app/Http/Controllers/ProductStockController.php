@@ -7,6 +7,7 @@ use App\Models\ProductPurchase;
 use App\Models\ProductService;
 use App\Models\ProductStock;
 use App\Models\Utility;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class ProductStockController extends Controller
@@ -87,9 +88,8 @@ class ProductStockController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Models\ProductStock  $productStock
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         if (\Auth::user()->can('edit product & service')) {
             $productService = ProductService::find($id);

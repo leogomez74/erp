@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\BankAccount;
 use App\Models\ChartOfAccount;
 use App\Models\ChartOfAccountType;
-//use App\Models\Mail\InvoicePaymentCreate;
 use App\Models\Customer;
+//use App\Models\Mail\InvoicePaymentCreate;
 use App\Models\InvoicePayment;
 use App\Models\ProductServiceCategory;
 use App\Models\Revenue;
 use App\Models\Transaction;
 use App\Models\Utility;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -94,7 +95,7 @@ class RevenueController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create revenue')) {
             $validator = \Validator::make(
@@ -208,7 +209,7 @@ class RevenueController extends Controller
         }
     }
 
-    public function update(Request $request, Revenue $revenue)
+    public function update(Request $request, Revenue $revenue): RedirectResponse
     {
         if (\Auth::user()->can('edit revenue')) {
             $validator = \Validator::make(
@@ -267,7 +268,7 @@ class RevenueController extends Controller
         }
     }
 
-    public function destroy(Revenue $revenue)
+    public function destroy(Revenue $revenue): RedirectResponse
     {
         if (\Auth::user()->can('delete revenue')) {
             if ($revenue->created_by == \Auth::user()->creatorId()) {

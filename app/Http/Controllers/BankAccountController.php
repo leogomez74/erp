@@ -9,6 +9,7 @@ use App\Models\InvoicePayment;
 use App\Models\Payment;
 use App\Models\Revenue;
 use App\Models\Transaction;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class BankAccountController extends Controller
@@ -35,7 +36,7 @@ class BankAccountController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create bank account')) {
             $validator = \Validator::make(
@@ -87,7 +88,7 @@ class BankAccountController extends Controller
         }
     }
 
-    public function update(Request $request, BankAccount $bankAccount)
+    public function update(Request $request, BankAccount $bankAccount): RedirectResponse
     {
         if (\Auth::user()->can('create bank account')) {
             $validator = \Validator::make(
@@ -122,7 +123,7 @@ class BankAccountController extends Controller
         }
     }
 
-    public function destroy(BankAccount $bankAccount)
+    public function destroy(BankAccount $bankAccount): RedirectResponse
     {
         if (\Auth::user()->can('delete bank account')) {
             if ($bankAccount->created_by == \Auth::user()->creatorId()) {

@@ -11,15 +11,17 @@ use App\Models\Plan;
 use App\Models\Transaction;
 use App\Models\UserCoupon;
 use App\Models\Utility;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Stripe;
 
 class StripePaymentController extends Controller
 {
     public $settings;
 
-    public function index()
+    public function index(): View
     {
         $objUser = \Auth::user();
         if ($objUser->type == 'super admin') {
@@ -49,7 +51,7 @@ class StripePaymentController extends Controller
         }
     }
 
-    public function stripePost(Request $request)
+    public function stripePost(Request $request): RedirectResponse
     {
         $objUser = \Auth::user();
         $planID = \Illuminate\Support\Facades\Crypt::decrypt($request->plan_id);
@@ -145,7 +147,7 @@ class StripePaymentController extends Controller
         }
     }
 
-    public function addPayment(Request $request, $id)
+    public function addPayment(Request $request, $id): RedirectResponse
     {
         $invoice = Invoice::find($id);
         $company_payment_setting = Utility::getCompanyPaymentSetting($invoice->created_by);

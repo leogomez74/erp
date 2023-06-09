@@ -15,9 +15,12 @@ use App\Models\TimeTracker;
 use App\Models\User;
 use App\Models\Utility;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 
 class ProjectController extends Controller
 {
@@ -56,10 +59,8 @@ class ProjectController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create project')) {
             $validator = \Validator::make(
@@ -296,9 +297,8 @@ class ProjectController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Poject  $poject
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Project $project)
+    public function update(Request $request, Project $project): RedirectResponse
     {
         if (\Auth::user()->can('edit project')) {
             $validator = \Validator::make(
@@ -337,9 +337,8 @@ class ProjectController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Poject  $poject
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(Project $project)
+    public function destroy(Project $project): RedirectResponse
     {
         if (\Auth::user()->can('delete project')) {
             if (! empty($project->image)) {
@@ -353,7 +352,7 @@ class ProjectController extends Controller
         }
     }
 
-    public function inviteMemberView(Request $request, $project_id)
+    public function inviteMemberView(Request $request, $project_id): View
     {
         $usr = Auth::user();
         $project = Project::find($project_id);
@@ -399,7 +398,7 @@ class ProjectController extends Controller
         );
     }
 
-    public function destroyProjectUser($id, $user_id)
+    public function destroyProjectUser($id, $user_id): RedirectResponse
     {
         $project = Project::find($id);
         if ($project->created_by == \Auth::user()->ownerId()) {
@@ -411,7 +410,7 @@ class ProjectController extends Controller
         }
     }
 
-    public function loadUser(Request $request)
+    public function loadUser(Request $request): JsonResponse
     {
         if ($request->ajax()) {
             $project = Project::find($request->project_id);
@@ -437,7 +436,7 @@ class ProjectController extends Controller
         }
     }
 
-    public function milestoneStore(Request $request, $project_id)
+    public function milestoneStore(Request $request, $project_id): RedirectResponse
     {
         if (\Auth::user()->can('create milestone')) {
             $project = Project::find($project_id);
@@ -485,7 +484,7 @@ class ProjectController extends Controller
         }
     }
 
-    public function milestoneUpdate($id, Request $request)
+    public function milestoneUpdate($id, Request $request): RedirectResponse
     {
         if (\Auth::user()->can('edit milestone')) {
             $validator = Validator::make(
@@ -511,7 +510,7 @@ class ProjectController extends Controller
         }
     }
 
-    public function milestoneDestroy($id)
+    public function milestoneDestroy($id): RedirectResponse
     {
         if (\Auth::user()->can('delete milestone')) {
             $milestone = Milestone::find($id);
@@ -601,7 +600,7 @@ class ProjectController extends Controller
         }
     }
 
-    public function ganttPost($projectID, Request $request)
+    public function ganttPost($projectID, Request $request): JsonResponse
     {
         $project = Project::find($projectID);
 
@@ -696,7 +695,7 @@ class ProjectController extends Controller
         return $latest->bug_id + 1;
     }
 
-    public function bugStore(Request $request, $project_id)
+    public function bugStore(Request $request, $project_id): RedirectResponse
     {
         if (\Auth::user()->can('create bug report')) {
             $validator = \Validator::make(
@@ -775,7 +774,7 @@ class ProjectController extends Controller
         }
     }
 
-    public function bugUpdate(Request $request, $project_id, $bug_id)
+    public function bugUpdate(Request $request, $project_id, $bug_id): RedirectResponse
     {
         if (\Auth::user()->can('edit bug report')) {
             $validator = \Validator::make(
@@ -809,7 +808,7 @@ class ProjectController extends Controller
         }
     }
 
-    public function bugDestroy($project_id, $bug_id)
+    public function bugDestroy($project_id, $bug_id): RedirectResponse
     {
         if (\Auth::user()->can('delete bug report')) {
             $bug = Bug::find($bug_id);
@@ -845,7 +844,7 @@ class ProjectController extends Controller
         }
     }
 
-    public function bugKanbanOrder(Request $request)
+    public function bugKanbanOrder(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('move bug report')) {
             $post = $request->all();
@@ -868,7 +867,7 @@ class ProjectController extends Controller
         }
     }
 
-    public function bugShow($project_id, $bug_id)
+    public function bugShow($project_id, $bug_id): View
     {
         $bug = Bug::find($bug_id);
 
@@ -930,7 +929,7 @@ class ProjectController extends Controller
         return 'true';
     }
 
-    public function tracker($id)
+    public function tracker($id): View
     {
         $treckers = TimeTracker::where('project_id', $id)->get();
 

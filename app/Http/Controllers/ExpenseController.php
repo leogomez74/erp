@@ -6,6 +6,7 @@ use App\Models\ActivityLog;
 use App\Models\Expense;
 use App\Models\Project;
 use App\Models\Utility;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -35,7 +36,7 @@ class ExpenseController extends Controller
         }
     }
 
-    public function store(Request $request, $project_id)
+    public function store(Request $request, $project_id): RedirectResponse
     {
         if (\Auth::user()->can('create expense')) {
             $usr = \Auth::user();
@@ -91,7 +92,7 @@ class ExpenseController extends Controller
         }
     }
 
-    public function update(Request $request, $project_id, $expense_id)
+    public function update(Request $request, $project_id, $expense_id): RedirectResponse
     {
         if (\Auth::user()->can('edit expense')) {
             $validator = Validator::make(
@@ -128,7 +129,7 @@ class ExpenseController extends Controller
         }
     }
 
-    public function destroy($expense_id)
+    public function destroy($expense_id): RedirectResponse
     {
         if (\Auth::user()->can('delete expense')) {
             $expense = Expense::find($expense_id);

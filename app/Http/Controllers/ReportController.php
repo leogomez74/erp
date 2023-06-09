@@ -31,6 +31,8 @@ use App\Models\Vender;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ReportController extends Controller
 {
@@ -1764,7 +1766,7 @@ class ReportController extends Controller
         }
     }
 
-    public function exportCsv($filter_month, $branch, $department)
+    public function exportCsv($filter_month, $branch, $department): StreamedResponse
     {
         $data['branch'] = __('All');
         $data['department'] = __('All');
@@ -1857,7 +1859,7 @@ class ReportController extends Controller
         }
     }
 
-    public function account(Request $request)
+    public function account(Request $request): View
     {
         $data['yearList'] = $this->yearList();
 
@@ -1911,7 +1913,7 @@ class ReportController extends Controller
         return view('report.account', $data);
     }
 
-   public function profitLossTotal(Request $request)
+   public function profitLossTotal(Request $request): View
    {
        if (isset($request->start_date) && isset($request->end_date) && isset($request->start_date1) && isset($request->end_date1)) {
            $start_date = $request->start_date;

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BankAccount;
 use App\Models\BankTransfer;
 use App\Models\Utility;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class BankTransferController extends Controller
@@ -47,7 +48,7 @@ class BankTransferController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create bank transfer')) {
             $validator = \Validator::make(
@@ -97,7 +98,7 @@ class BankTransferController extends Controller
         }
     }
 
-    public function update(Request $request, BankTransfer $transfer, $id)
+    public function update(Request $request, BankTransfer $transfer, $id): RedirectResponse
     {
         if (\Auth::user()->can('edit bank transfer')) {
             $transfer = BankTransfer::find($id);
@@ -136,7 +137,7 @@ class BankTransferController extends Controller
         }
     }
 
-    public function destroy(BankTransfer $transfer)
+    public function destroy(BankTransfer $transfer): RedirectResponse
     {
         if (\Auth::user()->can('delete bank transfer')) {
             if ($transfer->created_by == \Auth::user()->creatorId()) {

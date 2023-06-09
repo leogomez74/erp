@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\JobCategory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class JobCategoryController extends Controller
 {
@@ -18,12 +20,12 @@ class JobCategoryController extends Controller
         }
     }
 
-    public function create()
+    public function create(): View
     {
         return view('jobCategory.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create job category')) {
             $validator = \Validator::make(
@@ -54,12 +56,12 @@ class JobCategoryController extends Controller
         //
     }
 
-    public function edit(JobCategory $jobCategory)
+    public function edit(JobCategory $jobCategory): View
     {
         return view('jobCategory.edit', compact('jobCategory'));
     }
 
-    public function update(Request $request, JobCategory $jobCategory)
+    public function update(Request $request, JobCategory $jobCategory): RedirectResponse
     {
         if (\Auth::user()->can('edit job category')) {
             $validator = \Validator::make(
@@ -83,7 +85,7 @@ class JobCategoryController extends Controller
         }
     }
 
-    public function destroy(JobCategory $jobCategory)
+    public function destroy(JobCategory $jobCategory): RedirectResponse
     {
         if (\Auth::user()->can('delete job category')) {
             if ($jobCategory->created_by == \Auth::user()->creatorId()) {

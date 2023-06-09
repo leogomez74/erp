@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\Plan;
 use App\Models\UserCoupon;
 use App\Models\Utility;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -43,7 +44,7 @@ class MolliePaymentController extends Controller
         return $this;
     }
 
-    public function planPayWithMollie(Request $request)
+    public function planPayWithMollie(Request $request): RedirectResponse
     {
         $payment = $this->paymentConfig();
         $planID = \Illuminate\Support\Facades\Crypt::decrypt($request->plan_id);
@@ -131,7 +132,7 @@ class MolliePaymentController extends Controller
         }
     }
 
-    public function getPaymentStatus(Request $request, $plan)
+    public function getPaymentStatus(Request $request, $plan): RedirectResponse
     {
         $payment = $this->paymentConfig();
 
@@ -246,7 +247,7 @@ class MolliePaymentController extends Controller
         }
     }
 
-    public function getInvoicePaymentStatus(Request $request, $invoice_id, $amount)
+    public function getInvoicePaymentStatus(Request $request, $invoice_id, $amount): RedirectResponse
     {
         $invoiceID = \Illuminate\Support\Facades\Crypt::decrypt($invoice_id);
         $invoice = Invoice::find($invoiceID);

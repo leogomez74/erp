@@ -5,25 +5,25 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\Customer;
-use  App\Models\Plan;
+use App\Models\Plan;
 use App\Models\Utility;
-use App\Models\Vender;
+use  App\Models\Vender;
 use App\Providers\RouteServiceProvider;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
 {
     /**
      * Display the login view.
-     *
-     * @return \Illuminate\View\View
      */
-    public function __construct()
+    public function __construct(): View
     {
         // if(!file_exists(storage_path() . "/installed"))
         // {
@@ -33,16 +33,13 @@ class AuthenticatedSessionController extends Controller
         // $this->middleware('guest')->except('logout');
     }
 
-    public function create()
+    public function create(): View
     {
         // return view('auth.login');
     }
 
     /**
      * Handle an incoming authentication request.
-     *
-     *
-     * @return \Illuminate\Http\RedirectResponse
      */
 
     // protected function authenticated(Request $request)
@@ -60,7 +57,7 @@ class AuthenticatedSessionController extends Controller
     //        }
     //    }
 
-    public function store(LoginRequest $request)
+    public function store(LoginRequest $request): RedirectResponse
     {
         //ReCpatcha
         if (env('RECAPTCHA_MODULE') == 'yes') {
@@ -117,11 +114,8 @@ class AuthenticatedSessionController extends Controller
 
     /**
      * Destroy an authenticated session.
-     *
-     *
-     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();
 
@@ -132,7 +126,7 @@ class AuthenticatedSessionController extends Controller
         return redirect('/');
     }
 
-    public function showCustomerLoginForm($lang = '')
+    public function showCustomerLoginForm($lang = ''): View
     {
         if ($lang == '') {
             $lang = Utility::getValByName('default_language');
@@ -174,7 +168,7 @@ class AuthenticatedSessionController extends Controller
         return $this->sendFailedLoginResponse(0);
     }
 
-    public function showVenderLoginForm($lang = '')
+    public function showVenderLoginForm($lang = ''): View
     {
         if ($lang == '') {
             $lang = Utility::getValByName('default_language');
@@ -215,7 +209,7 @@ class AuthenticatedSessionController extends Controller
         return $this->sendFailedLoginResponse($request);
     }
 
-    public function showLoginForm($lang = '')
+    public function showLoginForm($lang = ''): View
     {
         if ($lang == '') {
             $lang = Utility::getValByName('default_language');
@@ -228,7 +222,7 @@ class AuthenticatedSessionController extends Controller
         return view('auth.login', compact('lang', 'settings'));
     }
 
-    public function showLinkRequestForm($lang = '')
+    public function showLinkRequestForm($lang = ''): View
     {
         if ($lang == '') {
             $lang = Utility::getValByName('default_language');
@@ -239,7 +233,7 @@ class AuthenticatedSessionController extends Controller
         return view('auth.forgot-password', compact('lang'));
     }
 
-    public function showCustomerLoginLang($lang = '')
+    public function showCustomerLoginLang($lang = ''): View
     {
         if ($lang == '') {
             $lang = Utility::getValByName('default_language');
@@ -250,7 +244,7 @@ class AuthenticatedSessionController extends Controller
         return view('auth.customer_login', compact('lang'));
     }
 
-    public function showVenderLoginLang($lang = '')
+    public function showVenderLoginLang($lang = ''): View
     {
         if ($lang == '') {
             $lang = Utility::getValByName('default_language');
@@ -262,7 +256,7 @@ class AuthenticatedSessionController extends Controller
     }
 
     //    ---------------------------------Customer ----------------------------------_
-    public function showCustomerLinkRequestForm($lang = '')
+    public function showCustomerLinkRequestForm($lang = ''): View
     {
         if ($lang == '') {
             $lang = Utility::getValByName('default_language');
@@ -302,7 +296,7 @@ class AuthenticatedSessionController extends Controller
         return back()->with('status', 'We have e-mailed your password reset link!');
     }
 
-    public function showResetForm(Request $request, $token = null)
+    public function showResetForm(Request $request, $token = null): View
     {
         $default_language = DB::table('settings')->select('value')->where('name', 'default_language')->first();
         $lang = ! empty($default_language) ? $default_language->value : 'en';
@@ -318,7 +312,7 @@ class AuthenticatedSessionController extends Controller
         );
     }
 
-    public function getCustomerPassword($token)
+    public function getCustomerPassword($token): View
     {
         return view('auth.passwords.customerReset', ['token' => $token]);
     }
@@ -353,7 +347,7 @@ class AuthenticatedSessionController extends Controller
     }
 
     //    ----------------------------Vendor----------------------------------------------------
-    public function showVendorLinkRequestForm($lang = '')
+    public function showVendorLinkRequestForm($lang = ''): View
     {
         if ($lang == '') {
             $lang = Utility::getValByName('default_language');
@@ -393,7 +387,7 @@ class AuthenticatedSessionController extends Controller
         return back()->with('status', 'We have e-mailed your password reset link!');
     }
 
-    public function getVendorPassword($token)
+    public function getVendorPassword($token): View
     {
         return view('auth.passwords.vendorReset', ['token' => $token]);
     }

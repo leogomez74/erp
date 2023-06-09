@@ -8,11 +8,13 @@ use App\Models\Utility;
 use App\Models\Vender;
 use Auth;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class LanguageController extends Controller
 {
-    public function changeLanquage($lang)
+    public function changeLanquage($lang): RedirectResponse
     {
         $user = Auth::user();
         $user->lang = $lang;
@@ -103,12 +105,12 @@ class LanguageController extends Controller
         return $content;
     }
 
-    public function createLanguage()
+    public function createLanguage(): View
     {
         return view('lang.create');
     }
 
-    public function storeLanguage(Request $request)
+    public function storeLanguage(Request $request): RedirectResponse
     {
         if (\Auth::user()->type == 'super admin') {
             $Filesystem = new Filesystem();
@@ -135,7 +137,7 @@ class LanguageController extends Controller
         }
     }
 
-    public function destroyLang($lang)
+    public function destroyLang($lang): RedirectResponse
     {
         $default_lang = env('default_language') ?? 'en';
         $langDir = base_path().'/lang/';

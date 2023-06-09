@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Competencies;
 use App\Models\PerformanceType;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class CompetenciesController extends Controller
 {
@@ -19,14 +21,14 @@ class CompetenciesController extends Controller
         }
     }
 
-    public function create()
+    public function create(): View
     {
         $performance = PerformanceType::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
 
         return view('competencies.create', compact('performance'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('Create Competencies')) {
             $validator = \Validator::make(
@@ -58,7 +60,7 @@ class CompetenciesController extends Controller
         //
     }
 
-    public function edit($id)
+    public function edit($id): View
     {
         $competencies = Competencies::find($id);
         $performance = PerformanceType::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
@@ -66,7 +68,7 @@ class CompetenciesController extends Controller
         return view('competencies.edit', compact('performance', 'competencies'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         if (\Auth::user()->can('Edit Competencies')) {
             $validator = \Validator::make(
@@ -91,7 +93,7 @@ class CompetenciesController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         if (\Auth::user()->can('Delete Competencies')) {
             $competencies = Competencies::find($id);

@@ -6,8 +6,10 @@ use App\Models\Employee;
 use App\Models\Leave;
 use App\Models\LeaveType;
 use App\Models\Utility;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class LeaveController extends Controller
 {
@@ -46,7 +48,7 @@ class LeaveController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create leave')) {
             $validator = \Validator::make(
@@ -89,7 +91,7 @@ class LeaveController extends Controller
         }
     }
 
-    public function show(Leave $leave)
+    public function show(Leave $leave): RedirectResponse
     {
         return redirect()->route('leave.index');
     }
@@ -110,7 +112,7 @@ class LeaveController extends Controller
         }
     }
 
-    public function update(Request $request, $leave)
+    public function update(Request $request, $leave): RedirectResponse
     {
         $leave = Leave::find($leave);
         if (\Auth::user()->can('edit leave')) {
@@ -149,7 +151,7 @@ class LeaveController extends Controller
         }
     }
 
-    public function destroy(Leave $leave)
+    public function destroy(Leave $leave): RedirectResponse
     {
         if (\Auth::user()->can('delete leave')) {
             if ($leave->created_by == \Auth::user()->creatorId()) {
@@ -164,7 +166,7 @@ class LeaveController extends Controller
         }
     }
 
-    public function action($id)
+    public function action($id): View
     {
         $leave = Leave::find($id);
         $employee = Employee::find($leave->employee_id);
@@ -173,7 +175,7 @@ class LeaveController extends Controller
         return view('leave.action', compact('employee', 'leavetype', 'leave'));
     }
 
-    public function changeaction(Request $request)
+    public function changeaction(Request $request): RedirectResponse
     {
         $leave = Leave::find($request->leave_id);
 

@@ -11,8 +11,10 @@ use App\Models\LeadStage;
 use App\Models\Pipeline;
 use App\Models\User;
 use App\Models\UserLead;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class FormBuilderController extends Controller
 {
@@ -28,12 +30,12 @@ class FormBuilderController extends Controller
         }
     }
 
-    public function create()
+    public function create(): View
     {
         return view('form_builder.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create form builder')) {
             $validator = \Validator::make(
@@ -87,7 +89,7 @@ class FormBuilderController extends Controller
         }
     }
 
-    public function update(Request $request, FormBuilder $formBuilder)
+    public function update(Request $request, FormBuilder $formBuilder): RedirectResponse
     {
         $usr = \Auth::user();
         if ($usr->can('edit form builder')) {
@@ -118,7 +120,7 @@ class FormBuilderController extends Controller
         }
     }
 
-    public function destroy(FormBuilder $formBuilder)
+    public function destroy(FormBuilder $formBuilder): RedirectResponse
     {
         if (Auth::user()->can('delete form builder')) {
             if ($formBuilder->created_by == \Auth::user()->ownerId()) {
@@ -155,7 +157,7 @@ class FormBuilderController extends Controller
         }
     }
 
-    public function fieldStore($id, Request $request)
+    public function fieldStore($id, Request $request): RedirectResponse
     {
         $usr = \Auth::user();
         if ($usr->can('create form field')) {
@@ -210,7 +212,7 @@ class FormBuilderController extends Controller
         }
     }
 
-    public function fieldUpdate($id, $field_id, Request $request)
+    public function fieldUpdate($id, $field_id, Request $request): RedirectResponse
     {
         $usr = \Auth::user();
         if ($usr->can('edit form field')) {
@@ -244,7 +246,7 @@ class FormBuilderController extends Controller
         }
     }
 
-    public function fieldDestroy($id, $field_id)
+    public function fieldDestroy($id, $field_id): RedirectResponse
     {
         $usr = \Auth::user();
         if ($usr->can('delete form field')) {
@@ -328,7 +330,7 @@ class FormBuilderController extends Controller
     }
 
     // For Front Side View Store
-    public function formViewStore(Request $request)
+    public function formViewStore(Request $request): RedirectResponse
     {
         // Get form
         $form = FormBuilder::where('code', 'LIKE', $request->code)->first();
@@ -423,7 +425,7 @@ class FormBuilderController extends Controller
     }
 
     // Store convert into lead modal
-    public function bindStore(Request $request, $id)
+    public function bindStore(Request $request, $id): RedirectResponse
     {
         $usr = Auth::user();
         if ($usr->type == 'company') {

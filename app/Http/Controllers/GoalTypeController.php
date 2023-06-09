@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\GoalType;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class GoalTypeController extends Controller
@@ -27,7 +28,7 @@ class GoalTypeController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create goal type')) {
             $validator = \Validator::make(
@@ -68,7 +69,7 @@ class GoalTypeController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         if (\Auth::user()->can('edit goal type')) {
             $validator = \Validator::make(
@@ -91,7 +92,7 @@ class GoalTypeController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         if (\Auth::user()->can('delete goal type')) {
             $goalType = GoalType::find($id);

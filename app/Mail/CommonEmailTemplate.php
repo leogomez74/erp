@@ -27,10 +27,8 @@ class CommonEmailTemplate extends Mailable
 
     /**
      * Build the message.
-     *
-     * @return $this
      */
-    public function build()
+    public function build(): static
     {
         return $this->from($this->settings['company_email'], $this->template->from)->markdown('email.common_email_template')->subject($this->template->subject)->with('content', $this->template->content);
     }

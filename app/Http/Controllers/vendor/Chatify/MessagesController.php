@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\vendor\Chatify;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Response;
@@ -18,7 +19,6 @@ class MessagesController extends Controller
     /**
      * Authinticate the connection for pusher
      *
-     * @param Request $request
      *
      * @return void
      */
@@ -51,11 +51,10 @@ class MessagesController extends Controller
     /**
      * Returning the view of the app with the required data.
      *
-     * @param int $id
      *
      * @return void
      */
-    public function index($id = null)
+    public function index(int $id = null)
     {
         if(Auth::user()->type != 'admin')
         {
@@ -83,12 +82,8 @@ class MessagesController extends Controller
 
     /**
      * Fetch data by id for (user/group)
-     *
-     * @param Request $request
-     *
-     * @return collection
      */
-    public function idFetchData(Request $request)
+    public function idFetchData(Request $request): JsonResponse
     {
         // Favorite
         $favorite = Chatify::inFavorite($request['id']);
@@ -122,11 +117,10 @@ class MessagesController extends Controller
      * This method to make a links for the attachments
      * to be downloadable.
      *
-     * @param string $fileName
      *
      * @return void
      */
-    public function download($fileName)
+    public function download(string $fileName)
     {
         $path = storage_path() . '/' . config('chatify.attachments.folder') . '/' . $fileName;
         if(file_exists($path))
@@ -142,11 +136,10 @@ class MessagesController extends Controller
     /**
      * Send a message to database
      *
-     * @param Request $request
      *
      * @return JSON response
      */
-    public function send(Request $request)
+    public function send(Request $request): JsonResponse
     {
         // default variables
         $error = (object)[
@@ -236,11 +229,10 @@ class MessagesController extends Controller
     /**
      * fetch [user/group] messages from database
      *
-     * @param Request $request
      *
      * @return JSON response
      */
-    public function fetch(Request $request)
+    public function fetch(Request $request): JsonResponse
     {
         // messages variable
         $allMessages = null;
@@ -279,12 +271,8 @@ class MessagesController extends Controller
 
     /**
      * Make messages as seen
-     *
-     * @param Request $request
-     *
-     * @return void
      */
-    public function seen(Request $request)
+    public function seen(Request $request): JsonResponse
     {
         // make as seen
         $seenmessage =  Message::Where('from_id', $request['id'])->where('to_id', Auth::user()->id)->where('seen', 0)->count();
@@ -308,11 +296,10 @@ class MessagesController extends Controller
     /**
      * Get contacts list
      *
-     * @param Request $request
      *
      * @return JSON response
      */
-    public function getContacts(Request $request)
+    public function getContacts(Request $request): JsonResponse
     {
         // get all users that received/sent message from/to [Auth user]
         $users = Message::join(
@@ -374,11 +361,10 @@ class MessagesController extends Controller
     /**
      * Update user's list item data
      *
-     * @param Request $request
      *
      * @return JSON response
      */
-    public function updateContactItem(Request $request)
+    public function updateContactItem(Request $request): JsonResponse
     {
         // Get user data
         $userCollection = User::where('id', $request['user_id'])->first();
@@ -396,12 +382,8 @@ class MessagesController extends Controller
 
     /**
      * Put a user in the favorites list
-     *
-     * @param Request $request
-     *
-     * @return void
      */
-    public function favorite(Request $request)
+    public function favorite(Request $request): JsonResponse
     {
         // check action [star/unstar]
         if(Chatify::inFavorite($request['user_id']))
@@ -427,12 +409,8 @@ class MessagesController extends Controller
 
     /**
      * Get favorites list
-     *
-     * @param Request $request
-     *
-     * @return void
      */
-    public function getFavorites(Request $request)
+    public function getFavorites(Request $request): JsonResponse
     {
         $favoritesList = null;
         $favorites     = Favorite::where('user_id', Auth::user()->id);
@@ -458,12 +436,8 @@ class MessagesController extends Controller
 
     /**
      * Search in messenger
-     *
-     * @param Request $request
-     *
-     * @return void
      */
-    public function search(Request $request)
+    public function search(Request $request): JsonResponse
     {
         $getRecords = null;
         $input      = trim(filter_var($request['input'], FILTER_SANITIZE_STRING));
@@ -492,12 +466,8 @@ class MessagesController extends Controller
 
     /**
      * Get shared photos
-     *
-     * @param Request $request
-     *
-     * @return void
      */
-    public function sharedPhotos(Request $request)
+    public function sharedPhotos(Request $request): JsonResponse
     {
         $shared       = Chatify::getSharedPhotos($request['user_id']);
         $sharedPhotos = null;
@@ -523,12 +493,8 @@ class MessagesController extends Controller
 
     /**
      * Delete conversation
-     *
-     * @param Request $request
-     *
-     * @return void
      */
-    public function deleteConversation(Request $request)
+    public function deleteConversation(Request $request): JsonResponse
     {
         // delete
         $delete = Chatify::deleteConversation($request['id']);
@@ -541,7 +507,7 @@ class MessagesController extends Controller
         );
     }
 
-    public function updateSettings(Request $request)
+    public function updateSettings(Request $request): JsonResponse
     {
         $msg   = null;
         $error = $success = 0;
@@ -615,12 +581,8 @@ class MessagesController extends Controller
 
     /**
      * Set user's active status
-     *
-     * @param Request $request
-     *
-     * @return void
      */
-    public function setActiveStatus(Request $request)
+    public function setActiveStatus(Request $request): JsonResponse
     {
         $update = $request['status'] > 0 ? User::where('id', $request['user_id'])->update(['active_status' => 1]) : User::where('id', $request['user_id'])->update(['active_status' => 0]);
 

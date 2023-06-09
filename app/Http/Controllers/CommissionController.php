@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Commission;
 use App\Models\Employee;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class CommissionController extends Controller
 {
-    public function commissionCreate($id)
+    public function commissionCreate($id): View
     {
         $employee = Employee::find($id);
         $commissions = Commission::$commissiontype;
@@ -16,7 +18,7 @@ class CommissionController extends Controller
         return view('commission.create', compact('employee', 'commissions'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create commission')) {
             $validator = \Validator::make(
@@ -46,7 +48,7 @@ class CommissionController extends Controller
         }
     }
 
-    public function show(Commission $commission)
+    public function show(Commission $commission): RedirectResponse
     {
         return redirect()->route('commision.index');
     }
@@ -67,7 +69,7 @@ class CommissionController extends Controller
         }
     }
 
-    public function update(Request $request, Commission $commission)
+    public function update(Request $request, Commission $commission): RedirectResponse
     {
         if (\Auth::user()->can('edit commission')) {
             if ($commission->created_by == \Auth::user()->creatorId()) {
@@ -98,7 +100,7 @@ class CommissionController extends Controller
         }
     }
 
-    public function destroy(Commission $commission)
+    public function destroy(Commission $commission): RedirectResponse
     {
         if (\Auth::user()->can('delete commission')) {
             if ($commission->created_by == \Auth::user()->creatorId()) {

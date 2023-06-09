@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\LeadStage;
 use App\Models\Pipeline;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class LeadStageController extends Controller
@@ -62,11 +63,8 @@ class LeadStageController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create lead stage')) {
             $validator = \Validator::make(
@@ -95,11 +93,8 @@ class LeadStageController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\LeadStage  $leadStage
-     * @return \Illuminate\Http\Response
      */
-    public function show(LeadStage $leadStage)
+    public function show(LeadStage $leadStage): RedirectResponse
     {
         return redirect()->route('lead_stages.index');
     }
@@ -107,7 +102,6 @@ class LeadStageController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\LeadStage  $leadStage
      * @return \Illuminate\Http\Response
      */
     public function edit(LeadStage $leadStage)
@@ -127,11 +121,8 @@ class LeadStageController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \App\LeadStage  $leadStage
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, LeadStage $leadStage)
+    public function update(Request $request, LeadStage $leadStage): RedirectResponse
     {
         if (\Auth::user()->can('edit lead stage')) {
             if ($leadStage->created_by == \Auth::user()->ownerId()) {
@@ -163,11 +154,8 @@ class LeadStageController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\LeadStage  $leadStage
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(LeadStage $leadStage)
+    public function destroy(LeadStage $leadStage): RedirectResponse
     {
         if (\Auth::user()->can('delete lead stage')) {
             $leadStage->delete();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Plan;
 use App\Models\Utility;
 use File;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class PlanController extends Controller
@@ -36,7 +37,7 @@ class PlanController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create plan')) {
             $admin_payment_setting = Utility::getAdminPaymentSetting();
@@ -113,7 +114,7 @@ class PlanController extends Controller
         }
     }
 
-    public function update(Request $request, $plan_id)
+    public function update(Request $request, $plan_id): RedirectResponse
     {
         if (\Auth::user()->can('edit plan')) {
             $admin_payment_setting = Utility::getAdminPaymentSetting();
@@ -193,7 +194,7 @@ class PlanController extends Controller
         }
     }
 
-    public function userPlan(Request $request)
+    public function userPlan(Request $request): RedirectResponse
     {
         $objUser = \Auth::user();
         $planID = \Illuminate\Support\Facades\Crypt::decrypt($request->code);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Branch;
 use App\Models\Department;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
@@ -30,7 +31,7 @@ class DepartmentController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create department')) {
             $validator = \Validator::make(
@@ -57,7 +58,7 @@ class DepartmentController extends Controller
         }
     }
 
-    public function show(Department $department)
+    public function show(Department $department): RedirectResponse
     {
         return redirect()->route('department.index');
     }
@@ -77,7 +78,7 @@ class DepartmentController extends Controller
         }
     }
 
-    public function update(Request $request, Department $department)
+    public function update(Request $request, Department $department): RedirectResponse
     {
         if (\Auth::user()->can('edit department')) {
             if ($department->created_by == \Auth::user()->creatorId()) {
@@ -106,7 +107,7 @@ class DepartmentController extends Controller
         }
     }
 
-    public function destroy(Department $department)
+    public function destroy(Department $department): RedirectResponse
     {
         if (\Auth::user()->can('delete department')) {
             if ($department->created_by == \Auth::user()->creatorId()) {

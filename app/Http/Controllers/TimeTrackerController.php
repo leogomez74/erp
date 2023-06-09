@@ -5,16 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\TimeTracker;
 use App\Models\TrackPhoto;
 use App\Models\Utility;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class TimeTrackerController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View
     {
         $treckers = TimeTracker::where('created_by', \Auth::user()->id)->get();
 
@@ -75,9 +75,8 @@ class TimeTrackerController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\TimeTracker  $timeTracker
-     * @return \Illuminate\Http\Response
      */
-    public function destroy($timetracker_id)
+    public function destroy($timetracker_id): RedirectResponse
     {
 //        return redirect()->back()->with('error',__('This operation is not perform due to demo mode.'));
         // if(Auth::user()->can('delete timesheet'))
@@ -93,7 +92,7 @@ class TimeTrackerController extends Controller
         // }
     }
 
-    public function getTrackerImages(Request $request)
+    public function getTrackerImages(Request $request): View
     {
         $tracker = TimeTracker::find($request->id);
 

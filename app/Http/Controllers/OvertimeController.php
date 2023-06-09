@@ -4,18 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use App\Models\Overtime;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class OvertimeController extends Controller
 {
-    public function overtimeCreate($id)
+    public function overtimeCreate($id): View
     {
         $employee = Employee::find($id);
 
         return view('overtime.create', compact('employee'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (\Auth::user()->can('create overtime')) {
             $validator = \Validator::make(
@@ -48,7 +50,7 @@ class OvertimeController extends Controller
         }
     }
 
-    public function show(Overtime $overtime)
+    public function show(Overtime $overtime): RedirectResponse
     {
         return redirect()->route('commision.index');
     }
@@ -67,7 +69,7 @@ class OvertimeController extends Controller
         }
     }
 
-    public function update(Request $request, $overtime)
+    public function update(Request $request, $overtime): RedirectResponse
     {
         $overtime = Overtime::find($overtime);
         if (\Auth::user()->can('edit overtime')) {
@@ -101,7 +103,7 @@ class OvertimeController extends Controller
         }
     }
 
-    public function destroy(Overtime $overtime)
+    public function destroy(Overtime $overtime): RedirectResponse
     {
         if (\Auth::user()->can('delete overtime')) {
             if ($overtime->created_by == \Auth::user()->creatorId()) {
