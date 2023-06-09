@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\Customer;
-use  App\Models\Plan;
+use App\Models\Plan;
 use App\Models\Utility;
-use App\Models\Vender;
+use  App\Models\Vender;
 use App\Providers\RouteServiceProvider;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
 {

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
 use App\Models\ActivityLog;
 use App\Models\ClientDeal;
 use App\Models\Deal;
@@ -11,6 +10,7 @@ use App\Models\DealFile;
 use App\Models\DealTask;
 use App\Models\Pipeline;
 use App\Models\UserDeal;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class PipelineController extends Controller

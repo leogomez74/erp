@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
-use Illuminate\Http\JsonResponse;
 use App\Models\Branch;
 use App\Models\Department;
 use App\Models\Designation;
@@ -16,11 +13,14 @@ use App\Models\Plan;
 use App\Models\User;
 use App\Models\Utility;
 use File;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\View\View;
 
 //use Faker\Provider\File;
 

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\Models\Appraisal;
 use App\Models\Branch;
 use App\Models\Competencies;
 use App\Models\Employee;
 use App\Models\PerformanceType;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class AppraisalController extends Controller
 {

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
 use App\Models\Project;
 use App\Models\ProjectUser;
 use App\Models\User;
 use App\Models\ZoomMeeting;
 use App\Traits\ZoomMeetingTrait;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ZoomMeetingController extends Controller
 {

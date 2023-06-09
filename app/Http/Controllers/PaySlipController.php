@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\Models\Allowance;
 use App\Models\Commission;
 use App\Models\Employee;
@@ -13,9 +11,11 @@ use App\Models\Overtime;
 use App\Models\PaySlip;
 use App\Models\SaturationDeduction;
 use App\Models\Utility;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\View\View;
 
 class PaySlipController extends Controller
 {

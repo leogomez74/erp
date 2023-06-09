@@ -2,9 +2,9 @@
 
 namespace App\Exports;
 
-use Illuminate\Support\Collection;
 use App\Models\ProductServiceCategory;
 use App\Models\Proposal;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 

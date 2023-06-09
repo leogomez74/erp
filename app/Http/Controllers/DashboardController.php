@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Http\JsonResponse;
-use Illuminate\View\View;
 use App\Models\Announcement;
 use App\Models\AttendanceEmployee;
 use App\Models\BankAccount;
@@ -36,9 +33,12 @@ use App\Models\Trainer;
 use App\Models\Training;
 use App\Models\User;
 use App\Models\Utility;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 
 class DashboardController extends Controller
 {

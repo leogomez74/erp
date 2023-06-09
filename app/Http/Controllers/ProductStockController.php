@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
 use App\Models\Currencie;
 use App\Models\ProductPurchase;
 use App\Models\ProductService;
 use App\Models\ProductStock;
 use App\Models\Utility;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class ProductStockController extends Controller

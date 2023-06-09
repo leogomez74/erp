@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\Models\ClientDeal;
 use App\Models\ClientPermission;
 use App\Models\Contract;
@@ -13,9 +11,11 @@ use App\Models\Plan;
 use App\Models\User;
 use App\Models\Utility;
 use http\Client;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\View\View;
 use Spatie\Permission\Models\Role;
 
 class ClientController extends Controller

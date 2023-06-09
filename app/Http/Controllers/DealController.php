@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use App\Models\ActivityLog;
 use App\Models\ClientDeal;
 use App\Models\ClientPermission;
@@ -23,6 +21,8 @@ use App\Models\Stage;
 use App\Models\User;
 use App\Models\UserDeal;
 use App\Models\Utility;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 

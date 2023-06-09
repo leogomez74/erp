@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
 use App\Models\Branch;
 use App\Models\Department;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class DepartmentController extends Controller

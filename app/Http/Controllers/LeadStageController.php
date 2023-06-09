@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
 use App\Models\LeadStage;
 use App\Models\Pipeline;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class LeadStageController extends Controller

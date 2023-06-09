@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\Models\Companies;
 use App\Models\CustomField;
 use App\Models\Employee;
@@ -14,9 +12,11 @@ use App\Models\UserToDo;
 use App\Models\Utility;
 use Auth;
 use File;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\View\View;
 use Session;
 use Spatie\Permission\Models\Role;
 

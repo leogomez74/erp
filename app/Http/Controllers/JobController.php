@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\Models\Branch;
 use App\Models\CustomQuestion;
 use App\Models\Job;
@@ -12,7 +10,9 @@ use App\Models\JobApplicationNote;
 use App\Models\JobCategory;
 use App\Models\User;
 use App\Models\Utility;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class JobController extends Controller
 {

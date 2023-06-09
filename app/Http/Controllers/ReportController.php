@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Symfony\Component\HttpFoundation\StreamedResponse;
-use Illuminate\View\View;
 use App\Models\AttendanceEmployee;
 use App\Models\BankAccount;
 use App\Models\Bill;
@@ -33,6 +31,8 @@ use App\Models\Vender;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ReportController extends Controller
 {

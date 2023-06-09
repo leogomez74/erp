@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\JsonResponse;
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\Exports\InvoiceExport;
 use App\Models\BankAccount;
 use App\Models\Charges;
@@ -23,11 +20,14 @@ use App\Models\StockReport;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\Utility;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 
 class InvoiceController extends Controller

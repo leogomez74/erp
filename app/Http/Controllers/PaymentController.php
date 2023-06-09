@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
 use App\Models\BankAccount;
 use App\Models\BillPayment;
 use App\Models\ChartOfAccount;
@@ -12,6 +11,7 @@ use App\Models\ProductServiceCategory;
 use App\Models\Transaction;
 use App\Models\Utility;
 use App\Models\Vender;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller

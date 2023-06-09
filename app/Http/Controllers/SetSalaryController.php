@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
 use App\Models\Allowance;
 use App\Models\AllowanceOption;
 use App\Models\Commission;
@@ -15,7 +13,9 @@ use App\Models\OtherPayment;
 use App\Models\Overtime;
 use App\Models\PayslipType;
 use App\Models\SaturationDeduction;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class SetSalaryController extends Controller
 {

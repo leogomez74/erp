@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
 use App\Models\Branch;
 use App\Models\Employee;
 use App\Models\GoalTracking;
 use App\Models\GoalType;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class GoalTrackingController extends Controller

@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
 use App\Models\BankAccount;
 use App\Models\ChartOfAccount;
 use App\Models\ChartOfAccountType;
-//use App\Models\Mail\InvoicePaymentCreate;
 use App\Models\Customer;
+//use App\Models\Mail\InvoicePaymentCreate;
 use App\Models\InvoicePayment;
 use App\Models\ProductServiceCategory;
 use App\Models\Revenue;
 use App\Models\Transaction;
 use App\Models\Utility;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 

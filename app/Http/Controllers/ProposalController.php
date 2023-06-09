@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
 use App\Exports\ProposalExport;
 use App\Models\Customer;
 use App\Models\CustomField;
@@ -16,10 +14,12 @@ use App\Models\ProposalProduct;
 use App\Models\StockReport;
 use App\Models\User;
 use App\Models\Utility;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ProposalController extends Controller

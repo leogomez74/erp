@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
 use App\Models\AllowanceOption;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class AllowanceOptionController extends Controller

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
 use App\Models\ProductService;
 use App\Models\ProductServiceUnit;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class ProductServiceUnitController extends Controller

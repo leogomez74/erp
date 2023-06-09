@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\JsonResponse;
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\Models\ClientDeal;
 use App\Models\Deal;
 use App\Models\DealCall;
@@ -28,8 +25,11 @@ use App\Models\User;
 use App\Models\UserDeal;
 use App\Models\UserLead;
 use App\Models\Utility;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\View\View;
 use Spatie\Permission\Models\Role;
 
 class LeadController extends Controller

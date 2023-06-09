@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
 use App\Models\BillProduct;
 use App\Models\InvoiceProduct;
 use App\Models\ProposalProduct;
 use App\Models\Tax;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class TaxController extends Controller

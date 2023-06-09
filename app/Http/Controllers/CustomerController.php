@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\Exports\CustomerExport;
 use App\Imports\CustomerImport;
 use App\Models\ClientType;
@@ -16,8 +14,10 @@ use App\Models\User;
 use App\Models\Utility;
 use Auth;
 use File;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 
 class CustomerController extends Controller

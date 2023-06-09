@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
 use App\Models\BankAccount;
 use App\Models\BillPayment;
 use App\Models\CustomField;
@@ -10,6 +9,7 @@ use App\Models\InvoicePayment;
 use App\Models\Payment;
 use App\Models\Revenue;
 use App\Models\Transaction;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class BankAccountController extends Controller

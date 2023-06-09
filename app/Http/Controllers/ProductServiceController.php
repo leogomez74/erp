@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\Exports\ProductServiceExport;
 use App\Imports\ProductServiceImport;
 use App\Models\Currencie;
@@ -14,8 +12,10 @@ use App\Models\ProductServiceCategory;
 use App\Models\ProductServiceUnit;
 use App\Models\Tax;
 use App\Models\Vender;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ProductServiceController extends Controller

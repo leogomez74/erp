@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
 use App\Models\Department;
 use App\Models\Designation;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class DesignationController extends Controller

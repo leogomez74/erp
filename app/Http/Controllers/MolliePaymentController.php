@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
 use App\Models\Coupon;
 use App\Models\Customer;
 use App\Models\Invoice;
@@ -11,6 +10,7 @@ use App\Models\Order;
 use App\Models\Plan;
 use App\Models\UserCoupon;
 use App\Models\Utility;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;

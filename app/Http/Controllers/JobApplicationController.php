@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\JsonResponse;
 use App\Models\Branch;
 use App\Models\CustomQuestion;
 use App\Models\Department;
@@ -22,10 +19,13 @@ use App\Models\Mail\UserCreate;
 use App\Models\Plan;
 use App\Models\User;
 use App\Models\Utility;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\View\View;
 
 class JobApplicationController extends Controller
 {
