@@ -38,7 +38,7 @@ class facturasVencidas extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $total_amount = 0;
 //        $waYoselin = "50686975829";

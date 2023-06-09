@@ -27,7 +27,7 @@ class checkCharges extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $waYoselin = '50686975829';
         $waMaria = '50670718888';

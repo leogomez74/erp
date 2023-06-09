@@ -12,7 +12,7 @@ class PlansTableSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         Plan::create(
             [

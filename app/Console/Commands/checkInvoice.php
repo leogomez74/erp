@@ -36,7 +36,7 @@ class checkInvoice extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $vencidas = Invoice::whereNotIn('status', [3, 4, 5])->where('due_date', '<', now()->format('Y-m-d'));
 
