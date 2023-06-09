@@ -65,9 +65,6 @@ class StageController extends Controller
 
     /**
      * Store a newly created restage in storage.
-     *
-     *
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request): RedirectResponse
     {
@@ -98,9 +95,6 @@ class StageController extends Controller
 
     /**
      * Display the specified restage.
-     *
-     * @param  \App\Stage  $stage
-     * @return \Illuminate\Http\Response
      */
     public function show(Stage $stage): RedirectResponse
     {
@@ -110,7 +104,6 @@ class StageController extends Controller
     /**
      * Show the form for editing the specified restage.
      *
-     * @param  \App\Stage  $stage
      * @return \Illuminate\Http\Response
      */
     public function edit(Stage $stage)
@@ -130,9 +123,6 @@ class StageController extends Controller
 
     /**
      * Update the specified restage in storage.
-     *
-     * @param  \App\Stage  $stage
-     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Stage $stage): RedirectResponse
     {
@@ -165,9 +155,6 @@ class StageController extends Controller
 
     /**
      * Remove the specified restage from storage.
-     *
-     * @param  \App\Stage  $stage
-     * @return \Illuminate\Http\Response
      */
     public function destroy(Stage $stage): RedirectResponse
     {

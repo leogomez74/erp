@@ -122,7 +122,6 @@ trait ZoomMeetingTrait
     }
 
     /**
-     * @param  string  $id
      * @return bool[]
      */
     public function delete(string $id): array

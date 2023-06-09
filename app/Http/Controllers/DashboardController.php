@@ -53,8 +53,6 @@ class DashboardController extends Controller
 
     /**
      * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
      */
     public function account_dashboard_index(): Renderable
     {

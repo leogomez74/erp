@@ -9,9 +9,6 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class CustomerExport implements FromCollection, WithHeadings
 {
-    /**
-     * @return \Illuminate\Support\Collection
-     */
     public function collection(): Collection
     {
         $data = Customer::get();

@@ -101,9 +101,6 @@ class LeadController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     *
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request): RedirectResponse
     {
@@ -236,7 +233,6 @@ class LeadController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Lead  $lead
      * @return \Illuminate\Http\Response
      */
     public function show(Lead $lead)
@@ -263,7 +259,6 @@ class LeadController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Lead  $lead
      * @return \Illuminate\Http\Response
      */
     public function edit(Lead $lead)
@@ -289,9 +284,6 @@ class LeadController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \App\Lead  $lead
-     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Lead $lead): RedirectResponse
     {
@@ -339,9 +331,6 @@ class LeadController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Lead  $lead
-     * @return \Illuminate\Http\Response
      */
     public function destroy(Lead $lead): RedirectResponse
     {

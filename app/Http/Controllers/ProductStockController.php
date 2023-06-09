@@ -88,7 +88,6 @@ class ProductStockController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Models\ProductStock  $productStock
-     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id): RedirectResponse
     {

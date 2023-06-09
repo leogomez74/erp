@@ -148,9 +148,6 @@ class DealController extends Controller
 
     /**
      * Store a newly created redeal in storage.
-     *
-     *
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request): RedirectResponse
     {
@@ -282,7 +279,6 @@ class DealController extends Controller
     /**
      * Display the specified redeal.
      *
-     * @param  \App\Deal  $deal
      * @return \Illuminate\Http\Response
      */
     public function show(Deal $deal)
@@ -317,7 +313,6 @@ class DealController extends Controller
     /**
      * Show the form for editing the specified redeal.
      *
-     * @param  \App\Deal  $deal
      * @return \Illuminate\Http\Response
      */
     public function edit(Deal $deal)
@@ -344,9 +339,6 @@ class DealController extends Controller
 
     /**
      * Update the specified redeal in storage.
-     *
-     * @param  \App\Deal  $deal
-     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Deal $deal): RedirectResponse
     {
@@ -392,9 +384,6 @@ class DealController extends Controller
 
     /**
      * Remove the specified redeal from storage.
-     *
-     * @param  \App\Deal  $deal
-     * @return \Illuminate\Http\Response
      */
     public function destroy(Deal $deal): RedirectResponse
     {

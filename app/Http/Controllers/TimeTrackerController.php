@@ -13,8 +13,6 @@ class TimeTrackerController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index(): View
     {
@@ -77,7 +75,6 @@ class TimeTrackerController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\TimeTracker  $timeTracker
-     * @return \Illuminate\Http\Response
      */
     public function destroy($timetracker_id): RedirectResponse
     {

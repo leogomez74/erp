@@ -65,9 +65,6 @@ class LabelController extends Controller
 
     /**
      * Store a newly created relabel in storage.
-     *
-     *
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request): RedirectResponse
     {
@@ -101,9 +98,6 @@ class LabelController extends Controller
 
     /**
      * Display the specified relabel.
-     *
-     * @param  \App\Label  $label
-     * @return \Illuminate\Http\Response
      */
     public function show(Label $label): RedirectResponse
     {
@@ -113,7 +107,6 @@ class LabelController extends Controller
     /**
      * Show the form for editing the specified relabel.
      *
-     * @param  \App\Label  $label
      * @return \Illuminate\Http\Response
      */
     public function edit(Label $label)
@@ -134,9 +127,6 @@ class LabelController extends Controller
 
     /**
      * Update the specified relabel in storage.
-     *
-     * @param  \App\Label  $label
-     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Label $label): RedirectResponse
     {
@@ -172,9 +162,6 @@ class LabelController extends Controller
 
     /**
      * Remove the specified relabel from storage.
-     *
-     * @param  \App\Label  $label
-     * @return \Illuminate\Http\Response
      */
     public function destroy(Label $label): RedirectResponse
     {

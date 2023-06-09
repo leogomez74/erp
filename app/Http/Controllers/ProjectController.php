@@ -59,8 +59,6 @@ class ProjectController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request): RedirectResponse
     {
@@ -299,7 +297,6 @@ class ProjectController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Poject  $poject
-     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Project $project): RedirectResponse
     {
@@ -340,7 +337,6 @@ class ProjectController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Poject  $poject
-     * @return \Illuminate\Http\Response
      */
     public function destroy(Project $project): RedirectResponse
     {

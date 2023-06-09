@@ -19,7 +19,6 @@ class MessagesController extends Controller
     /**
      * Authinticate the connection for pusher
      *
-     * @param Request $request
      *
      * @return void
      */
@@ -52,7 +51,6 @@ class MessagesController extends Controller
     /**
      * Returning the view of the app with the required data.
      *
-     * @param int $id
      *
      * @return void
      */
@@ -84,10 +82,6 @@ class MessagesController extends Controller
 
     /**
      * Fetch data by id for (user/group)
-     *
-     * @param Request $request
-     *
-     * @return collection
      */
     public function idFetchData(Request $request): JsonResponse
     {
@@ -123,7 +117,6 @@ class MessagesController extends Controller
      * This method to make a links for the attachments
      * to be downloadable.
      *
-     * @param string $fileName
      *
      * @return void
      */
@@ -143,7 +136,6 @@ class MessagesController extends Controller
     /**
      * Send a message to database
      *
-     * @param Request $request
      *
      * @return JSON response
      */
@@ -237,7 +229,6 @@ class MessagesController extends Controller
     /**
      * fetch [user/group] messages from database
      *
-     * @param Request $request
      *
      * @return JSON response
      */
@@ -280,10 +271,6 @@ class MessagesController extends Controller
 
     /**
      * Make messages as seen
-     *
-     * @param Request $request
-     *
-     * @return void
      */
     public function seen(Request $request): JsonResponse
     {
@@ -309,7 +296,6 @@ class MessagesController extends Controller
     /**
      * Get contacts list
      *
-     * @param Request $request
      *
      * @return JSON response
      */
@@ -375,7 +361,6 @@ class MessagesController extends Controller
     /**
      * Update user's list item data
      *
-     * @param Request $request
      *
      * @return JSON response
      */
@@ -397,10 +382,6 @@ class MessagesController extends Controller
 
     /**
      * Put a user in the favorites list
-     *
-     * @param Request $request
-     *
-     * @return void
      */
     public function favorite(Request $request): JsonResponse
     {
@@ -428,10 +409,6 @@ class MessagesController extends Controller
 
     /**
      * Get favorites list
-     *
-     * @param Request $request
-     *
-     * @return void
      */
     public function getFavorites(Request $request): JsonResponse
     {
@@ -459,10 +436,6 @@ class MessagesController extends Controller
 
     /**
      * Search in messenger
-     *
-     * @param Request $request
-     *
-     * @return void
      */
     public function search(Request $request): JsonResponse
     {
@@ -493,10 +466,6 @@ class MessagesController extends Controller
 
     /**
      * Get shared photos
-     *
-     * @param Request $request
-     *
-     * @return void
      */
     public function sharedPhotos(Request $request): JsonResponse
     {
@@ -524,10 +493,6 @@ class MessagesController extends Controller
 
     /**
      * Delete conversation
-     *
-     * @param Request $request
-     *
-     * @return void
      */
     public function deleteConversation(Request $request): JsonResponse
     {
@@ -616,10 +581,6 @@ class MessagesController extends Controller
 
     /**
      * Set user's active status
-     *
-     * @param Request $request
-     *
-     * @return void
      */
     public function setActiveStatus(Request $request): JsonResponse
     {

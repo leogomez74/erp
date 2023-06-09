@@ -22,8 +22,6 @@ class AuthenticatedSessionController extends Controller
 {
     /**
      * Display the login view.
-     *
-     * @return \Illuminate\View\View
      */
     public function __construct(): View
     {
@@ -42,9 +40,6 @@ class AuthenticatedSessionController extends Controller
 
     /**
      * Handle an incoming authentication request.
-     *
-     *
-     * @return \Illuminate\Http\RedirectResponse
      */
 
     // protected function authenticated(Request $request)
@@ -119,9 +114,6 @@ class AuthenticatedSessionController extends Controller
 
     /**
      * Destroy an authenticated session.
-     *
-     *
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request): RedirectResponse
     {

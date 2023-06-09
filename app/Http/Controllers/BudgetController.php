@@ -94,9 +94,6 @@ class BudgetController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     *
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request): RedirectResponse
     {
@@ -563,9 +560,6 @@ class BudgetController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     *
-     * @return \Illuminate\Http\Response
      */
     public function destroy(Budget $budget): RedirectResponse
     {
