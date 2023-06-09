@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateCustomersTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -24,4 +24,4 @@ class UpdateCustomersTable extends Migration
     {
         //
     }
-}
+};
