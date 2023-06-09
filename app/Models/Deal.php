@@ -54,12 +54,12 @@ class Deal extends Model
 
     public function pipeline()
     {
-        return $this->hasOne('App\Models\Pipeline', 'id', 'pipeline_id');
+        return $this->hasOne(\App\Models\Pipeline::class, 'id', 'pipeline_id');
     }
 
     public function stage()
     {
-        return $this->hasOne('App\Models\Stage', 'id', 'stage_id');
+        return $this->hasOne(\App\Models\Stage::class, 'id', 'stage_id');
     }
 
     public function group()
@@ -69,12 +69,12 @@ class Deal extends Model
 
     public function clients()
     {
-        return $this->belongsToMany('App\Models\User', 'client_deals', 'deal_id', 'client_id');
+        return $this->belongsToMany(\App\Models\User::class, 'client_deals', 'deal_id', 'client_id');
     }
 
     public function users()
     {
-        return $this->belongsToMany('App\Models\User', 'user_deals', 'deal_id', 'user_id');
+        return $this->belongsToMany(\App\Models\User::class, 'user_deals', 'deal_id', 'user_id');
     }
 
     public function products()
@@ -97,42 +97,42 @@ class Deal extends Model
 
     public function files()
     {
-        return $this->hasMany('App\Models\DealFile', 'deal_id', 'id');
+        return $this->hasMany(\App\Models\DealFile::class, 'deal_id', 'id');
     }
 
     public function tasks()
     {
-        return $this->hasMany('App\Models\DealTask', 'deal_id', 'id');
+        return $this->hasMany(\App\Models\DealTask::class, 'deal_id', 'id');
     }
 
     public function complete_tasks()
     {
-        return $this->hasMany('App\Models\DealTask', 'deal_id', 'id')->where('status', '=', 1);
+        return $this->hasMany(\App\Models\DealTask::class, 'deal_id', 'id')->where('status', '=', 1);
     }
 
     public function invoices()
     {
-        return $this->hasMany('App\Models\Invoice', 'deal_id', 'id');
+        return $this->hasMany(\App\Models\Invoice::class, 'deal_id', 'id');
     }
 
     public function calls()
     {
-        return $this->hasMany('App\Models\DealCall', 'deal_id', 'id');
+        return $this->hasMany(\App\Models\DealCall::class, 'deal_id', 'id');
     }
 
     public function emails()
     {
-        return $this->hasMany('App\Models\DealEmail', 'deal_id', 'id')->orderByDesc('id');
+        return $this->hasMany(\App\Models\DealEmail::class, 'deal_id', 'id')->orderByDesc('id');
     }
 
     public function activities()
     {
-        return $this->hasMany('App\Models\ActivityLog', 'deal_id', 'id')->orderBy('id', 'desc');
+        return $this->hasMany(\App\Models\ActivityLog::class, 'deal_id', 'id')->orderBy('id', 'desc');
     }
 
     public function discussions()
     {
-        return $this->hasMany('App\Models\DealDiscussion', 'deal_id', 'id')->orderBy('id', 'desc');
+        return $this->hasMany(\App\Models\DealDiscussion::class, 'deal_id', 'id')->orderBy('id', 'desc');
     }
 
     public static function getDealSummary($deals)

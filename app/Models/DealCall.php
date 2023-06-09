@@ -18,6 +18,6 @@ class DealCall extends Model
 
     public function getDealCallUser()
     {
-        return $this->hasOne('App\Models\User', 'id', 'user_id');
+        return $this->hasOne(\App\Models\User::class, 'id', 'user_id');
     }
 }

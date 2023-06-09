@@ -15,6 +15,6 @@ class CreditNote extends Model
 
     public function customer()
     {
-        return $this->hasOne('App\Models\Customer', 'customer_id', 'customer');
+        return $this->hasOne(\App\Models\Customer::class, 'customer_id', 'customer');
     }
 }

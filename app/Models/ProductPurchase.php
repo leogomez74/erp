@@ -23,6 +23,6 @@ class ProductPurchase extends Model
     }*/
     public function currency()
     {
-        return $this->hasOne('App\Models\Currencie', 'id', 'currency_id');
+        return $this->hasOne(\App\Models\Currencie::class, 'id', 'currency_id');
     }
 }

@@ -19,12 +19,12 @@ class Contract extends Model
 
     public function clients()
     {
-        return $this->hasOne('App\Models\User', 'id', 'client_name');
+        return $this->hasOne(\App\Models\User::class, 'id', 'client_name');
     }
 
     public function types()
     {
-        return $this->hasOne('App\Models\ContractType', 'id', 'type');
+        return $this->hasOne(\App\Models\ContractType::class, 'id', 'type');
     }
 
     public static function getContractSummary($contracts)

@@ -34,17 +34,17 @@ class Lead extends Model
 
     public function stage()
     {
-        return $this->hasOne('App\Models\LeadStage', 'id', 'stage_id');
+        return $this->hasOne(\App\Models\LeadStage::class, 'id', 'stage_id');
     }
 
     public function files()
     {
-        return $this->hasMany('App\Models\LeadFile', 'lead_id', 'id');
+        return $this->hasMany(\App\Models\LeadFile::class, 'lead_id', 'id');
     }
 
     public function pipeline()
     {
-        return $this->hasOne('App\Models\Pipeline', 'id', 'pipeline_id');
+        return $this->hasOne(\App\Models\Pipeline::class, 'id', 'pipeline_id');
     }
 
     public function products()
@@ -67,26 +67,26 @@ class Lead extends Model
 
     public function users()
     {
-        return $this->belongsToMany('App\Models\User', 'user_leads', 'lead_id', 'user_id');
+        return $this->belongsToMany(\App\Models\User::class, 'user_leads', 'lead_id', 'user_id');
     }
 
     public function activities()
     {
-        return $this->hasMany('App\Models\LeadActivityLog', 'lead_id', 'id')->orderBy('id', 'desc');
+        return $this->hasMany(\App\Models\LeadActivityLog::class, 'lead_id', 'id')->orderBy('id', 'desc');
     }
 
     public function discussions()
     {
-        return $this->hasMany('App\Models\LeadDiscussion', 'lead_id', 'id')->orderBy('id', 'desc');
+        return $this->hasMany(\App\Models\LeadDiscussion::class, 'lead_id', 'id')->orderBy('id', 'desc');
     }
 
     public function calls()
     {
-        return $this->hasMany('App\Models\LeadCall', 'lead_id', 'id');
+        return $this->hasMany(\App\Models\LeadCall::class, 'lead_id', 'id');
     }
 
     public function emails()
     {
-        return $this->hasMany('App\Models\LeadEmail', 'lead_id', 'id')->orderByDesc('id');
+        return $this->hasMany(\App\Models\LeadEmail::class, 'lead_id', 'id')->orderByDesc('id');
     }
 }

@@ -14,6 +14,6 @@ class EmailTemplate extends Model
 
     public function template()
     {
-        return $this->hasOne('App\Models\UserEmailTemplate', 'template_id', 'id')->where('user_id', '=', \Auth::user()->id);
+        return $this->hasOne(\App\Models\UserEmailTemplate::class, 'template_id', 'id')->where('user_id', '=', \Auth::user()->id);
     }
 }

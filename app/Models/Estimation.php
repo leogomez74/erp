@@ -27,17 +27,17 @@ class Estimation extends Model
 
     public function client()
     {
-        return $this->hasOne('App\Models\User', 'id', 'client_id');
+        return $this->hasOne(\App\Models\User::class, 'id', 'client_id');
     }
 
     public function tax()
     {
-        return $this->hasOne('App\Models\Tax', 'id', 'tax_id');
+        return $this->hasOne(\App\Models\Tax::class, 'id', 'tax_id');
     }
 
     public function getProducts()
     {
-        return $this->belongsToMany('App\Models\ProductService', 'estimation_products', 'estimation_id', 'product_id')->withPivot('id', 'price', 'quantity', 'description');
+        return $this->belongsToMany(\App\Models\ProductService::class, 'estimation_products', 'estimation_id', 'product_id')->withPivot('id', 'price', 'quantity', 'description');
     }
 
     public function getSubTotal()

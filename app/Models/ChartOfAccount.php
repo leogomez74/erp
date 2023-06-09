@@ -20,7 +20,7 @@ class ChartOfAccount extends Model
 
     public function types()
     {
-        return $this->hasOne('App\Models\ChartOfAccountType', 'id', 'type');
+        return $this->hasOne(\App\Models\ChartOfAccountType::class, 'id', 'type');
     }
 
     public function types_account($id = null)
@@ -30,7 +30,7 @@ class ChartOfAccount extends Model
 
     public function accounts()
     {
-        return $this->hasOne('App\Models\JournalItem', 'account', 'id');
+        return $this->hasOne(\App\Models\JournalItem::class, 'account', 'id');
     }
 
     public function balance()
@@ -46,20 +46,20 @@ class ChartOfAccount extends Model
 
     public function subType()
     {
-        return $this->hasOne('App\Models\ChartOfAccountSubType', 'id', 'sub_type');
+        return $this->hasOne(\App\Models\ChartOfAccountSubType::class, 'id', 'sub_type');
     }
 
     public function transaction()
     {
-        return $this->hasOne('App\Models\Transaction', 'account', 'id');
+        return $this->hasOne(\App\Models\Transaction::class, 'account', 'id');
     }
 
     public function incomeCategoryRevenueAmount()
     {
         $year = date('Y');
 
-        $revenue = $this->hasMany('App\Models\Revenue', 'account_id', 'id')->where('created_by', \Auth::user()->creatorId())->whereRAW('YEAR(date) =?', [$year])->sum('amount');
-        $invoices = $this->hasMany('App\Models\Invoice', 'category_id', 'id')->where('created_by', \Auth::user()->creatorId())->whereRAW('YEAR(send_date) =?', [$year])->get();
+        $revenue = $this->hasMany(\App\Models\Revenue::class, 'account_id', 'id')->where('created_by', \Auth::user()->creatorId())->whereRAW('YEAR(date) =?', [$year])->sum('amount');
+        $invoices = $this->hasMany(\App\Models\Invoice::class, 'category_id', 'id')->where('created_by', \Auth::user()->creatorId())->whereRAW('YEAR(send_date) =?', [$year])->get();
         $invoiceArray = [];
         foreach ($invoices as $invoice) {
             $invoiceArray[] = $invoice->getTotal();
@@ -72,9 +72,9 @@ class ChartOfAccount extends Model
     public function expenseCategoryAmount()
     {
         $year = date('Y');
-        $payment = $this->hasMany('App\Models\Payment', 'account_id', 'id')->where('created_by', \Auth::user()->creatorId())->whereRAW('YEAR(date) =?', [$year])->sum('amount');
+        $payment = $this->hasMany(\App\Models\Payment::class, 'account_id', 'id')->where('created_by', \Auth::user()->creatorId())->whereRAW('YEAR(date) =?', [$year])->sum('amount');
 
-        $bills = $this->hasMany('App\Models\Bill', 'category_id', 'id')->where('created_by', \Auth::user()->creatorId())->whereRAW('YEAR(send_date) =?', [$year])->get();
+        $bills = $this->hasMany(\App\Models\Bill::class, 'category_id', 'id')->where('created_by', \Auth::user()->creatorId())->whereRAW('YEAR(send_date) =?', [$year])->get();
         $billArray = [];
         foreach ($bills as $bill) {
             $billArray[] = $bill->getTotal();

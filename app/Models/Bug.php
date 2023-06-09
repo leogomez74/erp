@@ -27,32 +27,32 @@ class Bug extends Model
 
     public function bug_status()
     {
-        return $this->hasOne('App\Models\BugStatus', 'id', 'status');
+        return $this->hasOne(\App\Models\BugStatus::class, 'id', 'status');
     }
 
     public function assignTo()
     {
-        return $this->hasOne('App\Models\User', 'id', 'assign_to');
+        return $this->hasOne(\App\Models\User::class, 'id', 'assign_to');
     }
 
     public function createdBy()
     {
-        return $this->hasOne('App\Models\User', 'id', 'created_by');
+        return $this->hasOne(\App\Models\User::class, 'id', 'created_by');
     }
 
     public function comments()
     {
-        return $this->hasMany('App\Models\BugComment', 'bug_id', 'id')->orderBy('id', 'DESC');
+        return $this->hasMany(\App\Models\BugComment::class, 'bug_id', 'id')->orderBy('id', 'DESC');
     }
 
     public function bugFiles()
     {
-        return $this->hasMany('App\Models\BugFile', 'bug_id', 'id')->orderBy('id', 'DESC');
+        return $this->hasMany(\App\Models\BugFile::class, 'bug_id', 'id')->orderBy('id', 'DESC');
     }
 
     public function project()
     {
-        return $this->hasOne('App\Models\Project', 'id', 'project_id');
+        return $this->hasOne(\App\Models\Project::class, 'id', 'project_id');
     }
 
     public function users()

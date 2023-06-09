@@ -42,7 +42,7 @@ class ProjectTask extends Model
 
     public function milestone()
     {
-        return $this->hasOne('App\Models\Milestone', 'id', 'milestone_id');
+        return $this->hasOne(\App\Models\Milestone::class, 'id', 'milestone_id');
     }
 
     public function users()
@@ -52,12 +52,12 @@ class ProjectTask extends Model
 
     public function project()
     {
-        return $this->hasOne('App\Models\Project', 'id', 'project_id');
+        return $this->hasOne(\App\Models\Project::class, 'id', 'project_id');
     }
 
     public function stage()
     {
-        return $this->hasOne('App\Models\TaskStage', 'id', 'stage_id');
+        return $this->hasOne(\App\Models\TaskStage::class, 'id', 'stage_id');
     }
 
     public function taskProgress()
@@ -82,22 +82,22 @@ class ProjectTask extends Model
 
     public function task_user()
     {
-        return $this->hasOne('App\Models\User', 'id', 'assign_to');
+        return $this->hasOne(\App\Models\User::class, 'id', 'assign_to');
     }
 
     public function checklist()
     {
-        return $this->hasMany('App\Models\TaskChecklist', 'task_id', 'id')->orderBy('id', 'DESC');
+        return $this->hasMany(\App\Models\TaskChecklist::class, 'task_id', 'id')->orderBy('id', 'DESC');
     }
 
     public function taskFiles()
     {
-        return $this->hasMany('App\Models\TaskFile', 'task_id', 'id')->orderBy('id', 'DESC');
+        return $this->hasMany(\App\Models\TaskFile::class, 'task_id', 'id')->orderBy('id', 'DESC');
     }
 
     public function comments()
     {
-        return $this->hasMany('App\Models\TaskComment', 'task_id', 'id')->orderBy('id', 'DESC');
+        return $this->hasMany(\App\Models\TaskComment::class, 'task_id', 'id')->orderBy('id', 'DESC');
     }
 
     public function countTaskChecklist()
@@ -157,7 +157,7 @@ class ProjectTask extends Model
             foreach ($task_ids as $task_id) {
                 $task = ProjectTask::find($task_id);
                 $taskCollectionArray = $task->toArray();
-                $taskCollectionArray['taskinfo'] = json_decode(app('App\Http\Controllers\ProjectTaskController')->getDefaultTaskInfo($request, $task->id), true);
+                $taskCollectionArray['taskinfo'] = json_decode(app(\App\Http\Controllers\ProjectTaskController::class)->getDefaultTaskInfo($request, $task->id), true);
 
                 $taskArray[$counter]['sections'][] = $taskCollectionArray;
             }
@@ -171,7 +171,7 @@ class ProjectTask extends Model
                 $sectiontasks = $tasks;
 
                 foreach ($tasks as $onekey => $onetask) {
-                    $sectiontasks[$onekey]['taskinfo'] = json_decode(app('App\Http\Controllers\ProjectTaskController')->getDefaultTaskInfo($request, $onetask['id']), true);
+                    $sectiontasks[$onekey]['taskinfo'] = json_decode(app(\App\Http\Controllers\ProjectTaskController::class)->getDefaultTaskInfo($request, $onetask['id']), true);
                 }
 
                 $taskArray[$counter]['sections'] = $sectiontasks;
@@ -185,6 +185,6 @@ class ProjectTask extends Model
 
     public function timesheets()
     {
-        return $this->hasMany('App\Models\Timesheet', 'task_id', 'id')->orderBy('id', 'desc');
+        return $this->hasMany(\App\Models\Timesheet::class, 'task_id', 'id')->orderBy('id', 'desc');
     }
 }

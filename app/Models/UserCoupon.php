@@ -13,11 +13,11 @@ class UserCoupon extends Model
 
     public function userDetail()
     {
-        return $this->hasOne('App\Models\User', 'id', 'user');
+        return $this->hasOne(\App\Models\User::class, 'id', 'user');
     }
 
     public function coupon_detail()
     {
-        return $this->hasOne('App\Models\Coupon', 'id', 'coupon');
+        return $this->hasOne(\App\Models\Coupon::class, 'id', 'coupon');
     }
 }

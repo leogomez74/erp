@@ -14,11 +14,11 @@ class PlanRequest extends Model
 
     public function plan()
     {
-        return $this->hasOne('App\Models\Plan', 'id', 'plan_id');
+        return $this->hasOne(\App\Models\Plan::class, 'id', 'plan_id');
     }
 
     public function user()
     {
-        return $this->hasOne('App\Models\User', 'id', 'user_id');
+        return $this->hasOne(\App\Models\User::class, 'id', 'user_id');
     }
 }

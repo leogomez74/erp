@@ -20,22 +20,22 @@ class Task extends Model
 
     public function task_user()
     {
-        return $this->hasOne('App\Models\User', 'id', 'assign_to');
+        return $this->hasOne(\App\Models\User::class, 'id', 'assign_to');
     }
 
     public function project()
     {
-        return $this->hasOne('App\Models\Project', 'id', 'project_id');
+        return $this->hasOne(\App\Models\Project::class, 'id', 'project_id');
     }
 
     public function comments()
     {
-        return $this->hasMany('App\Models\TaskComment', 'task_id', 'id')->orderBy('id', 'DESC');
+        return $this->hasMany(\App\Models\TaskComment::class, 'task_id', 'id')->orderBy('id', 'DESC');
     }
 
     public function taskFiles()
     {
-        return $this->hasMany('App\Models\TaskFile', 'task_id', 'id')->orderBy('id', 'DESC');
+        return $this->hasMany(\App\Models\TaskFile::class, 'task_id', 'id')->orderBy('id', 'DESC');
     }
 
     public function taskCheckList()
@@ -55,6 +55,6 @@ class Task extends Model
 
     public function milestone()
     {
-        return $this->hasOne('App\Models\Milestone', 'id', 'milestone_id');
+        return $this->hasOne(\App\Models\Milestone::class, 'id', 'milestone_id');
     }
 }

@@ -27,22 +27,22 @@ class Bill extends Model
 
     public function vender()
     {
-        return $this->hasOne('App\Models\Vender', 'id', 'vender_id');
+        return $this->hasOne(\App\Models\Vender::class, 'id', 'vender_id');
     }
 
     public function tax()
     {
-        return $this->hasOne('App\Models\Tax', 'id', 'tax_id');
+        return $this->hasOne(\App\Models\Tax::class, 'id', 'tax_id');
     }
 
     public function items()
     {
-        return $this->hasMany('App\Models\BillProduct', 'bill_id', 'id');
+        return $this->hasMany(\App\Models\BillProduct::class, 'bill_id', 'id');
     }
 
     public function payments()
     {
-        return $this->hasMany('App\Models\BillPayment', 'bill_id', 'id');
+        return $this->hasMany(\App\Models\BillPayment::class, 'bill_id', 'id');
     }
 
     public function getSubTotal()
@@ -94,26 +94,26 @@ class Bill extends Model
 
     public function category()
     {
-        return $this->hasOne('App\Models\ProductServiceCategory', 'id', 'category_id');
+        return $this->hasOne(\App\Models\ProductServiceCategory::class, 'id', 'category_id');
     }
 
     public function debitNote()
     {
-        return $this->hasMany('App\Models\DebitNote', 'bill', 'id');
+        return $this->hasMany(\App\Models\DebitNote::class, 'bill', 'id');
     }
 
     public function billTotalDebitNote()
     {
-        return $this->hasMany('App\Models\DebitNote', 'bill', 'id')->sum('amount');
+        return $this->hasMany(\App\Models\DebitNote::class, 'bill', 'id')->sum('amount');
     }
 
     public function lastPayments()
     {
-        return $this->hasOne('App\Models\BillPayment', 'id', 'bill_id');
+        return $this->hasOne(\App\Models\BillPayment::class, 'id', 'bill_id');
     }
 
     public function taxes()
     {
-        return $this->hasOne('App\Models\Tax', 'id', 'tax');
+        return $this->hasOne(\App\Models\Tax::class, 'id', 'tax');
     }
 }

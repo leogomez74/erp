@@ -21,11 +21,11 @@ class Leave extends Model
 
     public function leaveType()
     {
-        return $this->hasOne('App\Models\LeaveType', 'id', 'leave_type_id');
+        return $this->hasOne(\App\Models\LeaveType::class, 'id', 'leave_type_id');
     }
 
     public function employees()
     {
-        return $this->hasOne('App\Models\Employee', 'id', 'employee_id');
+        return $this->hasOne(\App\Models\Employee::class, 'id', 'employee_id');
     }
 }

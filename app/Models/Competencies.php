@@ -20,6 +20,6 @@ class Competencies extends Model
 
     public function performance()
     {
-        return $this->hasOne('App\Models\PerformanceType', 'id', 'type');
+        return $this->hasOne(\App\Models\PerformanceType::class, 'id', 'type');
     }
 }

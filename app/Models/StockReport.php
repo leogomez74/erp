@@ -19,6 +19,6 @@ class StockReport extends Model
 
     public function product()
     {
-        return $this->hasOne('App\Models\ProductService', 'id', 'product_id');
+        return $this->hasOne(\App\Models\ProductService::class, 'id', 'product_id');
     }
 }

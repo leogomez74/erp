@@ -15,6 +15,6 @@ class Milestone extends Model
 
     public function tasks()
     {
-        return $this->hasMany('App\Models\ProjectTask', 'milestone_id', 'id');
+        return $this->hasMany(\App\Models\ProjectTask::class, 'milestone_id', 'id');
     }
 }

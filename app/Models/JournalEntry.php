@@ -16,7 +16,7 @@ class JournalEntry extends Model
 
     public function accounts()
     {
-        return $this->hasmany('App\Models\JournalItem', 'journal', 'id');
+        return $this->hasmany(\App\Models\JournalItem::class, 'journal', 'id');
     }
 
     public function totalCredit()

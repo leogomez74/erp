@@ -18,6 +18,6 @@ class LeadCall extends Model
 
     public function getLeadCallUser()
     {
-        return $this->hasOne('App\Models\User', 'id', 'user_id');
+        return $this->hasOne(\App\Models\User::class, 'id', 'user_id');
     }
 }

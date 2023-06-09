@@ -16,6 +16,6 @@ class SupportReply extends Model
 
     public function users()
     {
-        return $this->hasOne('App\Models\User', 'id', 'user');
+        return $this->hasOne(\App\Models\User::class, 'id', 'user');
     }
 }

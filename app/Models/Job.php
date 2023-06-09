@@ -31,12 +31,12 @@ class Job extends Model
 
     public function branches()
     {
-        return $this->hasOne('App\Models\Branch', 'id', 'branch');
+        return $this->hasOne(\App\Models\Branch::class, 'id', 'branch');
     }
 
     public function categories()
     {
-        return $this->hasOne('App\Models\JobCategory', 'id', 'category');
+        return $this->hasOne(\App\Models\JobCategory::class, 'id', 'category');
     }
 
     public function questions()
@@ -48,6 +48,6 @@ class Job extends Model
 
     public function createdBy()
     {
-        return $this->hasOne('App\Models\User', 'id', 'created_by');
+        return $this->hasOne(\App\Models\User::class, 'id', 'created_by');
     }
 }

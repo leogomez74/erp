@@ -15,6 +15,6 @@ class JobApplicationNote extends Model
 
     public function noteCreated()
     {
-        return $this->hasOne('App\Models\User', 'id', 'note_created');
+        return $this->hasOne(\App\Models\User::class, 'id', 'note_created');
     }
 }

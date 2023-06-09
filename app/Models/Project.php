@@ -39,7 +39,7 @@ class Project extends Model
 
     public function milestones()
     {
-        return $this->hasMany('App\Models\Milestone', 'project_id', 'id');
+        return $this->hasMany(\App\Models\Milestone::class, 'project_id', 'id');
     }
 
     protected $appends = ['img_image'];
@@ -90,12 +90,12 @@ class Project extends Model
 
     public function tasks()
     {
-        return $this->hasMany('App\Models\ProjectTask', 'project_id', 'id')->orderBy('id', 'desc');
+        return $this->hasMany(\App\Models\ProjectTask::class, 'project_id', 'id')->orderBy('id', 'desc');
     }
 
     public function users()
     {
-        return $this->belongsToMany('App\Models\User', 'project_users', 'project_id', 'user_id');
+        return $this->belongsToMany(\App\Models\User::class, 'project_users', 'project_id', 'user_id');
     }
 
     public function projectAttachments()
@@ -109,14 +109,14 @@ class Project extends Model
     public function activities()
     {
         $usr = Auth::user();
-        $activity = $this->hasMany('App\Models\ActivityLog', 'project_id', 'id')->orderBy('id', 'desc');
+        $activity = $this->hasMany(\App\Models\ActivityLog::class, 'project_id', 'id')->orderBy('id', 'desc');
 
         return $activity;
     }
 
     public function expense()
     {
-        return $this->hasMany('App\Models\Expense', 'project_id', 'id')->orderBy('id', 'desc');
+        return $this->hasMany(\App\Models\Expense::class, 'project_id', 'id')->orderBy('id', 'desc');
     }
 
     // Return timesheet html in table format
@@ -232,7 +232,7 @@ class Project extends Model
     // Get Mileston desc wise
     public function tasksections()
     {
-        return $this->hasMany('App\Models\Milestone', 'project_id', 'id')->orderBy('id', 'desc');
+        return $this->hasMany(\App\Models\Milestone::class, 'project_id', 'id')->orderBy('id', 'desc');
     }
 
     public static function getAssignedProjectTasks($project_id = null, $stage_id = null, $filterdata = [])
@@ -259,7 +259,7 @@ class Project extends Model
     // Get Project based it's Timesheet
     public function timesheets()
     {
-        return $this->hasMany('App\Models\Timesheet', 'project_id', 'id')->orderBy('id', 'desc');
+        return $this->hasMany(\App\Models\Timesheet::class, 'project_id', 'id')->orderBy('id', 'desc');
     }
 
     // For Delete project and it's based sub record
@@ -296,12 +296,12 @@ class Project extends Model
 
     public function label()
     {
-        return $this->hasOne('App\Models\Label', 'id', 'status')->first();
+        return $this->hasOne(\App\Models\Label::class, 'id', 'status')->first();
     }
 
     public function project_user()
     {
-        return $this->hasMany('App\Models\ProjectUser', 'user_id', 'id');
+        return $this->hasMany(\App\Models\ProjectUser::class, 'user_id', 'id');
     }
 
     // Get Project Task Count "completed/total"

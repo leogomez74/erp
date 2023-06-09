@@ -41,21 +41,21 @@ class Training extends Model
 
     public function branches()
     {
-        return $this->hasOne('App\Models\Branch', 'id', 'branch');
+        return $this->hasOne(\App\Models\Branch::class, 'id', 'branch');
     }
 
     public function types()
     {
-        return $this->hasOne('App\Models\TrainingType', 'id', 'training_type');
+        return $this->hasOne(\App\Models\TrainingType::class, 'id', 'training_type');
     }
 
     public function employees()
     {
-        return $this->hasOne('App\Models\Employee', 'id', 'employee');
+        return $this->hasOne(\App\Models\Employee::class, 'id', 'employee');
     }
 
     public function trainers()
     {
-        return $this->hasOne('App\Models\Trainer', 'id', 'trainer');
+        return $this->hasOne(\App\Models\Trainer::class, 'id', 'trainer');
     }
 }

@@ -34,12 +34,12 @@ class Employee extends Model
 
     public function documents()
     {
-        return $this->hasMany('App\Models\EmployeeDocument', 'employee_id', 'employee_id')->get();
+        return $this->hasMany(\App\Models\EmployeeDocument::class, 'employee_id', 'employee_id')->get();
     }
 
     public function salary_type()
     {
-        return $this->hasOne('App\Models\PayslipType', 'id', 'salary_type')->pluck('name')->first();
+        return $this->hasOne(\App\Models\PayslipType::class, 'id', 'salary_type')->pluck('name')->first();
     }
 
     public function get_net_salary()
@@ -214,32 +214,32 @@ class Employee extends Model
 
     public function branch()
     {
-        return $this->hasOne('App\Models\Branch', 'id', 'branch_id');
+        return $this->hasOne(\App\Models\Branch::class, 'id', 'branch_id');
     }
 
     public function department()
     {
-        return $this->hasOne('App\Models\Department', 'id', 'department_id');
+        return $this->hasOne(\App\Models\Department::class, 'id', 'department_id');
     }
 
     public function designation()
     {
-        return $this->hasOne('App\Models\Designation', 'id', 'designation_id');
+        return $this->hasOne(\App\Models\Designation::class, 'id', 'designation_id');
     }
 
     public function salaryType()
     {
-        return $this->hasOne('App\Models\PayslipType', 'id', 'salary_type');
+        return $this->hasOne(\App\Models\PayslipType::class, 'id', 'salary_type');
     }
 
     public function user()
     {
-        return $this->hasOne('App\Models\User', 'id', 'user_id');
+        return $this->hasOne(\App\Models\User::class, 'id', 'user_id');
     }
 
     public function paySlip()
     {
-        return $this->hasOne('App\Models\PaySlip', 'id', 'employee_id');
+        return $this->hasOne(\App\Models\PaySlip::class, 'id', 'employee_id');
     }
 
     public function present_status($employee_id, $data)

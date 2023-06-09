@@ -28,22 +28,22 @@ class Invoice extends Model
 
     public function tax()
     {
-        return $this->hasOne('App\Models\Tax', 'id', 'tax_id');
+        return $this->hasOne(\App\Models\Tax::class, 'id', 'tax_id');
     }
 
     public function items()
     {
-        return $this->hasMany('App\Models\InvoiceProduct', 'invoice_id', 'id');
+        return $this->hasMany(\App\Models\InvoiceProduct::class, 'invoice_id', 'id');
     }
 
     public function payments()
     {
-        return $this->hasMany('App\Models\InvoicePayment', 'invoice_id', 'id');
+        return $this->hasMany(\App\Models\InvoicePayment::class, 'invoice_id', 'id');
     }
 
     public function customer()
     {
-        return $this->hasOne('App\Models\Customer', 'id', 'customer_id');
+        return $this->hasOne(\App\Models\Customer::class, 'id', 'customer_id');
     }
 
     public function getSubTotal()
@@ -102,26 +102,26 @@ class Invoice extends Model
 
     public function category()
     {
-        return $this->hasOne('App\Models\ProductServiceCategory', 'id', 'category_id');
+        return $this->hasOne(\App\Models\ProductServiceCategory::class, 'id', 'category_id');
     }
 
     public function creditNote()
     {
-        return $this->hasMany('App\Models\CreditNote', 'invoice', 'id');
+        return $this->hasMany(\App\Models\CreditNote::class, 'invoice', 'id');
     }
 
     public function invoiceTotalCreditNote()
     {
-        return $this->hasMany('App\Models\CreditNote', 'invoice', 'id')->sum('amount');
+        return $this->hasMany(\App\Models\CreditNote::class, 'invoice', 'id')->sum('amount');
     }
 
     public function lastPayments()
     {
-        return $this->hasOne('App\Models\InvoicePayment', 'id', 'invoice_id');
+        return $this->hasOne(\App\Models\InvoicePayment::class, 'id', 'invoice_id');
     }
 
     public function taxes()
     {
-        return $this->hasOne('App\Models\Tax', 'id', 'tax');
+        return $this->hasOne(\App\Models\Tax::class, 'id', 'tax');
     }
 }

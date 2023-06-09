@@ -19,7 +19,7 @@ class Transaction extends Model
 
     public function bankAccount()
     {
-        return $this->hasOne('App\Models\BankAccount', 'id', 'account')->first();
+        return $this->hasOne(\App\Models\BankAccount::class, 'id', 'account')->first();
     }
 
     public static function addTransaction($request)
@@ -56,16 +56,16 @@ class Transaction extends Model
 
     public function payment()
     {
-        return $this->hasOne('App\Models\InvoicePayment', 'id', 'payment_id');
+        return $this->hasOne(\App\Models\InvoicePayment::class, 'id', 'payment_id');
     }
 
     public function billPayment()
     {
-        return $this->hasOne('App\Models\BillPayment', 'id', 'payment_id');
+        return $this->hasOne(\App\Models\BillPayment::class, 'id', 'payment_id');
     }
 
     public function accounts()
     {
-        return $this->belongsTo('App\Models\ChartOfAccount', 'account', 'id');
+        return $this->belongsTo(\App\Models\ChartOfAccount::class, 'account', 'id');
     }
 }

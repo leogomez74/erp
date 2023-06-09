@@ -150,7 +150,7 @@ class User extends Authenticatable
 
     public function getPlan()
     {
-        return $this->hasOne('App\Models\Plan', 'id', 'plan');
+        return $this->hasOne(\App\Models\Plan::class, 'id', 'plan');
     }
 
     public function assignPlan($planID)
@@ -524,7 +524,7 @@ class User extends Authenticatable
 
     public function currentPlan()
     {
-        return $this->hasOne('App\Models\Plan', 'id', 'plan');
+        return $this->hasOne(\App\Models\Plan::class, 'id', 'plan');
     }
 
     public function weeklyInvoice()
@@ -613,27 +613,27 @@ class User extends Authenticatable
 
     public function clientEstimations()
     {
-        return $this->hasMany('App\Models\Estimation', 'client_id', 'id');
+        return $this->hasMany(\App\Models\Estimation::class, 'client_id', 'id');
     }
 
     public function clientContracts()
     {
-        return $this->hasMany('App\Models\Contract', 'client_name', 'id');
+        return $this->hasMany(\App\Models\Contract::class, 'client_name', 'id');
     }
 
     public function deals()
     {
-        return $this->belongsToMany('App\Models\Deal', 'user_deals', 'user_id', 'deal_id');
+        return $this->belongsToMany(\App\Models\Deal::class, 'user_deals', 'user_id', 'deal_id');
     }
 
     public function leads()
     {
-        return $this->belongsToMany('App\Models\Lead', 'user_leads', 'user_id', 'lead_id');
+        return $this->belongsToMany(\App\Models\Lead::class, 'user_leads', 'user_id', 'lead_id');
     }
 
     public function clientDeals()
     {
-        return $this->belongsToMany('App\Models\Deal', 'client_deals', 'client_id', 'deal_id');
+        return $this->belongsToMany(\App\Models\Deal::class, 'client_deals', 'client_id', 'deal_id');
     }
 
     public function employeeIdFormat($number)
@@ -680,7 +680,7 @@ class User extends Authenticatable
 
     public function projects()
     {
-        return $this->belongsToMany('App\Models\Project', 'project_users', 'user_id', 'project_id')->withTimestamps();
+        return $this->belongsToMany(\App\Models\Project::class, 'project_users', 'user_id', 'project_id')->withTimestamps();
     }
 
     // check project is shared or not
@@ -725,17 +725,17 @@ class User extends Authenticatable
     // Get User's Contact
     public function contacts()
     {
-        return $this->hasMany('App\Models\UserContact', 'parent_id', 'id');
+        return $this->hasMany(\App\Models\UserContact::class, 'parent_id', 'id');
     }
 
     public function todo()
     {
-        return $this->hasMany('App\Models\UserToDo', 'user_id', 'id');
+        return $this->hasMany(\App\Models\UserToDo::class, 'user_id', 'id');
     }
 
     public function employee()
     {
-        return $this->hasOne('App\Models\Employee', 'user_id', 'id');
+        return $this->hasOne(\App\Models\Employee::class, 'user_id', 'id');
     }
 
     public function total_lead()
@@ -757,7 +757,7 @@ class User extends Authenticatable
     public function user_project()
     {
         if (\Auth::user()->type != 'client') {
-            return $this->belongsToMany('App\Models\Project', 'project_users', 'user_id', 'project_id')->count();
+            return $this->belongsToMany(\App\Models\Project::class, 'project_users', 'user_id', 'project_id')->count();
         } else {
             return Project::where('client_id', '=', $this->authId())->count();
         }
@@ -853,7 +853,7 @@ class User extends Authenticatable
 
     public function clientProjects()
     {
-        return $this->hasMany('App\Models\Project', 'client_id', 'id');
+        return $this->hasMany(\App\Models\Project::class, 'client_id', 'id');
     }
 
     public function isUser()

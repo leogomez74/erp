@@ -44,12 +44,12 @@ class ZoomMeeting extends Model
 
     public function projectName()
     {
-        return $this->hasOne('App\Models\Project', 'id', 'project_id');
+        return $this->hasOne(\App\Models\Project::class, 'id', 'project_id');
     }
 
     public function userName()
     {
-        return $this->hasOne('App\Models\User', 'id', 'user_id');
+        return $this->hasOne(\App\Models\User::class, 'id', 'user_id');
     }
 
     public function users($users)

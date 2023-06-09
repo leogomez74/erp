@@ -15,7 +15,7 @@ class LeadActivityLog extends Model
 
     public function user()
     {
-        return $this->hasOne('App\Models\User', 'id', 'user_id');
+        return $this->hasOne(\App\Models\User::class, 'id', 'user_id');
     }
 
     public function getLeadRemark()

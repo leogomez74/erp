@@ -286,7 +286,7 @@ class PaymentWallPaymentController extends Controller
                 if ($charge->isSuccessful() and empty($responseData['secure'])) {
                     if ($charge->isCaptured()) {
                         $invoice_payment = new InvoicePayment();
-                        $invoice_payment->transaction_id = app('App\Http\Controllers\InvoiceController')->transactionNumber();
+                        $invoice_payment->transaction_id = app(\App\Http\Controllers\InvoiceController::class)->transactionNumber();
                         $invoice_payment->invoice_id = $invoice->id;
                         $invoice_payment->amount = isset($invoice_data['total_price']) ? $invoice_data['total_price'] : 0;
                         $invoice_payment->date = date('Y-m-d');

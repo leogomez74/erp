@@ -28,6 +28,6 @@ class PaySlip extends Model
 
     public function employees()
     {
-        return $this->hasOne('App\Models\Employee', 'id', 'employee_id');
+        return $this->hasOne(\App\Models\Employee::class, 'id', 'employee_id');
     }
 }
