@@ -48,7 +48,7 @@ return [
         'storage/logs/' => '777',
         'storage/uploads/' => '777',
         'bootstrap/cache/' => '777',
-        'resources/lang/' => '777',
+        'lang/' => '777',
     ],
 
     /*
