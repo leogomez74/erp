@@ -20,18 +20,16 @@ class Payment extends Model
 
     public function category()
     {
-        return $this->hasOne('App\Models\ProductServiceCategory', 'id', 'category_id');
+        return $this->hasOne(\App\Models\ProductServiceCategory::class, 'id', 'category_id');
     }
 
     public function vender()
     {
-        return $this->hasOne('App\Models\Vender', 'id', 'vender_id');
+        return $this->hasOne(\App\Models\Vender::class, 'id', 'vender_id');
     }
-
 
     public function bankAccount()
     {
-        return $this->hasOne('App\Models\ChartOfAccount', 'id', 'account_id');
+        return $this->hasOne(\App\Models\ChartOfAccount::class, 'id', 'account_id');
     }
-
 }

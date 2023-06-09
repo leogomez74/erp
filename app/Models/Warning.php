@@ -15,18 +15,18 @@ class Warning extends Model
         'created_by',
     ];
 
-
     public function employee()
     {
-        return $this->hasOne('App\Models\Employee', 'id', 'employee_id')->first();
+        return $this->hasOne(\App\Models\Employee::class, 'id', 'employee_id')->first();
     }
 
     public function warningTo($warningto)
     {
-        return Employee::where('id',$warningto)->first();
+        return Employee::where('id', $warningto)->first();
     }
+
     public function warningBy($warningby)
     {
-        return Employee::where('id',$warningby)->first();
+        return Employee::where('id', $warningby)->first();
     }
 }

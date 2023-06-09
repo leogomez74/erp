@@ -20,41 +20,37 @@ class ProductServiceCategory extends Model
 
     public function categories()
     {
-        return $this->hasMany('App\Models\Revenue', 'category_id', 'id');
+        return $this->hasMany(\App\Models\Revenue::class, 'category_id', 'id');
     }
 
     public function incomeCategoryRevenueAmount()
     {
-        $year    = date('Y');
-        $revenue = $this->hasMany('App\Models\Revenue', 'category_id', 'id')->where('created_by', \Auth::user()->creatorId())->whereRAW('YEAR(date) =?', [$year])->sum('amount');
+        $year = date('Y');
+        $revenue = $this->hasMany(\App\Models\Revenue::class, 'category_id', 'id')->where('created_by', \Auth::user()->creatorId())->whereRAW('YEAR(date) =?', [$year])->sum('amount');
 
-        $invoices     = $this->hasMany('App\Models\Invoice', 'category_id', 'id')->where('created_by', \Auth::user()->creatorId())->whereRAW('YEAR(send_date) =?', [$year])->get();
-        $invoiceArray = array();
-        foreach($invoices as $invoice)
-        {
+        $invoices = $this->hasMany(\App\Models\Invoice::class, 'category_id', 'id')->where('created_by', \Auth::user()->creatorId())->whereRAW('YEAR(send_date) =?', [$year])->get();
+        $invoiceArray = [];
+        foreach ($invoices as $invoice) {
             $invoiceArray[] = $invoice->getTotal();
         }
-        $totalIncome = (!empty($revenue) ? $revenue : 0) + (!empty($invoiceArray) ? array_sum($invoiceArray) : 0);
+        $totalIncome = (! empty($revenue) ? $revenue : 0) + (! empty($invoiceArray) ? array_sum($invoiceArray) : 0);
 
         return $totalIncome;
-
     }
 
     public function expenseCategoryAmount()
     {
-        $year    = date('Y');
-        $payment = $this->hasMany('App\Models\Payment', 'category_id', 'id')->where('created_by', \Auth::user()->creatorId())->whereRAW('YEAR(date) =?', [$year])->sum('amount');
+        $year = date('Y');
+        $payment = $this->hasMany(\App\Models\Payment::class, 'category_id', 'id')->where('created_by', \Auth::user()->creatorId())->whereRAW('YEAR(date) =?', [$year])->sum('amount');
 
-        $bills     = $this->hasMany('App\Models\Bill', 'category_id', 'id')->where('created_by', \Auth::user()->creatorId())->whereRAW('YEAR(send_date) =?', [$year])->get();
-        $billArray = array();
-        foreach($bills as $bill)
-        {
+        $bills = $this->hasMany(\App\Models\Bill::class, 'category_id', 'id')->where('created_by', \Auth::user()->creatorId())->whereRAW('YEAR(send_date) =?', [$year])->get();
+        $billArray = [];
+        foreach ($bills as $bill) {
             $billArray[] = $bill->getTotal();
         }
 
-        $totalExpense = (!empty($payment) ? $payment : 0) + (!empty($billArray) ? array_sum($billArray) : 0);
+        $totalExpense = (! empty($payment) ? $payment : 0) + (! empty($billArray) ? array_sum($billArray) : 0);
 
         return $totalExpense;
-
     }
 }

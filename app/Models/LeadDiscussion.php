@@ -13,6 +13,6 @@ class LeadDiscussion extends Model
 
     public function user()
     {
-        return $this->hasOne('App\Models\User', 'id', 'created_by');
+        return $this->hasOne(\App\Models\User::class, 'id', 'created_by');
     }
 }

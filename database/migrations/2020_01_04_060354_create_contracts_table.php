@@ -14,18 +14,18 @@ class CreateContractsTable extends Migration
     public function up()
     {
         Schema::create(
-            'contracts', function (Blueprint $table){
-            $table->bigIncrements('id');
-            $table->integer('client_name');
-            $table->string('subject')->nullable();
-            $table->string('value')->nullable();
-            $table->integer('type');
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->string('description')->nullable();
-            $table->integer('created_by');
-            $table->timestamps();
-        }
+            'contracts', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->integer('client_name');
+                $table->string('subject')->nullable();
+                $table->string('value')->nullable();
+                $table->integer('type');
+                $table->date('start_date');
+                $table->date('end_date');
+                $table->string('description')->nullable();
+                $table->integer('created_by');
+                $table->timestamps();
+            }
         );
     }
 

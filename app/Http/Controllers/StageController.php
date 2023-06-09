@@ -26,26 +26,21 @@ class StageController extends Controller
      */
     public function index()
     {
-        if(\Auth::user()->can('manage stage'))
-        {
-            $stages    = Stage::select('stages.*', 'pipelines.name as pipeline')->join('pipelines', 'pipelines.id', '=', 'stages.pipeline_id')->where('pipelines.created_by', '=', \Auth::user()->ownerId())->where('stages.created_by', '=', \Auth::user()->ownerId())->orderBy('stages.pipeline_id')->orderBy('stages.order')->get();
+        if (\Auth::user()->can('manage stage')) {
+            $stages = Stage::select('stages.*', 'pipelines.name as pipeline')->join('pipelines', 'pipelines.id', '=', 'stages.pipeline_id')->where('pipelines.created_by', '=', \Auth::user()->ownerId())->where('stages.created_by', '=', \Auth::user()->ownerId())->orderBy('stages.pipeline_id')->orderBy('stages.order')->get();
             $pipelines = [];
 
-            foreach($stages as $stage)
-            {
-                if(!array_key_exists($stage->pipeline_id, $pipelines))
-                {
-                    $pipelines[$stage->pipeline_id]           = [];
-                    $pipelines[$stage->pipeline_id]['name']   = $stage['pipeline'];
+            foreach ($stages as $stage) {
+                if (! array_key_exists($stage->pipeline_id, $pipelines)) {
+                    $pipelines[$stage->pipeline_id] = [];
+                    $pipelines[$stage->pipeline_id]['name'] = $stage['pipeline'];
                     $pipelines[$stage->pipeline_id]['stages'] = [];
                 }
                 $pipelines[$stage->pipeline_id]['stages'][] = $stage;
             }
 
             return view('stages.index')->with('pipelines', $pipelines);
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
@@ -57,14 +52,11 @@ class StageController extends Controller
      */
     public function create()
     {
-        if(\Auth::user()->can('create stage'))
-        {
+        if (\Auth::user()->can('create stage')) {
             $pipelines = Pipeline::where('created_by', '=', \Auth::user()->ownerId())->get()->pluck('name', 'id');
 
             return view('stages.create')->with('pipelines', $pipelines);
-        }
-        else
-        {
+        } else {
             return response()->json(['error' => __('Permission Denied.')], 401);
         }
     }
@@ -72,36 +64,32 @@ class StageController extends Controller
     /**
      * Store a newly created restage in storage.
      *
-     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        if(\Auth::user()->can('create stage'))
-        {
+        if (\Auth::user()->can('create stage')) {
             $validator = \Validator::make(
                 $request->all(), [
-                                   'name' => 'required|max:20',
-                                   'pipeline_id' => 'required',
-                               ]
+                    'name' => 'required|max:20',
+                    'pipeline_id' => 'required',
+                ]
             );
 
-            if($validator->fails())
-            {
+            if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
+
                 return redirect()->route('stages.index')->with('error', $messages->first());
             }
-            $stage              = new Stage();
-            $stage->name        = $request->name;
+            $stage = new Stage();
+            $stage->name = $request->name;
             $stage->pipeline_id = $request->pipeline_id;
-            $stage->created_by  = \Auth::user()->ownerId();
+            $stage->created_by = \Auth::user()->ownerId();
             $stage->save();
 
             return redirect()->route('stages.index')->with('success', __('Deal Stage successfully created!'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
@@ -109,8 +97,7 @@ class StageController extends Controller
     /**
      * Display the specified restage.
      *
-     * @param \App\Stage $stage
-     *
+     * @param  \App\Stage  $stage
      * @return \Illuminate\Http\Response
      */
     public function show(Stage $stage)
@@ -121,27 +108,20 @@ class StageController extends Controller
     /**
      * Show the form for editing the specified restage.
      *
-     * @param \App\Stage $stage
-     *
+     * @param  \App\Stage  $stage
      * @return \Illuminate\Http\Response
      */
     public function edit(Stage $stage)
     {
-        if(\Auth::user()->can('edit stage'))
-        {
-            if($stage->created_by == \Auth::user()->ownerId())
-            {
+        if (\Auth::user()->can('edit stage')) {
+            if ($stage->created_by == \Auth::user()->ownerId()) {
                 $pipelines = Pipeline::where('created_by', '=', \Auth::user()->ownerId())->get()->pluck('name', 'id');
 
                 return view('stages.edit', compact('stage', 'pipelines'));
-            }
-            else
-            {
+            } else {
                 return response()->json(['error' => __('Permission Denied.')], 401);
             }
-        }
-        else
-        {
+        } else {
             return response()->json(['error' => __('Permission Denied.')], 401);
         }
     }
@@ -149,42 +129,34 @@ class StageController extends Controller
     /**
      * Update the specified restage in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Stage $stage
-     *
+     * @param  \App\Stage  $stage
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Stage $stage)
     {
-        if(\Auth::user()->can('edit stage'))
-        {
-
-            if($stage->created_by == \Auth::user()->ownerId())
-            {
+        if (\Auth::user()->can('edit stage')) {
+            if ($stage->created_by == \Auth::user()->ownerId()) {
                 $validator = \Validator::make(
                     $request->all(), [
-                                       'name' => 'required|max:20',
-                                       'pipeline_id' => 'required',
-                                   ]
+                        'name' => 'required|max:20',
+                        'pipeline_id' => 'required',
+                    ]
                 );
-                if($validator->fails())
-                {
+                if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
+
                     return redirect()->route('stages.index')->with('error', $messages->first());
                 }
 
-                $stage->name        = $request->name;
+                $stage->name = $request->name;
                 $stage->pipeline_id = $request->pipeline_id;
                 $stage->save();
+
                 return redirect()->route('stages.index')->with('success', __('Deal Stage successfully updated!'));
-            }
-            else
-            {
+            } else {
                 return redirect()->back()->with('error', __('Permission Denied.'));
             }
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
@@ -192,36 +164,26 @@ class StageController extends Controller
     /**
      * Remove the specified restage from storage.
      *
-     * @param \App\Stage $stage
-     *
+     * @param  \App\Stage  $stage
      * @return \Illuminate\Http\Response
      */
     public function destroy(Stage $stage)
     {
-        if(\Auth::user()->can('delete stage'))
-        {
-            if($stage->created_by == \Auth::user()->ownerId())
-            {
+        if (\Auth::user()->can('delete stage')) {
+            if ($stage->created_by == \Auth::user()->ownerId()) {
                 $deals = Deal::where('stage_id', '=', $stage->id)->where('created_by', '=', $stage->created_by)->count();
 
-                if($deals == 0)
-                {
+                if ($deals == 0) {
                     $stage->delete();
 
                     return redirect()->route('stages.index')->with('success', __('Deal Stage successfully deleted!'));
-                }
-                else
-                {
+                } else {
                     return redirect()->route('stages.index')->with('error', __('There are some deals on stage, please remove it first!'));
                 }
-            }
-            else
-            {
+            } else {
                 return redirect()->back()->with('error', __('Permission Denied.'));
             }
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
@@ -229,9 +191,8 @@ class StageController extends Controller
     public function order(Request $request)
     {
         $post = $request->all();
-        foreach($post['order'] as $key => $item)
-        {
-            $stage        = Stage::where('id', '=', $item)->first();
+        foreach ($post['order'] as $key => $item) {
+            $stage = Stage::where('id', '=', $item)->first();
             $stage->order = $key;
             $stage->save();
         }
@@ -240,16 +201,12 @@ class StageController extends Controller
     public function json(Request $request)
     {
         $stage = new Stage();
-        if($request->pipeline_id)
-        {
+        if ($request->pipeline_id) {
             $stage = $stage->where('pipeline_id', '=', $request->pipeline_id);
             $stage = $stage->get()->pluck('name', 'id');
-        }
-        else
-        {
+        } else {
             $stage = [];
         }
-
 
         return response()->json($stage);
     }

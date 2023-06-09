@@ -14,44 +14,39 @@ function getPhpVersionInfo()
     ];
 }
 
-$minPhpVersion                                 = '7.2';
-$arrPermissions                                = [];
-$arrPermissions['storage/framework/']          = __DIR__ . "/storage/framework/";
-$arrPermissions['storage/framework/cache/']    = __DIR__ . "/storage/framework/cache/";
-$arrPermissions['storage/framework/sessions/'] = __DIR__ . "/storage/framework/sessions/";
-$arrPermissions['storage/framework/views/']    = __DIR__ . "/storage/framework/views/";
-$arrPermissions['storage/logs/']               = __DIR__ . "/storage/logs/";
-$arrPermissions['bootstrap/cache/']            = __DIR__ . "/bootstrap/cache/";
-$arrPermissions['resources/lang/']             = __DIR__ . "/resources/lang/";
-$arrPermissions['.env']                        = __DIR__ . "/.env";
+$minPhpVersion = '7.2';
+$arrPermissions = [];
+$arrPermissions['storage/framework/'] = __DIR__.'/storage/framework/';
+$arrPermissions['storage/framework/cache/'] = __DIR__.'/storage/framework/cache/';
+$arrPermissions['storage/framework/sessions/'] = __DIR__.'/storage/framework/sessions/';
+$arrPermissions['storage/framework/views/'] = __DIR__.'/storage/framework/views/';
+$arrPermissions['storage/logs/'] = __DIR__.'/storage/logs/';
+$arrPermissions['bootstrap/cache/'] = __DIR__.'/bootstrap/cache/';
+$arrPermissions['resources/lang/'] = __DIR__.'/resources/lang/';
+$arrPermissions['.env'] = __DIR__.'/.env';
 $arrPer = [];
-$err    = 0;
+$err = 0;
 
-foreach($arrPermissions as $key => $value)
-{
-    $permission   = ltrim(substr(sprintf('%o', fileperms($value)), -4), 0);
+foreach ($arrPermissions as $key => $value) {
+    $permission = ltrim(substr(sprintf('%o', fileperms($value)), -4), 0);
     $arrPer[$key] = ltrim($permission, 0);
 
-    if($permission < '777')
-    {
+    if ($permission < '777') {
         $err = 1;
     }
 }
 
 // Check PHP Version
-$allowed_version = version_compare(getPhpVersionInfo()['version'], $minPhpVersion, ">=");
+$allowed_version = version_compare(getPhpVersionInfo()['version'], $minPhpVersion, '>=');
 
-
-if(!$allowed_version)
-{
+if (! $allowed_version) {
     $err = 1;
 }
 
 // If all directory has and .env file has permission then redirect to main File
-if($err != 1)
-{
-    require_once __DIR__ . '/public/index.php';
-    die;
+if ($err != 1) {
+    require_once __DIR__.'/public/index.php';
+    exit;
 }
 // end
 ?>
@@ -78,19 +73,16 @@ if($err != 1)
         <div class="main">
             <p>Please set below directory and file permission to <b>777</b> and reload page.</p>
             <ul class="list">
-                <li class="list__item list__title <?php if($allowed_version)
-                {
+                <li class="list__item list__title <?php if ($allowed_version) {
                     echo 'success';
-                }
-                else
-                {
+                } else {
                     echo 'error';
                 } ?>">
                     <strong>Php
                         <small>(version <?php echo $minPhpVersion; ?> required)</small>
                     </strong>
                     <span class="float-right">
-                        <?php if($allowed_version) { ?>
+                        <?php if ($allowed_version) { ?>
                             <i class="fa fa-fw fa-check-circle-o"></i><strong> <?php echo getPhpVersionInfo()['version']; ?></strong>
                         <?php } else { ?>
                             <i class="fa fa-fw fa-exclamation-circle"></i><strong> <?php echo getPhpVersionInfo()['version']; ?></strong>
@@ -99,24 +91,19 @@ if($err != 1)
 
                 </li>
                 <?php
-                foreach($arrPer as $key => $val)
-                { ?>
+                foreach ($arrPer as $key => $val) { ?>
 
-                    <li class="list__item list__item--permissions <?php if($val == '777')
-                    {
+                    <li class="list__item list__item--permissions <?php if ($val == '777') {
                         echo 'success';
-                    }
-                    else
-                    {
+                    } else {
                         echo 'error';
                     } ?>">
                         <?php echo $key ?>
-                        <?php if($val < '777')
-                        {
-                            echo "<small>(Required Permission is 777)</small>";
+                        <?php if ($val < '777') {
+                            echo '<small>(Required Permission is 777)</small>';
                         } ?>
                         <span>
-                            <?php if($val == '777') { ?>
+                            <?php if ($val == '777') { ?>
                                 <i class="fa fa-fw fa-check-circle-o"></i>
                             <?php } else { ?>
                                 <i class="fa fa-fw fa-exclamation-circle"></i>
@@ -126,7 +113,7 @@ if($err != 1)
                     </li>
                 <?php } ?>
             </ul>
-            <?php if($err != 1) { ?>
+            <?php if ($err != 1) { ?>
                 <div class="buttons">
                     <a href="." class="button">
                         Install

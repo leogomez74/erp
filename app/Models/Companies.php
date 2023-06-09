@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Companies extends Model
@@ -8,8 +10,8 @@ class Companies extends Model
         'name',
     ];
 
-    public static function setCompanies(){
-
+    public static function setCompanies()
+    {
         return Companies::get();
     }
 }

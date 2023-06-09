@@ -11,41 +11,37 @@ class CommissionController extends Controller
     public function commissionCreate($id)
     {
         $employee = Employee::find($id);
-        $commissions =Commission::$commissiontype;
-        return view('commission.create', compact('employee','commissions'));
+        $commissions = Commission::$commissiontype;
+
+        return view('commission.create', compact('employee', 'commissions'));
     }
 
     public function store(Request $request)
     {
-
-        if(\Auth::user()->can('create commission'))
-        {
+        if (\Auth::user()->can('create commission')) {
             $validator = \Validator::make(
                 $request->all(), [
-                                   'employee_id' => 'required',
-                                   'title' => 'required',
-                                   'amount' => 'required',
-                               ]
+                    'employee_id' => 'required',
+                    'title' => 'required',
+                    'amount' => 'required',
+                ]
             );
-            if($validator->fails())
-            {
+            if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
 
                 return redirect()->back()->with('error', $messages->first());
             }
 
-            $commission              = new Commission();
+            $commission = new Commission();
             $commission->employee_id = $request->employee_id;
-            $commission->title       = $request->title;
-            $commission->type        = $request->type;
-            $commission->amount      = $request->amount;
-            $commission->created_by  = \Auth::user()->creatorId();
+            $commission->title = $request->title;
+            $commission->type = $request->type;
+            $commission->amount = $request->amount;
+            $commission->created_by = \Auth::user()->creatorId();
             $commission->save();
 
             return redirect()->back()->with('success', __('Commission  successfully created.'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
@@ -58,83 +54,61 @@ class CommissionController extends Controller
     public function edit($commission)
     {
         $commission = Commission::find($commission);
-        if(\Auth::user()->can('edit commission'))
-        {
-            $commissions =Commission::$commissiontype;
+        if (\Auth::user()->can('edit commission')) {
+            $commissions = Commission::$commissiontype;
 
-            if($commission->created_by == \Auth::user()->creatorId())
-            {
-
-                return view('commission.edit', compact('commission','commissions'));
-            }
-            else
-            {
+            if ($commission->created_by == \Auth::user()->creatorId()) {
+                return view('commission.edit', compact('commission', 'commissions'));
+            } else {
                 return response()->json(['error' => __('Permission denied.')], 401);
             }
-        }
-        else
-        {
+        } else {
             return response()->json(['error' => __('Permission denied.')], 401);
         }
     }
 
     public function update(Request $request, Commission $commission)
     {
-        if(\Auth::user()->can('edit commission'))
-        {
-            if($commission->created_by == \Auth::user()->creatorId())
-            {
+        if (\Auth::user()->can('edit commission')) {
+            if ($commission->created_by == \Auth::user()->creatorId()) {
                 $validator = \Validator::make(
                     $request->all(), [
 
-                                       'title' => 'required',
-                                       'amount' => 'required',
-                                   ]
+                        'title' => 'required',
+                        'amount' => 'required',
+                    ]
                 );
-                if($validator->fails())
-                {
+                if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
 
                     return redirect()->back()->with('error', $messages->first());
                 }
 
-                $commission->title  = $request->title;
-                $commission->type  = $request->type;
+                $commission->title = $request->title;
+                $commission->type = $request->type;
                 $commission->amount = $request->amount;
                 $commission->save();
 
                 return redirect()->back()->with('success', __('Commission successfully updated.'));
-            }
-            else
-            {
+            } else {
                 return redirect()->back()->with('error', __('Permission denied.'));
             }
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
     public function destroy(Commission $commission)
     {
-
-        if(\Auth::user()->can('delete commission'))
-        {
-            if($commission->created_by == \Auth::user()->creatorId())
-            {
-
+        if (\Auth::user()->can('delete commission')) {
+            if ($commission->created_by == \Auth::user()->creatorId()) {
                 $commission->delete();
 
                 return redirect()->back()->with('success', __('Commission successfully deleted.'));
-            }
-            else
-            {
+            } else {
                 return redirect()->back()->with('error', __('Permission denied.'));
             }
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }

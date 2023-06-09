@@ -17,17 +17,16 @@ class Transfer extends Model
 
     public function department()
     {
-        return $this->hasMany('App\Models\Department', 'id', 'department_id')->first();
+        return $this->hasMany(\App\Models\Department::class, 'id', 'department_id')->first();
     }
 
     public function branch()
     {
-        return $this->hasMany('App\Models\Branch', 'id', 'branch_id')->first();
+        return $this->hasMany(\App\Models\Branch::class, 'id', 'branch_id')->first();
     }
-
 
     public function employee()
     {
-        return $this->hasOne('App\Models\Employee', 'id', 'employee_id')->first();
+        return $this->hasOne(\App\Models\Employee::class, 'id', 'employee_id')->first();
     }
 }

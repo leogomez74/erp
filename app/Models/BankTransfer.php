@@ -19,12 +19,11 @@ class BankTransfer extends Model
 
     public function fromBankAccount()
     {
-        return $this->hasOne('App\Models\BankAccount', 'id', 'from_account')->first();
+        return $this->hasOne(\App\Models\BankAccount::class, 'id', 'from_account')->first();
     }
 
     public function toBankAccount()
     {
-        return $this->hasOne('App\Models\BankAccount', 'id', 'to_account')->first();
+        return $this->hasOne(\App\Models\BankAccount::class, 'id', 'to_account')->first();
     }
-
 }

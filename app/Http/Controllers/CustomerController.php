@@ -7,24 +7,19 @@ use App\Imports\CustomerImport;
 use App\Models\ClientType;
 use App\Models\Customer;
 use App\Models\CustomField;
-use App\Models\Mail\UserCreate;
 use App\Models\PayType;
+use App\Models\Plan;
 use App\Models\Transaction;
+use App\Models\User;
 use App\Models\Utility;
 use Auth;
-use App\Models\User;
-use App\Models\Plan;
 use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
-use Spatie\Permission\Models\Role;
 
 class CustomerController extends Controller
 {
-
     public function dashboard()
     {
         $data['invoiceChartData'] = \Auth::user()->invoiceChartData();
@@ -34,182 +29,156 @@ class CustomerController extends Controller
 
     public function index()
     {
-        if(\Auth::user()->can('manage customer'))
-        {
+        if (\Auth::user()->can('manage customer')) {
             $customers = Customer::where('created_by', \Auth::user()->creatorId())->get();
 
             return view('customer.index', compact('customers'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
     public function create()
     {
-        if(\Auth::user()->can('create customer'))
-        {
-            $client_type=ClientType::all()->pluck('name','id');
-            $pay_type=PayType::all()->pluck('name','id');
+        if (\Auth::user()->can('create customer')) {
+            $client_type = ClientType::all()->pluck('name', 'id');
+            $pay_type = PayType::all()->pluck('name', 'id');
             $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'customer')->get();
 
-            return view('customer.create', compact('customFields','client_type','pay_type'));
-        }
-        else
-        {
+            return view('customer.create', compact('customFields', 'client_type', 'pay_type'));
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
-
     public function store(Request $request)
     {
-        if(\Auth::user()->can('create customer'))
-        {
-
+        if (\Auth::user()->can('create customer')) {
             $rules = [
                 'name' => 'required',
                 'contact' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/',
                 'email' => 'required|email|unique:customers',
             ];
 
-
             $validator = \Validator::make($request->all(), $rules);
 
-            if($validator->fails())
-            {
+            if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
+
                 return redirect()->route('customer.index')->with('error', $messages->first());
             }
 
-            $objCustomer    = \Auth::user();
-            $creator        = User::find($objCustomer->creatorId());
+            $objCustomer = \Auth::user();
+            $creator = User::find($objCustomer->creatorId());
             $total_customer = $objCustomer->countCustomers();
-            $plan           = Plan::find($creator->plan);
+            $plan = Plan::find($creator->plan);
 
-            $default_language          = DB::table('settings')->select('value')->where('name', 'default_language')->first();
-            if($total_customer < $plan->max_customers || $plan->max_customers == -1)
-            {
-                $customer                  = new Customer();
-                $customer->customer_id     = $this->customerNumber();
-                $customer->name            = $request->name;
-                $customer->contact         = $request->contact;
-                $customer->email           = $request->email;
-                $customer->tax_number      =$request->tax_number;
-                $customer->created_by      = \Auth::user()->creatorId();
-                $customer->billing_name    = $request->billing_name;
+            $default_language = DB::table('settings')->select('value')->where('name', 'default_language')->first();
+            if ($total_customer < $plan->max_customers || $plan->max_customers == -1) {
+                $customer = new Customer();
+                $customer->customer_id = $this->customerNumber();
+                $customer->name = $request->name;
+                $customer->contact = $request->contact;
+                $customer->email = $request->email;
+                $customer->tax_number = $request->tax_number;
+                $customer->created_by = \Auth::user()->creatorId();
+                $customer->billing_name = $request->billing_name;
                 $customer->billing_country = $request->billing_country;
-                $customer->billing_state   = $request->billing_state;
-                $customer->billing_city    = $request->billing_city;
-                $customer->billing_phone   = $request->billing_phone;
-                $customer->billing_zip     = $request->billing_zip;
+                $customer->billing_state = $request->billing_state;
+                $customer->billing_city = $request->billing_city;
+                $customer->billing_phone = $request->billing_phone;
+                $customer->billing_zip = $request->billing_zip;
                 $customer->billing_address = $request->billing_address;
 
-                $customer->shipping_name    = $request->shipping_name;
+                $customer->shipping_name = $request->shipping_name;
                 $customer->shipping_country = $request->shipping_country;
-                $customer->shipping_state   = $request->shipping_state;
-                $customer->shipping_city    = $request->shipping_city;
-                $customer->shipping_phone   = $request->shipping_phone;
-                $customer->shipping_zip     = $request->shipping_zip;
+                $customer->shipping_state = $request->shipping_state;
+                $customer->shipping_city = $request->shipping_city;
+                $customer->shipping_phone = $request->shipping_phone;
+                $customer->shipping_zip = $request->shipping_zip;
                 $customer->shipping_address = $request->shipping_address;
                 $customer->client_type = $request->client_type;
                 $customer->pay_type = $request->pay_type;
 
-                $customer->lang = !empty($default_language) ? $default_language->value : '';
+                $customer->lang = ! empty($default_language) ? $default_language->value : '';
 
                 $customer->save();
                 CustomField::saveData($customer, $request->customField);
-            }
-            else
-            {
+            } else {
                 return redirect()->back()->with('error', __('Your user limit is over, Please upgrade plan.'));
             }
 
             //Twilio Notification
-            $setting  = Utility::settings(\Auth::user()->creatorId());
-            if(isset($setting['twilio_customer_notification']) && $setting['twilio_customer_notification'] ==1)
-            {
-                $msg = __("New Customer created by").' '.\Auth::user()->name.'.';
-                Utility::send_twilio_msg($request->contact,$msg);
+            $setting = Utility::settings(\Auth::user()->creatorId());
+            if (isset($setting['twilio_customer_notification']) && $setting['twilio_customer_notification'] == 1) {
+                $msg = __('New Customer created by').' '.\Auth::user()->name.'.';
+                Utility::send_twilio_msg($request->contact, $msg);
             }
 
             return redirect()->route('customer.index')->with('success', __('Customer successfully created.'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
-
     public function show($ids)
     {
-        $id       = \Crypt::decrypt($ids);
-        $customer = Customer::with('clienttype','paytype')->find($id);
+        $id = \Crypt::decrypt($ids);
+        $customer = Customer::with('clienttype', 'paytype')->find($id);
+
         return view('customer.show', compact('customer'));
     }
 
-
     public function edit($id)
     {
-        if(\Auth::user()->can('edit customer'))
-        {
-            $client_type=ClientType::all()->pluck('name','id');
-            $pay_type=PayType::all()->pluck('name','id');
-            $customer              = Customer::find($id);
+        if (\Auth::user()->can('edit customer')) {
+            $client_type = ClientType::all()->pluck('name', 'id');
+            $pay_type = PayType::all()->pluck('name', 'id');
+            $customer = Customer::find($id);
 
             $customer->customField = CustomField::getData($customer, 'customer');
 
             $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'customer')->get();
 
-            return view('customer.edit', compact('customer', 'customFields','client_type','pay_type'));
-        }
-        else
-        {
+            return view('customer.edit', compact('customer', 'customFields', 'client_type', 'pay_type'));
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
-
     public function update(Request $request, Customer $customer)
     {
-
-        if(\Auth::user()->can('edit customer'))
-        {
-
+        if (\Auth::user()->can('edit customer')) {
             $rules = [
                 'name' => 'required',
                 'contact' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/',
             ];
 
-
             $validator = \Validator::make($request->all(), $rules);
-            if($validator->fails())
-            {
+            if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
 
                 return redirect()->route('customer.index')->with('error', $messages->first());
             }
 
-            $customer->name             = $request->name;
-            $customer->contact          = $request->contact;
-            $customer->email           = $request->email;
-            $customer->tax_number      =$request->tax_number;
-            $customer->created_by       = \Auth::user()->creatorId();
-            $customer->billing_name     = $request->billing_name;
-            $customer->billing_country  = $request->billing_country;
-            $customer->billing_state    = $request->billing_state;
-            $customer->billing_city     = $request->billing_city;
-            $customer->billing_phone    = $request->billing_phone;
-            $customer->billing_zip      = $request->billing_zip;
-            $customer->billing_address  = $request->billing_address;
-            $customer->shipping_name    = $request->shipping_name;
+            $customer->name = $request->name;
+            $customer->contact = $request->contact;
+            $customer->email = $request->email;
+            $customer->tax_number = $request->tax_number;
+            $customer->created_by = \Auth::user()->creatorId();
+            $customer->billing_name = $request->billing_name;
+            $customer->billing_country = $request->billing_country;
+            $customer->billing_state = $request->billing_state;
+            $customer->billing_city = $request->billing_city;
+            $customer->billing_phone = $request->billing_phone;
+            $customer->billing_zip = $request->billing_zip;
+            $customer->billing_address = $request->billing_address;
+            $customer->shipping_name = $request->shipping_name;
             $customer->shipping_country = $request->shipping_country;
-            $customer->shipping_state   = $request->shipping_state;
-            $customer->shipping_city    = $request->shipping_city;
-            $customer->shipping_phone   = $request->shipping_phone;
-            $customer->shipping_zip     = $request->shipping_zip;
+            $customer->shipping_state = $request->shipping_state;
+            $customer->shipping_city = $request->shipping_city;
+            $customer->shipping_phone = $request->shipping_phone;
+            $customer->shipping_zip = $request->shipping_zip;
             $customer->shipping_address = $request->shipping_address;
             $customer->client_type = $request->client_type;
             $customer->pay_type = $request->pay_type;
@@ -218,40 +187,30 @@ class CustomerController extends Controller
             CustomField::saveData($customer, $request->customField);
 
             return redirect()->route('customer.index')->with('success', __('Customer successfully updated.'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
-
 
     public function destroy(Customer $customer)
     {
-        if(\Auth::user()->can('delete customer'))
-        {
-            if($customer->created_by == \Auth::user()->creatorId())
-            {
+        if (\Auth::user()->can('delete customer')) {
+            if ($customer->created_by == \Auth::user()->creatorId()) {
                 $customer->delete();
 
                 return redirect()->route('customer.index')->with('success', __('Customer successfully deleted.'));
-            }
-            else
-            {
+            } else {
                 return redirect()->back()->with('error', __('Permission denied.'));
             }
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
-    function customerNumber()
+    public function customerNumber()
     {
         $latest = Customer::where('created_by', '=', \Auth::user()->creatorId())->latest()->first();
-        if(!$latest)
-        {
+        if (! $latest) {
             return 1;
         }
 
@@ -269,9 +228,7 @@ class CustomerController extends Controller
 
     public function payment(Request $request)
     {
-
-        if(\Auth::user()->can('manage customer payment'))
-        {
+        if (\Auth::user()->can('manage customer payment')) {
             $category = [
                 'Invoice' => 'Invoice',
                 'Deposit' => 'Deposit',
@@ -279,30 +236,25 @@ class CustomerController extends Controller
             ];
 
             $query = Transaction::where('user_id', \Auth::user()->id)->where('user_type', 'Customer')->where('type', 'Payment');
-            if(!empty($request->date))
-            {
+            if (! empty($request->date)) {
                 $date_range = explode(' - ', $request->date);
                 $query->whereBetween('date', $date_range);
             }
 
-            if(!empty($request->category))
-            {
+            if (! empty($request->category)) {
                 $query->where('category', '=', $request->category);
             }
             $payments = $query->get();
 
             return view('customer.payment', compact('payments', 'category'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
     public function transaction(Request $request)
     {
-        if(\Auth::user()->can('manage customer payment'))
-        {
+        if (\Auth::user()->can('manage customer payment')) {
             $category = [
                 'Invoice' => 'Invoice',
                 'Deposit' => 'Deposit',
@@ -311,31 +263,27 @@ class CustomerController extends Controller
 
             $query = Transaction::where('user_id', \Auth::user()->id)->where('user_type', 'Customer');
 
-            if(!empty($request->date))
-            {
+            if (! empty($request->date)) {
                 $date_range = explode(' - ', $request->date);
                 $query->whereBetween('date', $date_range);
             }
 
-            if(!empty($request->category))
-            {
+            if (! empty($request->category)) {
                 $query->where('category', '=', $request->category);
             }
             $transactions = $query->get();
 
             return view('customer.transaction', compact('transactions', 'category'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
     public function profile()
     {
-        $userDetail              = \Auth::user();
+        $userDetail = \Auth::user();
         $userDetail->customField = CustomField::getData($userDetail, 'customer');
-        $customFields            = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'customer')->get();
+        $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'customer')->get();
 
         return view('customer.profile', compact('userDetail', 'customFields'));
     }
@@ -343,46 +291,41 @@ class CustomerController extends Controller
     public function editprofile(Request $request)
     {
         $userDetail = \Auth::user();
-        $user       = Customer::findOrFail($userDetail['id']);
+        $user = Customer::findOrFail($userDetail['id']);
 
         $this->validate(
             $request, [
-                        'name' => 'required|max:120',
-                        'contact' => 'required',
-                        'email' => 'required|email|unique:users,email,' . $userDetail['id'],
-                    ]
+                'name' => 'required|max:120',
+                'contact' => 'required',
+                'email' => 'required|email|unique:users,email,'.$userDetail['id'],
+            ]
         );
 
-        if($request->hasFile('profile'))
-        {
+        if ($request->hasFile('profile')) {
             $filenameWithExt = $request->file('profile')->getClientOriginalName();
-            $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            $extension       = $request->file('profile')->getClientOriginalExtension();
-            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('profile')->getClientOriginalExtension();
+            $fileNameToStore = $filename.'_'.time().'.'.$extension;
 
-            $dir        = storage_path('uploads/avatar/');
-            $image_path = $dir . $userDetail['avatar'];
+            $dir = storage_path('uploads/avatar/');
+            $image_path = $dir.$userDetail['avatar'];
 
-            if(File::exists($image_path))
-            {
+            if (File::exists($image_path)) {
                 File::delete($image_path);
             }
 
-            if(!file_exists($dir))
-            {
+            if (! file_exists($dir)) {
                 mkdir($dir, 0777, true);
             }
 
             $path = $request->file('profile')->storeAs('uploads/avatar/', $fileNameToStore);
-
         }
 
-        if(!empty($request->profile))
-        {
+        if (! empty($request->profile)) {
             $user['avatar'] = $fileNameToStore;
         }
-        $user['name']    = $request['name'];
-        $user['email']   = $request['email'];
+        $user['name'] = $request['name'];
+        $user['email'] = $request['email'];
         $user['contact'] = $request['contact'];
         $user->save();
         CustomField::saveData($user, $request->customField);
@@ -395,17 +338,17 @@ class CustomerController extends Controller
     public function editBilling(Request $request)
     {
         $userDetail = \Auth::user();
-        $user       = Customer::findOrFail($userDetail['id']);
+        $user = Customer::findOrFail($userDetail['id']);
         $this->validate(
             $request, [
-                        'billing_name' => 'required',
-                        'billing_country' => 'required',
-                        'billing_state' => 'required',
-                        'billing_city' => 'required',
-                        'billing_phone' => 'required',
-                        'billing_zip' => 'required',
-                        'billing_address' => 'required',
-                    ]
+                'billing_name' => 'required',
+                'billing_country' => 'required',
+                'billing_state' => 'required',
+                'billing_city' => 'required',
+                'billing_phone' => 'required',
+                'billing_zip' => 'required',
+                'billing_address' => 'required',
+            ]
         );
         $input = $request->all();
         $user->fill($input)->save();
@@ -418,17 +361,17 @@ class CustomerController extends Controller
     public function editShipping(Request $request)
     {
         $userDetail = \Auth::user();
-        $user       = Customer::findOrFail($userDetail['id']);
+        $user = Customer::findOrFail($userDetail['id']);
         $this->validate(
             $request, [
-                        'shipping_name' => 'required',
-                        'shipping_country' => 'required',
-                        'shipping_state' => 'required',
-                        'shipping_city' => 'required',
-                        'shipping_phone' => 'required',
-                        'shipping_zip' => 'required',
-                        'shipping_address' => 'required',
-                    ]
+                'shipping_name' => 'required',
+                'shipping_country' => 'required',
+                'shipping_state' => 'required',
+                'shipping_city' => 'required',
+                'shipping_phone' => 'required',
+                'shipping_zip' => 'required',
+                'shipping_address' => 'required',
+            ]
         );
         $input = $request->all();
         $user->fill($input)->save();
@@ -438,23 +381,20 @@ class CustomerController extends Controller
         );
     }
 
-
     public function changeLanquage($lang)
     {
-
-        $user       = Auth::user();
+        $user = Auth::user();
         $user->lang = $lang;
         $user->save();
 
         return redirect()->back()->with('success', __('Language Change Successfully!'));
-
     }
-
 
     public function export()
     {
-        $name = 'customer_' . date('Y-m-d i:h:s');
-        $data = Excel::download(new CustomerExport(), $name . '.xlsx'); ob_end_clean();
+        $name = 'customer_'.date('Y-m-d i:h:s');
+        $data = Excel::download(new CustomerExport(), $name.'.xlsx');
+        ob_end_clean();
 
         return $data;
     }
@@ -466,15 +406,13 @@ class CustomerController extends Controller
 
     public function import(Request $request)
     {
-
         $rules = [
             'file' => 'required|mimes:csv,txt',
         ];
 
         $validator = \Validator::make($request->all(), $rules);
 
-        if($validator->fails())
-        {
+        if ($validator->fails()) {
             $messages = $validator->getMessageBag();
 
             return redirect()->back()->with('error', $messages->first());
@@ -483,72 +421,57 @@ class CustomerController extends Controller
         $customers = (new CustomerImport())->toArray(request()->file('file'))[0];
 
         $totalCustomer = count($customers) - 1;
-        $errorArray    = [];
-        for($i = 1; $i <= count($customers) - 1; $i++)
-        {
+        $errorArray = [];
+        for ($i = 1; $i <= count($customers) - 1; $i++) {
             $customer = $customers[$i];
 
             $customerByEmail = Customer::where('email', $customer[1])->first();
-            if(!empty($customerByEmail))
-            {
+            if (! empty($customerByEmail)) {
                 $customerData = $customerByEmail;
-            }
-            else
-            {
+            } else {
                 $customerData = new Customer();
-                $customerData->customer_id      = $this->customerNumber();
+                $customerData->customer_id = $this->customerNumber();
             }
 
-
-            $customerData->name             = $customer[0];
-            $customerData->email            = $customer[1];
-            $customerData->contact          = $customer[3];
-            $customerData->is_active        = 1;
-            $customerData->billing_name     = $customer[4];
-            $customerData->billing_country  = $customer[5];
-            $customerData->billing_state    = $customer[6];
-            $customerData->billing_city     = $customer[7];
-            $customerData->billing_phone    = $customer[8];
-            $customerData->billing_zip      = $customer[9];
-            $customerData->billing_address  = $customer[10];
-            $customerData->shipping_name    = $customer[11];
+            $customerData->name = $customer[0];
+            $customerData->email = $customer[1];
+            $customerData->contact = $customer[3];
+            $customerData->is_active = 1;
+            $customerData->billing_name = $customer[4];
+            $customerData->billing_country = $customer[5];
+            $customerData->billing_state = $customer[6];
+            $customerData->billing_city = $customer[7];
+            $customerData->billing_phone = $customer[8];
+            $customerData->billing_zip = $customer[9];
+            $customerData->billing_address = $customer[10];
+            $customerData->shipping_name = $customer[11];
             $customerData->shipping_country = $customer[12];
-            $customerData->shipping_state   = $customer[13];
-            $customerData->shipping_city    = $customer[14];
-            $customerData->shipping_phone   = $customer[15];
-            $customerData->shipping_zip     = $customer[16];
+            $customerData->shipping_state = $customer[13];
+            $customerData->shipping_city = $customer[14];
+            $customerData->shipping_phone = $customer[15];
+            $customerData->shipping_zip = $customer[16];
             $customerData->shipping_address = $customer[17];
-            $customerData->lang             = 'en';
-            $customerData->balance          = 0;
-            $customerData->created_by       = \Auth::user()->creatorId();
+            $customerData->lang = 'en';
+            $customerData->balance = 0;
+            $customerData->created_by = \Auth::user()->creatorId();
 
-            if(empty($customerData))
-            {
+            if (empty($customerData)) {
                 $errorArray[] = $customerData;
-            }
-            else
-            {
+            } else {
                 $customerData->save();
             }
         }
 
         $errorRecord = [];
-        if(empty($errorArray))
-        {
+        if (empty($errorArray)) {
             $data['status'] = 'success';
-            $data['msg']    = __('Record successfully imported');
-        }
-        else
-        {
+            $data['msg'] = __('Record successfully imported');
+        } else {
             $data['status'] = 'error';
-            $data['msg']    = count($errorArray) . ' ' . __('Record imported fail out of' . ' ' . $totalCustomer . ' ' . 'record');
+            $data['msg'] = count($errorArray).' '.__('Record imported fail out of'.' '.$totalCustomer.' '.'record');
 
-
-            foreach($errorArray as $errorData)
-            {
-
+            foreach ($errorArray as $errorData) {
                 $errorRecord[] = implode(',', $errorData);
-
             }
 
             \Session::put('errorArray', $errorRecord);
@@ -556,6 +479,4 @@ class CustomerController extends Controller
 
         return redirect()->back()->with($data['status'], $data['msg']);
     }
-
-
 }

@@ -17,11 +17,11 @@ class Timesheet extends Model
 
     public function project()
     {
-        return $this->hasOne('App\Models\Project', 'id', 'project_id');
+        return $this->hasOne(\App\Models\Project::class, 'id', 'project_id');
     }
 
     public function task()
     {
-        return $this->hasOne('App\Models\ProjectTask', 'id', 'task_id');
+        return $this->hasOne(\App\Models\ProjectTask::class, 'id', 'task_id');
     }
 }

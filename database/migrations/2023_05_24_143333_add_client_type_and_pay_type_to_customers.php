@@ -14,8 +14,8 @@ class AddClientTypeAndPayTypeToCustomers extends Migration
     public function up()
     {
         Schema::table('customers', function (Blueprint $table) {
-            $table->integer("client_type")->after("tax_number")->nullable();
-            $table->integer("pay_type")->after("client_type")->nullable();
+            $table->integer('client_type')->after('tax_number')->nullable();
+            $table->integer('pay_type')->after('client_type')->nullable();
         });
     }
 

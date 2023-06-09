@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\ProductService;
 use Illuminate\Database\Eloquent\Model;
 
 class ProductPurchase extends Model
@@ -15,7 +14,7 @@ class ProductPurchase extends Model
         'currency_id',
         'issue_date',
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     /*public function products()
@@ -24,10 +23,6 @@ class ProductPurchase extends Model
     }*/
     public function currency()
     {
-        return $this->hasOne('App\Models\Currencie', 'id', 'currency_id');
+        return $this->hasOne(\App\Models\Currencie::class, 'id', 'currency_id');
     }
-    
-
-
-
 }

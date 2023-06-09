@@ -23,16 +23,16 @@ class FormBuilder extends Model
 
     public function form_field()
     {
-        return $this->hasMany('App\Models\FormField', 'form_id', 'id');
+        return $this->hasMany(\App\Models\FormField::class, 'form_id', 'id');
     }
 
     public function fieldResponse()
     {
-        return $this->hasOne('App\Models\FormFieldResponse', 'form_id', 'id');
+        return $this->hasOne(\App\Models\FormFieldResponse::class, 'form_id', 'id');
     }
 
     public function response()
     {
-        return $this->hasMany('App\Models\FormResponse', 'form_id', 'id');
+        return $this->hasMany(\App\Models\FormResponse::class, 'form_id', 'id');
     }
 }

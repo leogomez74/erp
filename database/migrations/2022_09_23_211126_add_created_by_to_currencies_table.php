@@ -14,7 +14,7 @@ class AddCreatedByToCurrenciesTable extends Migration
     public function up()
     {
         Schema::table('currencies', function (Blueprint $table) {
-            $table->integer("created_by")->after("symbol")->nullable();
+            $table->integer('created_by')->after('symbol')->nullable();
         });
     }
 

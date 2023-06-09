@@ -15,18 +15,18 @@ class Complaint extends Model
         'created_by',
     ];
 
-
     public function employee()
     {
-        return $this->hasOne('App\Models\Employee', 'id', 'employee_id')->first();
+        return $this->hasOne(\App\Models\Employee::class, 'id', 'employee_id')->first();
     }
 
     public function complaintFrom($complaint_from)
     {
-        return Employee::where('id',$complaint_from)->first();
+        return Employee::where('id', $complaint_from)->first();
     }
+
     public function complaintAgainst($complaint_against)
     {
-        return Employee::where('id',$complaint_against)->first();
+        return Employee::where('id', $complaint_against)->first();
     }
 }

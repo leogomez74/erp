@@ -15,9 +15,8 @@ class BillPayment extends Model
         'description',
     ];
 
-
     public function bankAccount()
     {
-        return $this->hasOne('App\Models\ChartOfAccount', 'id', 'account_id');
+        return $this->hasOne(\App\Models\ChartOfAccount::class, 'id', 'account_id');
     }
 }

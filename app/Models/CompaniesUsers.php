@@ -1,7 +1,9 @@
 <?php
+
 namespace App\Models;
-use Illuminate\Database\Eloquent\Model;
+
 use Auth;
+use Illuminate\Database\Eloquent\Model;
 
 class CompaniesUsers extends Model
 {
@@ -10,9 +12,9 @@ class CompaniesUsers extends Model
         'id_company',
     ];
 
-    public static function setCompaniesUsers(){
-
-        $companies_users=CompaniesUsers::select('id_company')->where('id_user',Auth::user()->id)->get();
+    public static function setCompaniesUsers()
+    {
+        $companies_users = CompaniesUsers::select('id_company')->where('id_user', Auth::user()->id)->get();
 
         /*foreach($companies_users as $company){
             $companies[]=$company['id_company'];
@@ -20,6 +22,4 @@ class CompaniesUsers extends Model
         }   */
         return $companies_users;
     }
-
-   
 }

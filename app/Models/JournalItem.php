@@ -15,8 +15,6 @@ class JournalItem extends Model
 
     public function accounts()
     {
-        return $this->hasOne('App\Models\ChartOfAccount', 'id', 'account');
+        return $this->hasOne(\App\Models\ChartOfAccount::class, 'id', 'account');
     }
-
-
 }

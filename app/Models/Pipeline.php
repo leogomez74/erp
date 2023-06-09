@@ -13,11 +13,11 @@ class Pipeline extends Model
 
     public function stages()
     {
-        return $this->hasMany('App\Models\Stage', 'pipeline_id', 'id')->where('created_by', '=', \Auth::user()->ownerId())->orderBy('order');
+        return $this->hasMany(\App\Models\Stage::class, 'pipeline_id', 'id')->where('created_by', '=', \Auth::user()->ownerId())->orderBy('order');
     }
 
     public function leadStages()
     {
-        return $this->hasMany('App\Models\LeadStage', 'pipeline_id', 'id')->where('created_by', '=', \Auth::user()->ownerId())->orderBy('order');
+        return $this->hasMany(\App\Models\LeadStage::class, 'pipeline_id', 'id')->where('created_by', '=', \Auth::user()->ownerId())->orderBy('order');
     }
 }

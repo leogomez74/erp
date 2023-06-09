@@ -20,12 +20,12 @@ class GoalTracking extends Model
 
     public function goalType()
     {
-        return $this->hasOne('App\Models\GoalType', 'id', 'goal_type');
+        return $this->hasOne(\App\Models\GoalType::class, 'id', 'goal_type');
     }
 
     public function branches()
     {
-        return $this->hasOne('App\Models\Branch', 'id', 'branch');
+        return $this->hasOne(\App\Models\Branch::class, 'id', 'branch');
     }
 
     public static $status = [

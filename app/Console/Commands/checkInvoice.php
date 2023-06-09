@@ -38,10 +38,10 @@ class checkInvoice extends Command
      */
     public function handle()
     {
-        $vencidas = Invoice::whereNotIn("status",[3,4,5])->where("due_date","<",now()->format("Y-m-d"));
+        $vencidas = Invoice::whereNotIn('status', [3, 4, 5])->where('due_date', '<', now()->format('Y-m-d'));
 
-       if ($vencidas->count() >0){
-           $vencidas->update(['status' => 5]);
-       }
+        if ($vencidas->count() > 0) {
+            $vencidas->update(['status' => 5]);
+        }
     }
 }

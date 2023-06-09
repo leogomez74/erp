@@ -11,6 +11,7 @@ class CommonEmailTemplate extends Mailable
     use Queueable, SerializesModels;
 
     public $template;
+
     public $settings;
 
     /**
@@ -20,7 +21,6 @@ class CommonEmailTemplate extends Mailable
      */
     public function __construct($template, $settings)
     {
-
         $this->template = $template;
         $this->settings = $settings;
     }
@@ -33,6 +33,5 @@ class CommonEmailTemplate extends Mailable
     public function build()
     {
         return $this->from($this->settings['company_email'], $this->template->from)->markdown('email.common_email_template')->subject($this->template->subject)->with('content', $this->template->content);
-
     }
 }

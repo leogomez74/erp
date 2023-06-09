@@ -14,7 +14,7 @@ class AddOpeningBalanceToChartOfAccounts extends Migration
     public function up()
     {
         Schema::table('chart_of_accounts', function (Blueprint $table) {
-            $table->double("opening_balance",15,2)->after("description")->nullable();
+            $table->double('opening_balance', 15, 2)->after('description')->nullable();
         });
     }
 

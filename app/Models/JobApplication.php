@@ -30,6 +30,6 @@ class JobApplication extends Model
 
     public function jobs()
     {
-        return $this->hasOne('App\Models\Job', 'id', 'job');
+        return $this->hasOne(\App\Models\Job::class, 'id', 'job');
     }
 }

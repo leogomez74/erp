@@ -16,7 +16,7 @@ class JobOnBoard extends Model
 
     public function applications()
     {
-        return $this->hasOne('App\Models\JobApplication', 'id', 'application');
+        return $this->hasOne(\App\Models\JobApplication::class, 'id', 'application');
     }
 
     public static $status = [

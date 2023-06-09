@@ -11,11 +11,8 @@ class PerformanceType extends Model
         'created_by',
     ];
 
-
     public function types()
     {
-
-        return $this->hasMany('App\Models\Competencies', 'type', 'id');
+        return $this->hasMany(\App\Models\Competencies::class, 'type', 'id');
     }
-
 }

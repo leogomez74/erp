@@ -16,15 +16,16 @@ class SaturationDeduction extends Model
 
     public function employee()
     {
-        return $this->hasOne('App\Models\Employee', 'id', 'employee_id')->first();
+        return $this->hasOne(\App\Models\Employee::class, 'id', 'employee_id')->first();
     }
 
     public function deduction_option()
     {
-        return $this->hasOne('App\Models\DeductionOption', 'id', 'deduction_option')->first();
+        return $this->hasOne(\App\Models\DeductionOption::class, 'id', 'deduction_option')->first();
     }
+
     public static $saturationDeductiontype = [
-        'fixed'=>'Fixed',
-        'percentage'=> 'Percentage',
+        'fixed' => 'Fixed',
+        'percentage' => 'Percentage',
     ];
 }

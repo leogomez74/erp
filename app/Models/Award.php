@@ -17,11 +17,11 @@ class Award extends Model
 
     public function awardType()
     {
-        return $this->hasOne('App\Models\AwardType', 'id', 'award_type')->first();
+        return $this->hasOne(\App\Models\AwardType::class, 'id', 'award_type')->first();
     }
 
     public function employee()
     {
-        return $this->hasOne('App\Models\Employee', 'id', 'employee_id')->first();
+        return $this->hasOne(\App\Models\Employee::class, 'id', 'employee_id')->first();
     }
 }

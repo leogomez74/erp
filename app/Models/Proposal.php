@@ -25,27 +25,25 @@ class Proposal extends Model
         'Close',
     ];
 
-
     public function tax()
     {
-        return $this->hasOne('App\Models\Tax', 'id', 'tax_id');
+        return $this->hasOne(\App\Models\Tax::class, 'id', 'tax_id');
     }
 
     public function items()
     {
-        return $this->hasMany('App\Models\ProposalProduct', 'proposal_id', 'id');
+        return $this->hasMany(\App\Models\ProposalProduct::class, 'proposal_id', 'id');
     }
 
     public function customer()
     {
-        return $this->hasOne('App\Models\Customer', 'id', 'customer_id');
+        return $this->hasOne(\App\Models\Customer::class, 'id', 'customer_id');
     }
 
     public function getSubTotal()
     {
         $subTotal = 0;
-        foreach($this->items as $product)
-        {
+        foreach ($this->items as $product) {
             $subTotal += ($product->price * $product->quantity);
         }
 
@@ -55,8 +53,7 @@ class Proposal extends Model
     public function getTotalTax()
     {
         $totalTax = 0;
-        foreach($this->items as $product)
-        {
+        foreach ($this->items as $product) {
             $taxes = Utility::totalTaxRate($product->tax);
 
             $totalTax += ($taxes / 100) * ($product->price * $product->quantity);
@@ -68,8 +65,7 @@ class Proposal extends Model
     public function getTotalDiscount()
     {
         $totalDiscount = 0;
-        foreach($this->items as $product)
-        {
+        foreach ($this->items as $product) {
             $totalDiscount += $product->discount;
         }
 
@@ -84,8 +80,7 @@ class Proposal extends Model
     public function getDue()
     {
         $due = 0;
-        foreach($this->payments as $payment)
-        {
+        foreach ($this->payments as $payment) {
             $due += $payment->amount;
         }
 
@@ -94,20 +89,18 @@ class Proposal extends Model
 
     public static function change_status($proposal_id, $status)
     {
-
-        $proposal         = Proposal::find($proposal_id);
+        $proposal = Proposal::find($proposal_id);
         $proposal->status = $status;
         $proposal->update();
     }
 
     public function category()
     {
-        return $this->hasOne('App\Models\ProductServiceCategory', 'id', 'category_id');
+        return $this->hasOne(\App\Models\ProductServiceCategory::class, 'id', 'category_id');
     }
 
     public function taxes()
     {
-        return $this->hasOne('App\Models\Tax', 'id', 'tax');
+        return $this->hasOne(\App\Models\Tax::class, 'id', 'tax');
     }
-
 }

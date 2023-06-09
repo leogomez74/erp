@@ -37,21 +37,21 @@ class Indicator extends Model
 
     public function branches()
     {
-        return $this->hasOne('App\Models\Branch', 'id', 'branch');
+        return $this->hasOne(\App\Models\Branch::class, 'id', 'branch');
     }
 
     public function departments()
     {
-        return $this->hasOne('App\Models\Department', 'id', 'department');
+        return $this->hasOne(\App\Models\Department::class, 'id', 'department');
     }
 
     public function designations()
     {
-        return $this->hasOne('App\Models\Designation', 'id', 'designation');
+        return $this->hasOne(\App\Models\Designation::class, 'id', 'designation');
     }
 
     public function user()
     {
-        return $this->hasOne('App\Models\User', 'id', 'created_user');
+        return $this->hasOne(\App\Models\User::class, 'id', 'created_user');
     }
 }

@@ -16,17 +16,16 @@ class Allowance extends Model
 
     public function employee()
     {
-        return $this->hasOne('App\Models\Employee', 'id', 'employee_id')->first();
+        return $this->hasOne(\App\Models\Employee::class, 'id', 'employee_id')->first();
     }
 
     public function allowance_option()
     {
-        return $this->hasOne('App\Models\AllowanceOption', 'id', 'allowance_option')->first();
+        return $this->hasOne(\App\Models\AllowanceOption::class, 'id', 'allowance_option')->first();
     }
 
-    public static $Allowancetype =[
-        'fixed'      => 'Fixed',
+    public static $Allowancetype = [
+        'fixed' => 'Fixed',
         'percentage' => 'Percentage',
     ];
-
 }

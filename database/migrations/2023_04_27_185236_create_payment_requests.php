@@ -15,18 +15,18 @@ class CreatePaymentRequests extends Migration
     {
         Schema::create('payment_requests', function (Blueprint $table) {
             $table->id();
-            $table->date("date")->nullable();
-            $table->char("day",2)->nullable();
-            $table->string("company");
-            $table->string("payment_type");
-            $table->string("periodicity");
-            $table->string("periodicityd")->nullable();
-            $table->string("category");
-            $table->decimal("amount",15,2);
-            $table->char("currency",3)->default("₡");
-            $table->tinyInteger("status")->default(0);
-            $table->text("observation")->nullable();
-            $table->integer("created_by");
+            $table->date('date')->nullable();
+            $table->char('day', 2)->nullable();
+            $table->string('company');
+            $table->string('payment_type');
+            $table->string('periodicity');
+            $table->string('periodicityd')->nullable();
+            $table->string('category');
+            $table->decimal('amount', 15, 2);
+            $table->char('currency', 3)->default('₡');
+            $table->tinyInteger('status')->default(0);
+            $table->text('observation')->nullable();
+            $table->integer('created_by');
             $table->timestamps();
         });
     }

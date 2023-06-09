@@ -1,12 +1,13 @@
 <?php
 
 namespace Database\Seeders;
+
 use App\Models\User;
 use App\Models\Utility;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\Hash;
 
 class UsersTableSeeder extends Seeder
 {
@@ -2905,7 +2906,7 @@ class UsersTableSeeder extends Seeder
 
         // Super admin
 
-        $superAdminRole        = Role::create(
+        $superAdminRole = Role::create(
             [
                 'name' => 'super admin',
                 'created_by' => 0,
@@ -2954,7 +2955,7 @@ class UsersTableSeeder extends Seeder
         $superAdmin->assignRole($superAdminRole);
 
         // customer
-        $customerRole       = Role::create(
+        $customerRole = Role::create(
             [
                 'name' => 'customer',
                 'created_by' => 0,
@@ -2972,7 +2973,7 @@ class UsersTableSeeder extends Seeder
         $customerRole->givePermissionTo($customerPermission);
 
         // vender
-        $venderRole       = Role::create(
+        $venderRole = Role::create(
             [
                 'name' => 'vender',
                 'created_by' => 0,
@@ -3484,7 +3485,7 @@ class UsersTableSeeder extends Seeder
         $company->assignRole($companyRole);
 
         // accountant
-        $accountantRole       = Role::create(
+        $accountantRole = Role::create(
             [
                 'name' => 'accountant',
                 'created_by' => $company->id,
@@ -3615,7 +3616,6 @@ class UsersTableSeeder extends Seeder
             ['name' => 'view budget plan'],
         ];
 
-
         $accountantRole->givePermissionTo($accountantPermission);
 
         $accountant = User::create(
@@ -3645,7 +3645,7 @@ class UsersTableSeeder extends Seeder
         );
 
         // accountant
-        $clientRole       = Role::create(
+        $clientRole = Role::create(
             [
                 'name' => 'client',
                 'created_by' => $company->id,

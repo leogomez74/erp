@@ -19,7 +19,6 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
@@ -28,7 +27,6 @@ class Kernel extends ConsoleKernel
         $schedule->command('checkInvoice')->dailyAt('07:00')->timezone('America/Costa_Rica');
         $schedule->command('checkCharges')->dailyAt('08:00')->timezone('America/Costa_Rica');
         $schedule->command('facturasVencidas')->dailyAt('08:00')->timezone('America/Costa_Rica');
-
     }
 
     /**

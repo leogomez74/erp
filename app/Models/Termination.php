@@ -17,11 +17,11 @@ class Termination extends Model
 
     public function terminationType()
     {
-        return $this->hasOne('App\Models\TerminationType', 'id', 'termination_type')->first();
+        return $this->hasOne(\App\Models\TerminationType::class, 'id', 'termination_type')->first();
     }
 
     public function employee()
     {
-        return $this->hasOne('App\Models\Employee', 'id', 'employee_id')->first();
+        return $this->hasOne(\App\Models\Employee::class, 'id', 'employee_id')->first();
     }
 }
